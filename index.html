@@ -399,8 +399,6 @@
     <button class="tab active" onclick="filterProducts('all', this)">All Items</button>
     <button class="tab" onclick="filterProducts('vegetables', this)">🥬 Vegetables</button>
     <button class="tab" onclick="filterProducts('fruits', this)">🍎 Fruits</button>
-    <button class="tab" onclick="filterProducts('dairy', this)">🥛 Dairy</button>
-    <button class="tab" onclick="filterProducts('pantry', this)">🫙 Pantry</button>
   </div>
   <div class="products-grid" id="productsGrid"></div>
 </section>
@@ -474,11 +472,11 @@
       </div>
       <div class="form-group">
         <label>Items Needed *</label>
-        <textarea placeholder="e.g. 5 tomatoes, 1 litre milk, 2 kg rice..." id="items"></textarea>
+        <textarea placeholder="e.g. 5 buckets of potatoes, 5 Kg of tomatoes, 2 kg rice..." id="items"></textarea>
       </div>
       <button class="submit-btn" onclick="submitOrder()">📦 Place Order</button>
       <div class="success-msg" id="successMsg">
-        ✅ Order received! We'll call you on your number to confirm. Thank you for choosing Runjo Stores!
+        ✅ Order received! We'll call you at your number to confirm. Thank you for choosing Runjo Stores!
       </div>
     </div>
   </div>
@@ -664,6 +662,9 @@
      { name: "Tomatoes", unit: "per kg", price: "Ksh 80", cost: 80, emoji: "🍅", cat: "vegetables", badge: "Ksh 80!" },
     { name: "Sukuma Wiki", unit: "per bunch", price: "Ksh 10", cost: 10, emoji: "🥬", cat: "vegetables" },
     { name: "Onions", unit: "per kg", price: "Ksh 100", cost: 100, emoji: "🧅", cat: "vegetables" },
+    { name: "Potatoes", unit: "per kg", price: "Ksh 90", emoji: "🥔", cat: "vegetables" },
+    { name: "Potatoes", unit: "per bucket", price: "Ksh 900", emoji: "🥔", cat: "vegetables" },
+    { name: "Potatoes", unit: "per 2 kg kasuku", price: "Ksh 200", emoji: "🥔", cat: "vegetables" },
     { name: "Carrots", unit: "per 2kg kasuku", price: "Ksh 80", cost: 80, emoji: "🥕", cat: "vegetables" },
     { name: "Cabbage", unit: "per head", price: "Ksh 70", cost: 70, emoji: "🥦", cat: "vegetables" },
     { name: "Spinach", unit: "per bunch", price: "Ksh 15", cost: 15, emoji: "🌿", cat: "vegetables" },
@@ -855,6 +856,7 @@
 </script>
 </body>
 </html>
+
 
 
 
