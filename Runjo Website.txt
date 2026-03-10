@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Runjo Stores – Kamiti Corner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #1a6b3c;
+      --green-light: #3cb371;
+      --green-pale: #d6f0e0;
+      --cream: #fffdf5;
+      --brown: #4a2c1a;
+      --orange: #e8572a;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --white: #ffffff;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,253,245,0.93); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(26,107,60,0.12);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 68px;
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--green); letter-spacing: -0.02em; }
+    .nav-logo span { color: var(--orange); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta { background: var(--green); color: var(--white); border: none; padding: 10px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.15s; text-decoration: none; }
+    .nav-cta:hover { background: var(--green-light); transform: translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; padding: 100px 5vw 60px; gap: 4rem;
+      background: linear-gradient(135deg, var(--cream) 55%, var(--green-pale) 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 520px; height: 520px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(60,179,113,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      display: inline-block; background: var(--green-pale); color: var(--green);
+      padding: 6px 16px; border-radius: 50px; font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 5vw, 4rem); line-height: 1.1; font-weight: 900;
+      color: var(--text); margin-bottom: 1.2rem;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero h1 em { color: var(--green); font-style: normal; }
+    .hero p { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 440px; margin-bottom: 2rem; animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+    .btn-primary { background: var(--green); color: var(--white); padding: 14px 32px; border-radius: 50px; font-size: 0.95rem; font-weight: 500; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(26,107,60,0.25); }
+    .btn-primary:hover { background: var(--green-light); transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: var(--green); padding: 14px 32px; border-radius: 50px; border: 2px solid var(--green); font-size: 0.95rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .btn-secondary:hover { background: var(--green); color: var(--white); }
+
+    .hero-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; animation: fadeUp 0.7s 0.2s ease both; }
+    .hero-card { background: var(--white); border-radius: 20px; padding: 1.4rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); transition: transform 0.25s; }
+    .hero-card:hover { transform: translateY(-4px); }
+    .hero-card:first-child { margin-top: 2rem; }
+    .hero-card:last-child { margin-top: -1rem; }
+    .hero-card .emoji { font-size: 2.4rem; margin-bottom: 0.6rem; }
+    .hero-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .hero-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .hero-card .tag { display: inline-block; margin-top: 0.6rem; background: var(--green-pale); color: var(--green); font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+
+    /* FEATURES BAR */
+    .features-bar { background: var(--green); display: flex; justify-content: center; flex-wrap: wrap; }
+    .feat-item { display: flex; align-items: center; gap: 10px; padding: 18px 28px; border-right: 1px solid rgba(255,255,255,0.15); color: var(--white); }
+    .feat-item:last-child { border-right: none; }
+    .feat-item .icon { font-size: 1.3rem; }
+    .feat-item span { font-size: 0.88rem; font-weight: 500; }
+
+    /* SECTIONS */
+    section { padding: 80px 5vw; }
+    .section-tag { display: inline-block; background: var(--green-pale); color: var(--green); padding: 5px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 900; color: var(--text); margin-bottom: 0.6rem; line-height: 1.2; }
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 500px; line-height: 1.6; }
+
+    /* PRODUCTS */
+    #products { background: var(--white); }
+    .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+    .category-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .tab { padding: 8px 20px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; border: 1.5px solid #e5e7eb; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+    .tab.active, .tab:hover { background: var(--green); color: var(--white); border-color: var(--green); }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.4rem; }
+    .product-card { background: var(--cream); border-radius: 20px; padding: 1.4rem; text-align: center; transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,0.1); }
+    .product-badge { position: absolute; top: 12px; right: 12px; background: var(--orange); color: var(--white); font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+    .product-emoji { font-size: 3rem; margin-bottom: 0.8rem; display: block; }
+    .product-name { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    .product-unit { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.8rem; }
+    .product-price { font-size: 1.3rem; font-weight: 700; color: var(--green); margin-bottom: 1rem; }
+    .add-btn { width: 100%; padding: 10px; border-radius: 50px; background: var(--green); color: var(--white); border: none; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+    .add-btn:hover { background: var(--green-light); transform: scale(1.03); }
+
+    /* ORDER */
+    #order { background: var(--green-pale); }
+    .order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .steps { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+    .step-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .step-text p { font-size: 0.85rem; color: var(--muted); }
+    .order-form { background: var(--white); border-radius: 24px; padding: 2.4rem; box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+    .order-form h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1.6rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 500; margin-bottom: 0.4rem; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 1.5px solid #e5e7eb; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: var(--cream); color: var(--text); transition: border-color 0.2s; outline: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .submit-btn { width: 100%; padding: 14px; background: var(--green); color: var(--white); border: none; border-radius: 50px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 4px 20px rgba(26,107,60,0.25); }
+    .submit-btn:hover { background: var(--green-light); transform: translateY(-2px); }
+    .success-msg { display: none; background: var(--green-pale); border: 1px solid var(--green-light); border-radius: 12px; padding: 14px 18px; margin-top: 1rem; font-size: 0.9rem; color: var(--green); text-align: center; }
+
+    /* INFO */
+    #info { background: var(--cream); }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
+    .info-card { background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .info-card .icon { font-size: 2rem; margin-bottom: 1rem; }
+    .info-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.8rem; }
+    .info-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.8; }
+    .hours-list { list-style: none; }
+    .hours-list li { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); padding: 6px 0; border-bottom: 1px solid #f3f4f6; }
+    .hours-list li:last-child { border-bottom: none; }
+    .hours-list .day { font-weight: 600; color: var(--text); }
+    .closed { color: var(--orange) !important; }
+
+    /* TESTIMONIALS */
+    #testimonials { background: var(--white); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.6rem; margin-top: 2.5rem; }
+    .testi-card { background: var(--cream); border-radius: 20px; padding: 1.8rem; }
+    .stars { color: #f59e0b; font-size: 1rem; margin-bottom: 0.8rem; }
+    .testi-text { font-size: 0.92rem; color: var(--text); line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+    .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--green); color: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; }
+    .author-name { font-size: 0.88rem; font-weight: 600; }
+    .author-sub { font-size: 0.78rem; color: var(--muted); }
+
+    /* FOOTER */
+    footer { background: var(--brown); color: rgba(255,255,255,0.85); padding: 50px 5vw 30px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .footer-brand .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--white); margin-bottom: 0.8rem; }
+    .footer-brand .logo span { color: var(--green-light); }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 280px; }
+    .footer-col h4 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--white); margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a { font-size: 0.85rem; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--green-light); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+    /* PAYMENT */
+    #payment { background: var(--white); }
+    .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 2.5rem; }
+    .mpesa-card {
+      background: linear-gradient(135deg, #00a651 0%, #007a3d 100%);
+      border-radius: 24px; padding: 2.4rem;
+      color: white; text-align: center;
+      box-shadow: 0 12px 40px rgba(0,166,81,0.3);
+      position: relative; overflow: hidden;
+    }
+    .mpesa-card::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: rgba(255,255,255,0.08); pointer-events: none;
+    }
+    .mpesa-logo { font-size: 2.8rem; margin-bottom: 0.5rem; }
+    .mpesa-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.6rem; letter-spacing: 0.02em; opacity: 0.9; }
+    .mpesa-detail {
+      background: rgba(255,255,255,0.15); border-radius: 14px;
+      padding: 1rem 1.4rem; margin-bottom: 1rem; text-align: left;
+    }
+    .mpesa-detail-label { font-size: 0.72rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+    .mpesa-detail-value { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.05em; }
+    .mpesa-detail-value.small { font-size: 1.1rem; }
+    .mpesa-note { font-size: 0.8rem; opacity: 0.75; margin-top: 1.2rem; line-height: 1.6; }
+
+    .payment-steps { display: flex; flex-direction: column; gap: 1.2rem; }
+    .pay-step { display: flex; gap: 1rem; align-items: flex-start; background: var(--cream); border-radius: 16px; padding: 1.1rem 1.3rem; }
+    .pay-step-num { width: 32px; height: 32px; border-radius: 50%; background: #00a651; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+    .pay-step-text h4 { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem; color: var(--text); }
+    .pay-step-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .pay-step-text strong { color: #00a651; }
+
+    /* WHATSAPP FLOAT */
+    .whatsapp-float {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      background: #25d366; color: white;
+      width: 56px; height: 56px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,211,102,0.5); }
+
+    /* CART DRAWER */
+    .cart-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; }
+    .cart-overlay.open { display:block; }
+    .cart-drawer {
+      position:fixed; top:0; right:-420px; width:380px; max-width:95vw;
+      height:100vh; background:var(--white); z-index:201;
+      box-shadow:-8px 0 40px rgba(0,0,0,0.15);
+      display:flex; flex-direction:column;
+      transition: right 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .cart-drawer.open { right:0; }
+    .cart-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:20px 24px; border-bottom:1px solid #f0f0f0;
+      background:var(--green); color:white;
+    }
+    .cart-header h3 { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; }
+    .cart-close { background:rgba(255,255,255,0.2); border:none; color:white; width:34px; height:34px; border-radius:50%; font-size:1.1rem; cursor:pointer; transition:background 0.2s; }
+    .cart-close:hover { background:rgba(255,255,255,0.35); }
+    .cart-body { flex:1; overflow-y:auto; padding:16px 20px; }
+    .cart-empty { text-align:center; padding:60px 20px; color:var(--muted); }
+    .cart-empty .big { font-size:3rem; margin-bottom:1rem; }
+    .cart-empty p { font-size:0.9rem; }
+    .cart-item {
+      display:flex; align-items:center; gap:12px;
+      padding:12px 0; border-bottom:1px solid #f5f5f5;
+    }
+    .cart-item-emoji { font-size:1.8rem; flex-shrink:0; }
+    .cart-item-info { flex:1; }
+    .cart-item-name { font-size:0.9rem; font-weight:600; color:var(--text); }
+    .cart-item-price { font-size:0.8rem; color:var(--green); font-weight:500; margin-top:2px; }
+    .cart-item-qty {
+      display:flex; align-items:center; gap:8px; margin-top:6px;
+    }
+    .qty-btn {
+      width:26px; height:26px; border-radius:50%; border:1.5px solid var(--green);
+      background:transparent; color:var(--green); font-size:1rem; font-weight:700;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:all 0.15s; line-height:1;
+    }
+    .qty-btn:hover { background:var(--green); color:white; }
+    .qty-num { font-size:0.9rem; font-weight:600; min-width:18px; text-align:center; }
+    .cart-item-remove { background:none; border:none; color:#ccc; font-size:1.1rem; cursor:pointer; padding:4px; transition:color 0.2s; }
+    .cart-item-remove:hover { color:var(--orange); }
+    .cart-footer { padding:16px 20px; border-top:2px solid #f0f0f0; background:var(--cream); }
+    .cart-total { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+    .cart-total span { font-size:1rem; font-weight:700; color:var(--text); }
+    .cart-total .amount { font-size:1.3rem; color:var(--green); font-weight:900; }
+    .cart-checkout-btn {
+      width:100%; padding:14px; background:var(--green); color:white;
+      border:none; border-radius:50px; font-size:0.95rem; font-weight:600;
+      cursor:pointer; transition:background 0.2s, transform 0.15s;
+      box-shadow:0 4px 16px rgba(26,107,60,0.25);
+    }
+    .cart-checkout-btn:hover { background:var(--green-light); transform:translateY(-1px); }
+    .cart-clear { width:100%; padding:8px; background:none; border:none; color:var(--muted); font-size:0.8rem; cursor:pointer; margin-top:8px; text-decoration:underline; }
+    .cart-clear:hover { color:var(--orange); }
+
+    /* CART BADGE */
+    .cart-wrap { position: relative; display: inline-block; }
+    .cart-count { position: absolute; top: -8px; right: -8px; background: var(--orange); color: var(--white); width: 20px; height: 20px; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 768px) {
+      .payment-grid { grid-template-columns: 1fr; }
+      .hero { grid-template-columns: 1fr; padding-top: 90px; }
+      .hero-visual { display: none; }
+      .order-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CART OVERLAY & DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>🛒 Your Cart</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty">
+      <div class="big">🛒</div>
+      <p>Your cart is empty.<br/>Add items from the products section!</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">
+      <span>Total</span>
+      <span class="amount" id="cartTotal">Ksh 0</span>
+    </div>
+    <button class="cart-checkout-btn" onclick="checkoutCart()">Proceed to Order →</button>
+    <button class="cart-clear" onclick="clearCart()">Clear cart</button>
+  </div>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a class="whatsapp-float" href="https://wa.me/254702148068" target="_blank" title="Chat on WhatsApp">💬</a>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Runjo<span> Stores</span></div>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#order">Order</a></li>
+    <li><a href="#info">Find Us</a></li>
+    <li><a href="#payment">Pay</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <div class="cart-wrap">
+      <button id="cartBtn" onclick="toggleCart()" style="background:none;border:1.5px solid var(--green);border-radius:50px;padding:8px 16px;cursor:pointer;color:var(--green);font-size:0.88rem;font-weight:500;display:flex;align-items:center;gap:6px;">
+        🛒 Cart
+      </button>
+      <div class="cart-count" id="cartCount" style="display:none;">0</div>
+    </div>
+    <a href="#order" class="nav-cta">Order Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-eyebrow">🌿 Fresh Daily · Kamiti Corner</div>
+    <h1>Welcome to <em>Runjo Stores</em></h1>
+    <p>Your go-to grocery shop at Kamiti Corner, opposite Mkwaju. Fresh produce, everyday essentials, and friendly service — right in your neighbourhood.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Shop Now</a>
+      <a href="#order" class="btn-secondary">Place an Order</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="emoji">🍅</div>
+      <h3>Fresh Tomatoes</h3>
+      <p>Ripe, juicy tomatoes — only Ksh 10</p>
+      <span class="tag">In Stock</span>
+    </div>
+    <div class="hero-card">
+      <div class="emoji">🥬</div>
+      <h3>Fresh Vegetables</h3>
+      <p>Locally sourced, harvested daily</p>
+      <span class="tag">Daily Fresh</span>
+    </div>
+    <div class="hero-card">
+      <div class="emoji">🥚</div>
+      <h3>Fresh Eggs</h3>
+      <p>Farm-fresh tray of 30 — Ksh 450</p>
+      <span class="tag">Best Seller</span>
+    </div>
+    <div class="hero-card">
+      <div class="emoji">🍚</div>
+      <h3>Mwea Pishori</h3>
+      <p>Premium rice — Ksh 190/kg</p>
+      <span class="tag">Top Quality</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES BAR -->
+<div class="features-bar">
+  <div class="feat-item"><span class="icon">📍</span><span>Kamiti Corner, opp. Mkwaju</span></div>
+  <div class="feat-item"><span class="icon">🕐</span><span>Open Mon–Sat, 8am–8pm</span></div>
+  <div class="feat-item"><span class="icon">📞</span><span>0702 148 068</span></div>
+  <div class="feat-item"><span class="icon">🌱</span><span>Always Fresh Guarantee</span></div>
+  <div class="feat-item"><span class="icon">💚</span><span>M-Pesa Pochi la Biashara: 0712 778 283</span></div>
+  <div class="feat-item"><span class="icon">💬</span><span>WhatsApp Orders Welcome</span></div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="products-header">
+    <div>
+      <span class="section-tag">Our Products</span>
+      <h2 class="section-title">Fresh Picks at Runjo Stores</h2>
+      <p class="section-sub">All prices in Kenyan Shillings (Ksh)</p>
+    </div>
+  </div>
+  <div class="category-tabs">
+    <button class="tab active" onclick="filterProducts('all', this)">All Items</button>
+    <button class="tab" onclick="filterProducts('vegetables', this)">🥬 Vegetables</button>
+    <button class="tab" onclick="filterProducts('fruits', this)">🍎 Fruits</button>
+    <button class="tab" onclick="filterProducts('dairy', this)">🥛 Dairy</button>
+    <button class="tab" onclick="filterProducts('pantry', this)">🫙 Pantry</button>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- ORDER -->
+<section id="order">
+  <div class="order-grid">
+    <div class="order-info">
+      <span class="section-tag">Place Your Order</span>
+      <h2 class="section-title">Call, WhatsApp or Order Online</h2>
+      <p class="section-sub">Fill in the form below or reach us directly on <strong>0702 148 068</strong> and we'll have your items ready.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <h4>Pick Your Items</h4>
+            <p>Browse our products and tap "Add to Order"</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <h4>Fill the Form</h4>
+            <p>Tell us your name, phone, and what you need</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <h4>Pick Up or We Deliver</h4>
+            <p>Collect at Kamiti Corner or arrange delivery</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="order-form">
+      <h3>🛒 New Order</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name *</label>
+          <input type="text" placeholder="e.g. John" id="firstName"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="e.g. Kamau" id="lastName"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="tel" placeholder="e.g. 0712 345 678" id="phone"/>
+      </div>
+      <div class="form-group">
+        <label>Pickup or Delivery?</label>
+        <select id="delivType">
+          <option value="">Select option</option>
+          <option>I'll pick up at the store</option>
+          <option>I need delivery</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Delivery Address (if applicable)</label>
+        <input type="text" placeholder="e.g. Near Kamiti Road, House No. 4" id="address"/>
+      </div>
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select id="payMethod">
+          <option value="">Select payment</option>
+          <option>M-Pesa Pochi la Biashara (0712 778 283)</option>
+          <option>Pay on Pickup</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Items Needed *</label>
+        <textarea placeholder="e.g. 5 tomatoes, 1 litre milk, 2 kg rice..." id="items"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitOrder()">📦 Place Order</button>
+      <div class="success-msg" id="successMsg">
+        ✅ Order received! We'll call you on your number to confirm. Thank you for choosing Runjo Stores!
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section id="payment">
+  <span class="section-tag">Payment</span>
+  <h2 class="section-title">Pay via M-Pesa</h2>
+  <p class="section-sub">Fast, safe and easy — pay for your order using M-Pesa Pochi la Biashara before pickup or delivery.</p>
+  <div class="payment-grid">
+    <div class="mpesa-card">
+      <div class="mpesa-logo">📱</div>
+      <div class="mpesa-title">Pochi la Biashara</div>
+      <div class="mpesa-detail">
+        <div class="mpesa-detail-label">Send Money To</div>
+        <div class="mpesa-detail-value">0712 778 283</div>
+      </div>
+      <div class="mpesa-detail">
+        <div class="mpesa-detail-label">Business Name</div>
+        <div class="mpesa-detail-value small">Runjo Stores</div>
+      </div>
+      <div class="mpesa-detail">
+        <div class="mpesa-detail-label">Payment Type</div>
+        <div class="mpesa-detail-value small">Pochi la Biashara</div>
+      </div>
+      <p class="mpesa-note">💡 Send the exact amount for your order, then WhatsApp your M-Pesa confirmation to us so we can process it quickly!</p>
+    </div>
+
+    <div class="payment-steps">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:0.5rem;">How to Pay</h3>
+      <div class="pay-step">
+        <div class="pay-step-num">1</div>
+        <div class="pay-step-text">
+          <h4>Open M-Pesa on your phone</h4>
+          <p>Go to <strong>M-Pesa → Send Money</strong></p>
+        </div>
+      </div>
+      <div class="pay-step">
+        <div class="pay-step-num">2</div>
+        <div class="pay-step-text">
+          <h4>Enter the number</h4>
+          <p>Send to: <strong>0712 778 283</strong> (Runjo Stores)</p>
+        </div>
+      </div>
+      <div class="pay-step">
+        <div class="pay-step-num">3</div>
+        <div class="pay-step-text">
+          <h4>Enter Amount & Confirm</h4>
+          <p>Enter the total for your order and confirm with your M-Pesa PIN</p>
+        </div>
+      </div>
+      <div class="pay-step">
+        <div class="pay-step-num">4</div>
+        <div class="pay-step-text">
+          <h4>Send Us Confirmation</h4>
+          <p>WhatsApp your M-Pesa SMS to <strong>0702 148 068</strong> and we'll process your order right away!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO -->
+<section id="info">
+  <span class="section-tag">Find Us</span>
+  <h2 class="section-title">Store Information</h2>
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="icon">📍</div>
+      <h3>Our Location</h3>
+      <p>
+        <strong>Runjo Stores</strong><br/>
+        Kamiti Corner<br/>
+        Opposite Mkwaju<br/>
+        Nairobi, Kenya
+      </p>
+      <br/>
+      <a href="https://maps.google.com/?q=Kamiti+Corner+Nairobi" target="_blank" class="btn-primary" style="font-size:0.82rem;padding:8px 20px;display:inline-block;">Get Directions →</a>
+    </div>
+    <div class="info-card">
+      <div class="icon">🕐</div>
+      <h3>Opening Hours</h3>
+      <ul class="hours-list">
+        <li><span class="day">Monday</span><span>8:00 AM – 8:00 PM</span></li>
+        <li><span class="day">Tuesday</span><span>8:00 AM – 8:00 PM</span></li>
+        <li><span class="day">Wednesday</span><span>8:00 AM – 8:00 PM</span></li>
+        <li><span class="day">Thursday</span><span>8:00 AM – 8:00 PM</span></li>
+        <li><span class="day">Friday</span><span>8:00 AM – 8:00 PM</span></li>
+        <li><span class="day">Saturday</span><span>8:00 AM – 8:00 PM</span></li>
+        <li><span class="day">Sunday</span><span class="closed">Closed</span></li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <div class="icon">📞</div>
+      <h3>Contact Us</h3>
+      <p>
+        <strong>Phone / WhatsApp:</strong><br/>
+        <a href="tel:0702148068" style="color:var(--green);font-weight:600;text-decoration:none;font-size:1.05rem;">0702 148 068</a>
+        <br/><br/>
+        <strong>Location:</strong><br/>
+        Kamiti Corner, opp. Mkwaju<br/>
+        Nairobi, Kenya
+        <br/><br/>
+        <strong>Hours:</strong><br/>
+        Mon – Sat &nbsp;|&nbsp; 8:00 AM – 8:00 PM
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div style="text-align:center;margin-bottom:2.5rem;">
+    <span class="section-tag">Customer Reviews</span>
+    <h2 class="section-title">What Our Customers Say</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Runjo Stores is my favourite shop around Kamiti! The tomatoes are always fresh and the prices are very fair. I shop here every week."</p>
+      <div class="testi-author">
+        <div class="avatar">M</div>
+        <div><div class="author-name">Mary W.</div><div class="author-sub">Regular Customer</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Very friendly service and the shop is always well stocked. I can find everything I need in one place. Highly recommended!"</p>
+      <div class="testi-author">
+        <div class="avatar">J</div>
+        <div><div class="author-name">James N.</div><div class="author-sub">Nearby Resident</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★☆</div>
+      <p class="testi-text">"Quick, convenient and affordable. I love that I can WhatsApp my order and it'll be ready when I arrive. Makes life so much easier!"</p>
+      <div class="testi-author">
+        <div class="avatar">A</div>
+        <div><div class="author-name">Aisha K.</div><div class="author-sub">WhatsApp Customer</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">Runjo<span> Stores</span></div>
+      <p>Your trusted neighbourhood grocery store at Kamiti Corner, opposite Mkwaju. Fresh produce and everyday essentials, Mon–Sat.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#order">Place an Order</a></li>
+        <li><a href="#payment">How to Pay</a></li>
+        <li><a href="#info">Find Us</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:0702148068">0702 148 068</a></li>
+        <li><a href="https://wa.me/254702148068" target="_blank">WhatsApp Us</a></li>
+        <li><a href="#info">Kamiti Corner, opp. Mkwaju</a></li>
+        <li><a href="#info">Mon–Sat: 8am – 8pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Runjo Stores. All rights reserved.</p>
+    <p>Made with 🌿 for our Kamiti community</p>
+  </div>
+</footer>
+
+<script>
+  const products = [
+    { name: "Tomatoes", unit: "per piece", price: "Ksh 10", cost: 10, emoji: "🍅", cat: "vegetables", badge: "Ksh 10!" },
+    { name: "Sukuma Wiki", unit: "per bunch", price: "Ksh 10", cost: 10, emoji: "🥬", cat: "vegetables" },
+    { name: "Onions", unit: "per kg", price: "Ksh 100", cost: 100, emoji: "🧅", cat: "vegetables" },
+    { name: "Carrots", unit: "per bunch", price: "Ksh 30", cost: 30, emoji: "🥕", cat: "vegetables" },
+    { name: "Cabbage", unit: "per head", price: "Ksh 50", cost: 50, emoji: "🥦", cat: "vegetables" },
+    { name: "Spinach", unit: "per bunch", price: "Ksh 10", cost: 10, emoji: "🌿", cat: "vegetables" },
+    { name: "Bananas", unit: "per bunch", price: "Ksh 50", cost: 50, emoji: "🍌", cat: "fruits" },
+    { name: "Mangoes", unit: "per piece", price: "Ksh 25", cost: 25, emoji: "🥭", cat: "fruits", badge: "In Season" },
+    { name: "Avocado", unit: "per piece", price: "Ksh 30", cost: 30, emoji: "🥑", cat: "fruits" },
+    { name: "Pawpaw", unit: "per piece", price: "Ksh 60", cost: 60, emoji: "🍈", cat: "fruits" },
+    { name: "Eggs", unit: "per tray (30)", price: "Ksh 450", cost: 450, emoji: "🥚", cat: "dairy" },
+    { name: "Mwea Pishori Rice", unit: "1 kg", price: "Ksh 190", cost: 190, emoji: "🍚", cat: "pantry", badge: "Best Seller" },
+  ];
+
+  let cart = {}; // { productName: qty }
+
+  /* ── PRODUCTS ── */
+  function renderProducts(filter = 'all') {
+    const grid = document.getElementById('productsGrid');
+    const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+    grid.innerHTML = filtered.map(p => {
+      const qty = cart[p.name] || 0;
+      return `
+        <div class="product-card">
+          ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+          <span class="product-emoji">${p.emoji}</span>
+          <div class="product-name">${p.name}</div>
+          <div class="product-unit">${p.unit}</div>
+          <div class="product-price">${p.price}</div>
+          ${qty > 0
+            ? `<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;">
+                <button class="qty-btn" onclick="changeQty('${p.name}', -1)">−</button>
+                <span class="qty-num" style="font-size:1rem;font-weight:700;color:var(--green);">${qty}</span>
+                <button class="qty-btn" onclick="changeQty('${p.name}', 1)">+</button>
+               </div>`
+            : `<button class="add-btn" onclick="addToCart('${p.name}')">+ Add to Cart</button>`
+          }
+        </div>`;
+    }).join('');
+  }
+
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts(cat);
+  }
+
+  /* ── CART LOGIC ── */
+  function addToCart(name) {
+    cart[name] = (cart[name] || 0) + 1;
+    updateCart();
+    renderProducts(getCurrentFilter());
+  }
+
+  function changeQty(name, delta) {
+    cart[name] = (cart[name] || 0) + delta;
+    if (cart[name] <= 0) delete cart[name];
+    updateCart();
+    renderProducts(getCurrentFilter());
+  }
+
+  function removeFromCart(name) {
+    delete cart[name];
+    updateCart();
+    renderProducts(getCurrentFilter());
+  }
+
+  function clearCart() {
+    cart = {};
+    updateCart();
+    renderProducts(getCurrentFilter());
+  }
+
+  function getCurrentFilter() {
+    const active = document.querySelector('.tab.active');
+    return active ? active.getAttribute('data-cat') || 'all' : 'all';
+  }
+
+  function updateCart() {
+    const entries = Object.entries(cart);
+    const totalQty = entries.reduce((s, [, q]) => s + q, 0);
+    const totalCost = entries.reduce((s, [name, qty]) => {
+      const p = products.find(x => x.name === name);
+      return s + (p ? p.cost * qty : 0);
+    }, 0);
+
+    // Badge
+    const badge = document.getElementById('cartCount');
+    if (totalQty > 0) {
+      badge.style.display = 'flex';
+      badge.textContent = totalQty;
+    } else {
+      badge.style.display = 'none';
+    }
+
+    // Drawer body
+    const body = document.getElementById('cartBody');
+    const footer = document.getElementById('cartFooter');
+
+    if (entries.length === 0) {
+      body.innerHTML = `<div class="cart-empty"><div class="big">🛒</div><p>Your cart is empty.<br/>Add items from the products section!</p></div>`;
+      footer.style.display = 'none';
+    } else {
+      body.innerHTML = entries.map(([name, qty]) => {
+        const p = products.find(x => x.name === name);
+        return `
+          <div class="cart-item">
+            <div class="cart-item-emoji">${p.emoji}</div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">${name}</div>
+              <div class="cart-item-price">Ksh ${p.cost} × ${qty} = <strong>Ksh ${p.cost * qty}</strong></div>
+              <div class="cart-item-qty">
+                <button class="qty-btn" onclick="changeQty('${name}', -1)">−</button>
+                <span class="qty-num">${qty}</span>
+                <button class="qty-btn" onclick="changeQty('${name}', 1)">+</button>
+              </div>
+            </div>
+            <button class="cart-item-remove" onclick="removeFromCart('${name}')" title="Remove">🗑</button>
+          </div>`;
+      }).join('');
+      document.getElementById('cartTotal').textContent = `Ksh ${totalCost}`;
+      footer.style.display = 'block';
+    }
+  }
+
+  function toggleCart() {
+    document.getElementById('cartDrawer').classList.toggle('open');
+    document.getElementById('cartOverlay').classList.toggle('open');
+  }
+
+  function checkoutCart() {
+    const entries = Object.entries(cart);
+    if (entries.length === 0) return;
+    const summary = entries.map(([name, qty]) => {
+      const p = products.find(x => x.name === name);
+      return `${qty}× ${name} (Ksh ${p.cost * qty})`;
+    }).join(', ');
+    const total = entries.reduce((s, [name, qty]) => {
+      const p = products.find(x => x.name === name);
+      return s + p.cost * qty;
+    }, 0);
+    // Pre-fill order form
+    document.getElementById('items').value = summary;
+    toggleCart();
+    document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+    // Show total hint
+    setTimeout(() => {
+      const msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+      msg.style.background = '#fff3cd';
+      msg.style.borderColor = '#ffc107';
+      msg.style.color = '#856404';
+      msg.textContent = `🛒 Cart total: Ksh ${total}. Please fill in your details and place your order!`;
+      setTimeout(() => { msg.style.display = 'none'; }, 8000);
+    }, 600);
+  }
+
+  /* ── ORDER FORM ── */
+  function submitOrder() {
+    const fn = document.getElementById('firstName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const items = document.getElementById('items').value.trim();
+    if (!fn || !phone || !items) {
+      alert('Please fill in your name, phone number, and the items you need.');
+      return;
+    }
+    const msg = document.getElementById('successMsg');
+    msg.style.background = '';
+    msg.style.borderColor = '';
+    msg.style.color = '';
+    msg.textContent = '✅ Order received! We\'ll call you on your number to confirm. Thank you for choosing Runjo Stores!';
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 6000);
+    ['firstName','lastName','phone','delivType','payMethod','address','items'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    clearCart();
+  }
+
+  // Set data-cat on tabs for getCurrentFilter
+  document.querySelectorAll('.tab').forEach(btn => {
+    const txt = btn.textContent.trim().toLowerCase();
+    if (txt.includes('veg')) btn.setAttribute('data-cat','vegetables');
+    else if (txt.includes('fruit')) btn.setAttribute('data-cat','fruits');
+    else if (txt.includes('dairy')) btn.setAttribute('data-cat','dairy');
+    else if (txt.includes('pantry')) btn.setAttribute('data-cat','pantry');
+    else btn.setAttribute('data-cat','all');
+  });
+
+  renderProducts();
+</script>
+</body>
+</html>
