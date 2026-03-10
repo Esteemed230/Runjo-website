@@ -304,6 +304,24 @@
     </div>
   </div>
   <div class="cart-footer" id="cartFooter" style="display:none;">
+  <div class="cart-total">
+    <span>Subtotal</span>
+    <span class="amount" id="cartSubtotal">Ksh 0</span>
+  </div>
+  <div id="discountRow" style="display:none;justify-content:space-between;align-items:center;margin-bottom:8px;background:var(--green-pale);border-radius:10px;padding:8px 12px;">
+    <span style="font-size:0.85rem;color:var(--green);font-weight:600;">🎉 10% Bulk Discount</span>
+    <span style="font-size:0.95rem;color:var(--green);font-weight:700;" id="discountAmt">− Ksh 0</span>
+  </div>
+  <div id="bulkHint" style="font-size:0.78rem;color:var(--muted);text-align:center;margin-bottom:10px;display:none;">
+    🛍️ Add more to reach <strong style="color:var(--orange);">Ksh 7,500</strong> and unlock 10% off!
+  </div>
+  <div class="cart-total" style="border-top:2px solid #e5e7eb;padding-top:10px;margin-top:4px;">
+    <span style="font-size:1rem;font-weight:800;">Total to Pay</span>
+    <span class="amount" id="cartTotal">Ksh 0</span>
+  </div>
+  <button class="cart-checkout-btn" onclick="checkoutCart()">Proceed to Order →</button>
+  <button class="cart-clear" onclick="clearCart()">Clear cart</button>
+</div>
     <div class="cart-total">
       <span>Total</span>
       <span class="amount" id="cartTotal">Ksh 0</span>
@@ -748,14 +766,75 @@
     return active ? active.getAttribute('data-cat') || 'all' : 'all';
   }
 
-  function updateCart() {
-    const entries = Object.entries(cart);
-    const totalQty = entries.reduce((s, [, q]) => s + q, 0);
-    const totalCost = entries.reduce((s, [name, qty]) => {
-      const p = products.find(x => x.name === name);
-      return s + (p ? p.cost * qty : 0);
-    }, 0);
+ function updateCart() {
+  const entries = Object.entries(cart);
+  const totalQty = entries.reduce((s, [, q]) => s + q, 0);
+  const subtotal = entries.reduce((s, [name, qty]) => {
+    const p = products.find(x => x.name === name);
+    return s + (p ? p.cost * qty : 0);
+  }, 0);
 
+  const DISCOUNT_THRESHOLD = 7500;
+  const DISCOUNT_RATE = 0.10;
+  const hasDiscount = subtotal >= DISCOUNT_THRESHOLD;
+  const discountAmt = hasDiscount ? Math.round(subtotal * DISCOUNT_RATE) : 0;
+  const finalTotal = subtotal - discountAmt;
+
+  // Badge
+  const badge = document.getElementById('cartCount');
+  if (totalQty > 0) {
+    badge.style.display = 'flex';
+    badge.textContent = totalQty;
+  } else {
+    badge.style.display = 'none';
+  }
+
+  // Drawer body
+  const body = document.getElementById('cartBody');
+  const footer = document.getElementById('cartFooter');
+
+  if (entries.length === 0) {
+    body.innerHTML = `<div class="cart-empty"><div class="big">🛒</div><p>Your cart is empty.<br/>Add items from the products section!</p></div>`;
+    footer.style.display = 'none';
+  } else {
+    body.innerHTML = entries.map(([name, qty]) => {
+      const p = products.find(x => x.name === name);
+      return `
+        <div class="cart-item">
+          <div class="cart-item-emoji">${p.emoji}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${name}</div>
+            <div class="cart-item-price">Ksh ${p.cost} × ${qty} = <strong>Ksh ${p.cost * qty}</strong></div>
+            <div class="cart-item-qty">
+              <button class="qty-btn" onclick="changeQty('${name}', -1)">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn" onclick="changeQty('${name}', 1)">+</button>
+            </div>
+          </div>
+          <button class="cart-item-remove" onclick="removeFromCart('${name}')" title="Remove">🗑</button>
+        </div>`;
+    }).join('');
+
+    // Subtotal
+    document.getElementById('cartSubtotal').textContent = `Ksh ${subtotal}`;
+
+    // Discount row
+    const discountRow = document.getElementById('discountRow');
+    const bulkHint = document.getElementById('bulkHint');
+    if (hasDiscount) {
+      discountRow.style.display = 'flex';
+      document.getElementById('discountAmt').textContent = `− Ksh ${discountAmt}`;
+      bulkHint.style.display = 'none';
+    } else {
+      discountRow.style.display = 'none';
+      bulkHint.style.display = 'block';
+    }
+
+    // Final total
+    document.getElementById('cartTotal').textContent = `Ksh ${finalTotal}`;
+    footer.style.display = 'block';
+  }
+}
     // Badge
     const badge = document.getElementById('cartCount');
     if (totalQty > 0) {
@@ -800,17 +879,38 @@
     document.getElementById('cartOverlay').classList.toggle('open');
   }
 
-  function checkoutCart() {
-    const entries = Object.entries(cart);
-    if (entries.length === 0) return;
-    const summary = entries.map(([name, qty]) => {
-      const p = products.find(x => x.name === name);
-      return `${qty}× ${name} (Ksh ${p.cost * qty})`;
-    }).join(', ');
-    const total = entries.reduce((s, [name, qty]) => {
-      const p = products.find(x => x.name === name);
-      return s + p.cost * qty;
-    }, 0);
+ function checkoutCart() {
+  const entries = Object.entries(cart);
+  if (entries.length === 0) return;
+  const summary = entries.map(([name, qty]) => {
+    const p = products.find(x => x.name === name);
+    return `${qty}× ${name} (Ksh ${p.cost * qty})`;
+  }).join(', ');
+  const subtotal = entries.reduce((s, [name, qty]) => {
+    const p = products.find(x => x.name === name);
+    return s + p.cost * qty;
+  }, 0);
+  const hasDiscount = subtotal >= 7500;
+  const discountAmt = hasDiscount ? Math.round(subtotal * 0.10) : 0;
+  const finalTotal = subtotal - discountAmt;
+  const discountNote = hasDiscount
+    ? ` | 🎉 10% Bulk Discount Applied: −Ksh ${discountAmt} | TOTAL TO PAY: Ksh ${finalTotal}`
+    : ` | Total: Ksh ${subtotal}`;
+
+  document.getElementById('items').value = summary + discountNote;
+  toggleCart();
+  document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    const msg = document.getElementById('successMsg');
+    msg.style.display = 'block';
+    msg.style.background = hasDiscount ? '#d6f0e0' : '#fff3cd';
+    msg.style.borderColor = hasDiscount ? 'var(--green)' : '#ffc107';
+    msg.style.color = hasDiscount ? 'var(--green)' : '#856404';
+    msg.textContent = hasDiscount
+      ? `🎉 Bulk discount applied! You save Ksh ${discountAmt}. Total to pay: Ksh ${finalTotal}. Fill in your details and place your order!`
+      : `🛒 Cart total: Ksh ${subtotal}. Fill in your details and place your order!`;
+    setTimeout(() => { msg.style.display = 'none'; }, 8000);
+  }, 600);
     // Pre-fill order form
     document.getElementById('items').value = summary;
     toggleCart();
@@ -864,6 +964,7 @@
 </script>
 </body>
 </html>
+
 
 
 
