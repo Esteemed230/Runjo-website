@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- <title>Runjob Stores – Kamiti Corner</title>
+  <title>Runjob Stores – Kamiti Corner</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,7 +21,237 @@
     html { scroll-behavior: smooth; }
     body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
 
-    /* NAV */
+    /* ══════════════════════════════════════════
+       AUTH MODAL OVERLAY
+    ══════════════════════════════════════════ */
+    #authOverlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(10, 40, 20, 0.72);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+      animation: fadeIn 0.35s ease;
+    }
+    #authOverlay.hidden { display: none; }
+
+    .auth-modal {
+      background: var(--white);
+      border-radius: 28px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+      overflow: hidden;
+      animation: slideUp 0.4s cubic-bezier(.22,1,.36,1);
+    }
+
+    .auth-header {
+      background: linear-gradient(135deg, var(--green) 0%, #0f4a28 100%);
+      padding: 32px 36px 24px;
+      text-align: center;
+      position: relative;
+    }
+    .auth-header-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .auth-header-logo span { color: #7ee8a2; }
+    .auth-header p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* TAB SWITCHER */
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid #e5e7eb;
+      background: var(--cream);
+    }
+    .auth-tab {
+      flex: 1; padding: 14px;
+      font-size: 0.88rem; font-weight: 600;
+      border: none; background: none; cursor: pointer;
+      color: var(--muted); transition: all 0.2s;
+      border-bottom: 3px solid transparent;
+      letter-spacing: 0.02em;
+    }
+    .auth-tab.active {
+      color: var(--green);
+      border-bottom-color: var(--green);
+      background: var(--white);
+    }
+
+    /* FORM AREA */
+    .auth-body { padding: 28px 32px 32px; }
+
+    /* GOOGLE BUTTON */
+    .google-btn {
+      width: 100%; padding: 12px 20px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 50px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      transition: all 0.2s; color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .google-btn:hover {
+      border-color: #4285F4;
+      box-shadow: 0 4px 16px rgba(66,133,244,0.18);
+      transform: translateY(-1px);
+    }
+    .google-icon {
+      width: 20px; height: 20px; flex-shrink: 0;
+    }
+
+    /* DIVIDER */
+    .auth-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 18px 0;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ''; flex: 1; height: 1px; background: #e5e7eb;
+    }
+    .auth-divider span {
+      font-size: 0.78rem; color: var(--muted); font-weight: 500; white-space: nowrap;
+    }
+
+    /* FORM GROUPS */
+    .auth-form-group { margin-bottom: 14px; }
+    .auth-form-group label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      margin-bottom: 5px; color: var(--text);
+    }
+    .auth-form-group label .optional {
+      font-weight: 400; color: var(--muted); font-size: 0.75rem;
+    }
+    .auth-form-group input, .auth-form-group select {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .auth-form-group input:focus, .auth-form-group select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(26,107,60,0.1);
+    }
+    .auth-form-group input.error {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+    }
+    .field-error {
+      font-size: 0.74rem; color: #ef4444;
+      margin-top: 4px; display: none;
+    }
+    .field-error.show { display: block; }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    /* AUTH SUBMIT BTN */
+    .auth-submit-btn {
+      width: 100%; padding: 13px;
+      background: var(--green);
+      color: var(--white);
+      border: none; border-radius: 50px;
+      font-size: 0.92rem; font-weight: 600;
+      cursor: pointer; margin-top: 18px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(26,107,60,0.3);
+      letter-spacing: 0.01em;
+    }
+    .auth-submit-btn:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+    }
+    .auth-submit-btn:active { transform: translateY(0); }
+
+    /* SESSION TIMEOUT BANNER */
+    .session-banner {
+      background: linear-gradient(90deg, #fff3cd 0%, #fff9e6 100%);
+      border: 1.5px solid #ffc107;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: #856404;
+    }
+    .session-banner.hidden { display: none; }
+
+    /* TIMER BADGE */
+    #sessionTimer {
+      position: fixed; bottom: 90px; right: 24px; z-index: 500;
+      background: var(--green); color: white;
+      border-radius: 50px; padding: 8px 16px;
+      font-size: 0.78rem; font-weight: 600;
+      box-shadow: 0 4px 16px rgba(26,107,60,0.35);
+      display: flex; align-items: center; gap: 6px;
+      transition: background 0.3s;
+      cursor: default;
+    }
+    #sessionTimer.warning { background: #e8572a; }
+    #sessionTimer.hidden { display: none; }
+
+    /* USER NAV PILL */
+    .user-nav-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--green-pale);
+      border-radius: 50px;
+      padding: 6px 14px 6px 8px;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 600; color: var(--green);
+      transition: background 0.2s;
+    }
+    .user-nav-pill:hover { background: #b6e8ce; }
+    .user-avatar-sm {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--green); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+    }
+
+    /* DROPDOWN MENU */
+    .user-dropdown {
+      position: absolute; top: calc(100% + 10px); right: 0;
+      background: var(--white);
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+      min-width: 200px;
+      padding: 8px;
+      z-index: 300;
+      display: none;
+    }
+    .user-dropdown.open { display: block; animation: fadeIn 0.15s ease; }
+    .dropdown-info {
+      padding: 10px 12px 12px;
+      border-bottom: 1px solid #f3f4f6;
+      margin-bottom: 6px;
+    }
+    .dropdown-info .name { font-size: 0.9rem; font-weight: 700; }
+    .dropdown-info .email { font-size: 0.75rem; color: var(--muted); }
+    .dropdown-item {
+      width: 100%; text-align: left; padding: 9px 12px;
+      border: none; background: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; color: var(--text);
+      border-radius: 10px; display: flex; align-items: center; gap: 8px;
+      transition: background 0.15s;
+    }
+    .dropdown-item:hover { background: var(--cream); }
+    .dropdown-item.danger { color: #ef4444; }
+    .dropdown-item.danger:hover { background: #fef2f2; }
+
+    /* ═══════════ EXISTING STYLES (UNCHANGED) ═══════════ */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(255,253,245,0.93); backdrop-filter: blur(12px);
@@ -37,7 +267,6 @@
     .nav-cta { background: var(--green); color: var(--white); border: none; padding: 10px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.15s; text-decoration: none; }
     .nav-cta:hover { background: var(--green-light); transform: translateY(-1px); }
 
-    /* HERO */
     .hero {
       min-height: 100vh;
       display: grid; grid-template-columns: 1fr 1fr;
@@ -80,20 +309,17 @@
     .hero-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
     .hero-card .tag { display: inline-block; margin-top: 0.6rem; background: var(--green-pale); color: var(--green); font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
 
-    /* FEATURES BAR */
     .features-bar { background: var(--green); display: flex; justify-content: center; flex-wrap: wrap; }
     .feat-item { display: flex; align-items: center; gap: 10px; padding: 18px 28px; border-right: 1px solid rgba(255,255,255,0.15); color: var(--white); }
     .feat-item:last-child { border-right: none; }
     .feat-item .icon { font-size: 1.3rem; }
     .feat-item span { font-size: 0.88rem; font-weight: 500; }
 
-    /* SECTIONS */
     section { padding: 80px 5vw; }
     .section-tag { display: inline-block; background: var(--green-pale); color: var(--green); padding: 5px 14px; border-radius: 50px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 900; color: var(--text); margin-bottom: 0.6rem; line-height: 1.2; }
     .section-sub { font-size: 1rem; color: var(--muted); max-width: 500px; line-height: 1.6; }
 
-    /* PRODUCTS */
     #products { background: var(--white); }
     .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
     .category-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
@@ -110,7 +336,6 @@
     .add-btn { width: 100%; padding: 10px; border-radius: 50px; background: var(--green); color: var(--white); border: none; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.15s; }
     .add-btn:hover { background: var(--green-light); transform: scale(1.03); }
 
-    /* ORDER */
     #order { background: var(--green-pale); }
     .order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
     .steps { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
@@ -130,7 +355,6 @@
     .submit-btn:hover { background: var(--green-light); transform: translateY(-2px); }
     .success-msg { display: none; background: var(--green-pale); border: 1px solid var(--green-light); border-radius: 12px; padding: 14px 18px; margin-top: 1rem; font-size: 0.9rem; color: var(--green); text-align: center; }
 
-    /* INFO */
     #info { background: var(--cream); }
     .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; margin-top: 2.5rem; }
     .info-card { background: var(--white); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -143,7 +367,6 @@
     .hours-list .day { font-weight: 600; color: var(--text); }
     .closed { color: var(--orange) !important; }
 
-    /* TESTIMONIALS */
     #testimonials { background: var(--white); }
     .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.6rem; margin-top: 2.5rem; }
     .testi-card { background: var(--cream); border-radius: 20px; padding: 1.8rem; }
@@ -154,7 +377,6 @@
     .author-name { font-size: 0.88rem; font-weight: 600; }
     .author-sub { font-size: 0.78rem; color: var(--muted); }
 
-    /* FOOTER */
     footer { background: var(--brown); color: rgba(255,255,255,0.85); padding: 50px 5vw 30px; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
     .footer-brand .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--white); margin-bottom: 0.8rem; }
@@ -168,7 +390,6 @@
     .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
     .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
 
-    /* PAYMENT */
     #payment { background: var(--white); }
     .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 2.5rem; }
     .mpesa-card { background: linear-gradient(135deg, #00a651 0%, #007a3d 100%); border-radius: 24px; padding: 2.4rem; color: white; text-align: center; box-shadow: 0 12px 40px rgba(0,166,81,0.3); position: relative; overflow: hidden; }
@@ -187,11 +408,9 @@
     .pay-step-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
     .pay-step-text strong { color: #00a651; }
 
-    /* WHATSAPP FLOAT */
     .whatsapp-float { position: fixed; bottom: 24px; right: 24px; z-index: 999; background: #25d366; color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 20px rgba(37,211,102,0.4); text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
     .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,211,102,0.5); }
 
-    /* CART DRAWER */
     .cart-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; }
     .cart-overlay.open { display:block; }
     .cart-drawer { position:fixed; top:0; right:-420px; width:380px; max-width:95vw; height:100vh; background:var(--white); z-index:201; box-shadow:-8px 0 40px rgba(0,0,0,0.15); display:flex; flex-direction:column; transition: right 0.35s cubic-bezier(.4,0,.2,1); }
@@ -223,12 +442,49 @@
     .cart-checkout-btn:hover { background:var(--green-light); transform:translateY(-1px); }
     .cart-clear { width:100%; padding:8px; background:none; border:none; color:var(--muted); font-size:0.8rem; cursor:pointer; margin-top:8px; text-decoration:underline; }
     .cart-clear:hover { color:var(--orange); }
-
-    /* CART BADGE */
     .cart-wrap { position: relative; display: inline-block; }
     .cart-count { position: absolute; top: -8px; right: -8px; background: var(--orange); color: var(--white); width: 20px; height: 20px; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
+    /* NAV RIGHT AREA */
+    .nav-right { display: flex; align-items: center; gap: 1rem; position: relative; }
+
+    /* PASSWORD TOGGLE */
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 42px; }
+    .toggle-pw {
+      position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1rem; line-height: 1;
+      padding: 2px;
+    }
+
+    /* STRENGTH BAR */
+    .strength-bar {
+      height: 4px; border-radius: 4px;
+      background: #e5e7eb; margin-top: 6px; overflow: hidden;
+    }
+    .strength-fill {
+      height: 100%; border-radius: 4px;
+      transition: width 0.3s, background 0.3s;
+      width: 0%;
+    }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: var(--text); color: white;
+      border-radius: 50px; padding: 10px 24px;
+      font-size: 0.85rem; font-weight: 500;
+      z-index: 9998; opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none; white-space: nowrap;
+    }
+    #toast.show { opacity: 1; }
+
     @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     @media (max-width: 768px) {
       .payment-grid { grid-template-columns: 1fr; }
@@ -238,10 +494,148 @@
       .footer-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .form-row { grid-template-columns: 1fr; }
+      .form-row-3 { grid-template-columns: 1fr; }
+      .auth-body { padding: 20px 20px 24px; }
+      #sessionTimer { bottom: 90px; }
     }
   </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════
+     AUTH MODAL
+════════════════════════════════════════ -->
+<div id="authOverlay">
+  <div class="auth-modal">
+    <div class="auth-header">
+      <div class="auth-header-logo">Runjob<span> Stores</span></div>
+      <p>Sign in to shop, track orders &amp; get exclusive deals</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" id="tabSignup" onclick="switchTab('signup')">Create Account</button>
+    </div>
+
+    <div class="auth-body">
+
+      <!-- SESSION TIMEOUT NOTICE (shown after timeout) -->
+      <div class="session-banner hidden" id="sessionBanner">
+        ⏰ <strong>Your session expired</strong> after 1 hour of inactivity. Please sign in again.
+      </div>
+
+      <!-- GOOGLE BUTTON -->
+      <button class="google-btn" onclick="continueWithGoogle()">
+        <svg class="google-icon" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div class="auth-divider"><span>or continue with email</span></div>
+
+      <!-- ── LOGIN FORM ── -->
+      <div id="loginForm">
+        <div class="auth-form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" oninput="clearErr('loginEmail')"/>
+          <div class="field-error" id="loginEmailErr">Please enter a valid email.</div>
+        </div>
+        <div class="auth-form-group">
+          <label>Password</label>
+          <div class="password-wrap">
+            <input type="password" id="loginPw" placeholder="Your password" oninput="clearErr('loginPw')"/>
+            <button type="button" class="toggle-pw" onclick="togglePw('loginPw', this)">👁</button>
+          </div>
+          <div class="field-error" id="loginPwErr">Password is required.</div>
+        </div>
+        <div style="text-align:right;margin-top:-6px;margin-bottom:4px;">
+          <button onclick="forgotPassword()" style="background:none;border:none;color:var(--green);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Forgot password?</button>
+        </div>
+        <button class="auth-submit-btn" onclick="handleLogin()">🔑 Sign In</button>
+        <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:14px;">
+          No account? <button onclick="switchTab('signup')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Create one →</button>
+        </p>
+      </div>
+
+      <!-- ── SIGNUP FORM ── -->
+      <div id="signupForm" style="display:none;">
+        <!-- Three names -->
+        <div class="auth-form-group">
+          <label>Full Name</label>
+          <div class="form-row-3">
+            <input type="text" id="firstName" placeholder="First *" oninput="clearErr('firstName')"/>
+            <input type="text" id="middleName" placeholder="Middle (optional)"/>
+            <input type="text" id="lastName" placeholder="Last *" oninput="clearErr('lastName')"/>
+          </div>
+          <div class="field-error" id="firstNameErr">First and last name are required.</div>
+        </div>
+
+        <!-- DOB -->
+        <div class="auth-form-group">
+          <label>Date of Birth *</label>
+          <input type="date" id="dob" oninput="clearErr('dob')"/>
+          <div class="field-error" id="dobErr">Please enter your date of birth.</div>
+        </div>
+
+        <!-- Phone -->
+        <div class="auth-form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="phone" placeholder="e.g. 0712 345 678" oninput="clearErr('phone')"/>
+          <div class="field-error" id="phoneErr">Enter a valid Kenyan phone number.</div>
+        </div>
+
+        <!-- Email -->
+        <div class="auth-form-group">
+          <label>Email Address *</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" oninput="clearErr('signupEmail')"/>
+          <div class="field-error" id="signupEmailErr">Enter a valid email address.</div>
+        </div>
+
+        <!-- Password -->
+        <div class="auth-form-group">
+          <label>Password *</label>
+          <div class="password-wrap">
+            <input type="password" id="signupPw" placeholder="Min. 8 characters" oninput="checkStrength(); clearErr('signupPw')"/>
+            <button type="button" class="toggle-pw" onclick="togglePw('signupPw', this)">👁</button>
+          </div>
+          <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+          <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;" id="strengthLabel"></div>
+          <div class="field-error" id="signupPwErr">Password must be at least 8 characters.</div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="auth-form-group">
+          <label>Confirm Password *</label>
+          <div class="password-wrap">
+            <input type="password" id="confirmPw" placeholder="Repeat password" oninput="clearErr('confirmPw')"/>
+            <button type="button" class="toggle-pw" onclick="togglePw('confirmPw', this)">👁</button>
+          </div>
+          <div class="field-error" id="confirmPwErr">Passwords do not match.</div>
+        </div>
+
+        <div style="background:var(--green-pale);border-radius:10px;padding:10px 14px;font-size:0.78rem;color:var(--green);margin-bottom:4px;">
+          🔒 Sessions automatically expire after <strong>1 hour</strong> of inactivity for your security.
+        </div>
+
+        <button class="auth-submit-btn" onclick="handleSignup()">✨ Create Account</button>
+        <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:14px;">
+          Already have an account? <button onclick="switchTab('login')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign in →</button>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SESSION TIMER -->
+<div id="sessionTimer" class="hidden">⏱ <span id="timerDisplay">60:00</span></div>
+
+<!-- TOAST -->
+<div id="toast"></div>
 
 <!-- CART OVERLAY & DRAWER -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
@@ -281,7 +675,8 @@
 <a class="whatsapp-float" href="https://wa.me/254702148068" target="_blank" title="Chat on WhatsApp">💬</a>
 
 <!-- NAV -->
-<nav><div class="nav-logo">Runjob<span> Stores</span></div>
+<nav>
+  <div class="nav-logo">Runjob<span> Stores</span></div>
   <ul class="nav-links">
     <li><a href="#products">Products</a></li>
     <li><a href="#order">Order</a></li>
@@ -289,13 +684,33 @@
     <li><a href="#payment">Pay</a></li>
     <li><a href="#testimonials">Reviews</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:1rem;">
+  <div class="nav-right">
     <div class="cart-wrap">
       <button id="cartBtn" onclick="toggleCart()" style="background:none;border:1.5px solid var(--green);border-radius:50px;padding:8px 16px;cursor:pointer;color:var(--green);font-size:0.88rem;font-weight:500;display:flex;align-items:center;gap:6px;">
         🛒 Cart
       </button>
       <div class="cart-count" id="cartCount" style="display:none;">0</div>
     </div>
+
+    <!-- Not logged in: show sign in btn -->
+    <button id="navSigninBtn" onclick="openAuth(false)" style="background:none;border:1.5px solid var(--green);border-radius:50px;padding:9px 18px;cursor:pointer;color:var(--green);font-size:0.85rem;font-weight:500;display:none;">Sign In</button>
+
+    <!-- Logged in: user pill -->
+    <div style="position:relative;" id="navUserWrap" style="display:none;">
+      <button class="user-nav-pill" onclick="toggleDropdown()" id="userPill">
+        <div class="user-avatar-sm" id="navAvatar">?</div>
+        <span id="navName">User</span> ▾
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="dropdown-info">
+          <div class="name" id="ddName">—</div>
+          <div class="email" id="ddEmail">—</div>
+        </div>
+        <button class="dropdown-item" onclick="showProfile()">👤 My Profile</button>
+        <button class="dropdown-item danger" onclick="signOut()">🚪 Sign Out</button>
+      </div>
+    </div>
+
     <a href="#order" class="nav-cta">Order Now</a>
   </div>
 </nav>
@@ -310,7 +725,6 @@
       <a href="#products" class="btn-primary">Shop Now</a>
       <a href="#order" class="btn-secondary">Place an Order</a>
     </div>
-
   </div>
   <div class="hero-visual">
     <div class="hero-card">
@@ -377,76 +791,27 @@
       <h2 class="section-title">Call, WhatsApp or Order Online</h2>
       <p class="section-sub">Fill in the form below or reach us directly on <strong>0702 148 068</strong> and we'll have your items ready.</p>
       <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-text">
-            <h4>Pick Your Items</h4>
-            <p>Browse our products and tap "Add to Cart"</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-text">
-            <h4>Fill the Form</h4>
-            <p>Tell us your name, phone, and what you need</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-text">
-            <h4>Pick Up or We Deliver</h4>
-            <p>Collect at Kamiti Corner or arrange delivery</p>
-          </div>
-        </div>
+        <div class="step"><div class="step-num">1</div><div class="step-text"><h4>Pick Your Items</h4><p>Browse our products and tap "Add to Cart"</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><h4>Fill the Form</h4><p>Tell us your name, phone, and what you need</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><h4>Pick Up or We Deliver</h4><p>Collect at Kamiti Corner or arrange delivery</p></div></div>
       </div>
     </div>
     <div class="order-form">
       <h3>🛒 New Order</h3>
       <div class="form-row">
-        <div class="form-group">
-          <label>First Name *</label>
-          <input type="text" placeholder="e.g. John" id="firstName"/>
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="e.g. Kamau" id="lastName"/>
-        </div>
+        <div class="form-group"><label>First Name *</label><input type="text" placeholder="e.g. John" id="orderFirstName"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="e.g. Kamau" id="orderLastName"/></div>
       </div>
-      <div class="form-group">
-        <label>Phone Number *</label>
-        <input type="tel" placeholder="e.g. 0712 345 678" id="phone"/>
-      </div>
-      <div class="form-group">
-        <label>Pickup or Delivery?</label>
-        <select id="delivType">
-          <option value="">Select option</option>
-          <option>I'll pick up at the store</option>
-          <option>I need delivery</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Delivery Address (if applicable)</label>
-        <input type="text" placeholder="e.g. Near Kamiti Road, House No. 4" id="address"/>
-      </div>
-      <div class="form-group">
-        <label>Payment Method</label>
-        <select id="payMethod">
-          <option value="">Select payment</option>
-          <option>M-Pesa Pochi la Biashara (0712 778 283)</option>
-          <option>Pay on Pickup</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Items Needed *</label>
-        <textarea placeholder="e.g. 5 buckets of potatoes, 5 Kg of tomatoes, 2 kg rice..." id="items"></textarea>
-      </div>
+      <div class="form-group"><label>Phone Number *</label><input type="tel" placeholder="e.g. 0712 345 678" id="orderPhone"/></div>
+      <div class="form-group"><label>Pickup or Delivery?</label><select id="delivType"><option value="">Select option</option><option>I'll pick up at the store</option><option>I need delivery</option></select></div>
+      <div class="form-group"><label>Delivery Address (if applicable)</label><input type="text" placeholder="e.g. Near Kamiti Road, House No. 4" id="address"/></div>
+      <div class="form-group"><label>Payment Method</label><select id="payMethod"><option value="">Select payment</option><option>M-Pesa Pochi la Biashara (0712 778 283)</option><option>Pay on Pickup</option></select></div>
+      <div class="form-group"><label>Items Needed *</label><textarea placeholder="e.g. 5 buckets of potatoes, 5 Kg of tomatoes, 2 kg rice..." id="items"></textarea></div>
       <div style="background:var(--green-pale);border-radius:12px;padding:12px 16px;margin-bottom:1rem;font-size:0.85rem;color:var(--green);text-align:center;">
         🎉 <strong>Orders above Ksh 7,500</strong> automatically get a <strong>3% discount</strong> on your total!
       </div>
       <button class="submit-btn" onclick="submitOrder()">📦 Place Order</button>
-      <div class="success-msg" id="successMsg">
-        ✅ Order received! We'll call you at your number to confirm. Thank you for choosing Runjob Stores!
-      </div>
+      <div class="success-msg" id="successMsg">✅ Order received! We'll call you at your number to confirm. Thank you for choosing Runjob Stores!</div>
     </div>
   </div>
 </section>
@@ -460,50 +825,17 @@
     <div class="mpesa-card">
       <div class="mpesa-logo">📱</div>
       <div class="mpesa-title">Pochi la Biashara</div>
-      <div class="mpesa-detail">
-        <div class="mpesa-detail-label">Send Money To</div>
-        <div class="mpesa-detail-value">0712 778 283</div>
-      </div>
-      <div class="mpesa-detail">
-        <div class="mpesa-detail-label">Business Name</div>
-        <div class="mpesa-detail-value small">Ruth Njoki</div>
-      </div>
-      <div class="mpesa-detail">
-        <div class="mpesa-detail-label">Payment Type</div>
-        <div class="mpesa-detail-value small">Pochi la Biashara</div>
-      </div>
+      <div class="mpesa-detail"><div class="mpesa-detail-label">Send Money To</div><div class="mpesa-detail-value">0712 778 283</div></div>
+      <div class="mpesa-detail"><div class="mpesa-detail-label">Business Name</div><div class="mpesa-detail-value small">Ruth Njoki</div></div>
+      <div class="mpesa-detail"><div class="mpesa-detail-label">Payment Type</div><div class="mpesa-detail-value small">Pochi la Biashara</div></div>
       <p class="mpesa-note">💡 Send the exact amount for your order, then WhatsApp your M-Pesa confirmation to us so we can process it quickly!</p>
     </div>
     <div class="payment-steps">
       <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:0.5rem;">How to Pay</h3>
-      <div class="pay-step">
-        <div class="pay-step-num">1</div>
-        <div class="pay-step-text">
-          <h4>Open M-Pesa on your phone</h4>
-          <p>Go to <strong>M-Pesa → Send Money</strong></p>
-        </div>
-      </div>
-      <div class="pay-step">
-        <div class="pay-step-num">2</div>
-        <div class="pay-step-text">
-          <h4>Enter the number</h4>
-          <p>Send to: <strong>0712 778 283</strong> (Ruth Gachoki)</p>
-        </div>
-      </div>
-      <div class="pay-step">
-        <div class="pay-step-num">3</div>
-        <div class="pay-step-text">
-          <h4>Enter Amount & Confirm</h4>
-          <p>Enter the total for your order and confirm with your M-Pesa PIN</p>
-        </div>
-      </div>
-      <div class="pay-step">
-        <div class="pay-step-num">4</div>
-        <div class="pay-step-text">
-          <h4>Send Us Confirmation</h4>
-          <p>WhatsApp your M-Pesa SMS to <strong>0702 148 068</strong> and we'll process your order right away!</p>
-        </div>
-      </div>
+      <div class="pay-step"><div class="pay-step-num">1</div><div class="pay-step-text"><h4>Open M-Pesa on your phone</h4><p>Go to <strong>M-Pesa → Send Money</strong></p></div></div>
+      <div class="pay-step"><div class="pay-step-num">2</div><div class="pay-step-text"><h4>Enter the number</h4><p>Send to: <strong>0712 778 283</strong> (Ruth Gachoki)</p></div></div>
+      <div class="pay-step"><div class="pay-step-num">3</div><div class="pay-step-text"><h4>Enter Amount &amp; Confirm</h4><p>Enter the total for your order and confirm with your M-Pesa PIN</p></div></div>
+      <div class="pay-step"><div class="pay-step-num">4</div><div class="pay-step-text"><h4>Send Us Confirmation</h4><p>WhatsApp your M-Pesa SMS to <strong>0702 148 068</strong> and we'll process your order right away!</p></div></div>
     </div>
   </div>
 </section>
@@ -516,12 +848,7 @@
     <div class="info-card">
       <div class="icon">📍</div>
       <h3>Our Location</h3>
-      <p>
-        <strong>Runjob Stores</strong><br/>
-        Kamiti Corner<br/>
-        Opposite Mkwaju<br/>
-        Nairobi, Kenya
-      </p>
+      <p><strong>Runjob Stores</strong><br/>Kamiti Corner<br/>Opposite Mkwaju<br/>Nairobi, Kenya</p>
       <br/>
       <a href="https://maps.google.com/?q=Kamiti+Corner+Nairobi" target="_blank" class="btn-primary" style="font-size:0.82rem;padding:8px 20px;display:inline-block;">Get Directions →</a>
     </div>
@@ -543,14 +870,9 @@
       <h3>Contact Us</h3>
       <p>
         <strong>Phone / WhatsApp:</strong><br/>
-        <a href="tel:0702148068" style="color:var(--green);font-weight:600;text-decoration:none;font-size:1.05rem;">0702 148 068</a>
-        <br/><br/>
-        <strong>Location:</strong><br/>
-        Kamiti Corner, opp. Mkwaju<br/>
-        Nairobi, Kenya
-        <br/><br/>
-        <strong>Hours:</strong><br/>
-        Mon – Sat &nbsp;|&nbsp; 8:00 AM – 8:00 PM
+        <a href="tel:0702148068" style="color:var(--green);font-weight:600;text-decoration:none;font-size:1.05rem;">0702 148 068</a><br/><br/>
+        <strong>Location:</strong><br/>Kamiti Corner, opp. Mkwaju<br/>Nairobi, Kenya<br/><br/>
+        <strong>Hours:</strong><br/>Mon – Sat &nbsp;|&nbsp; 8:00 AM – 8:00 PM
       </p>
     </div>
   </div>
@@ -566,26 +888,17 @@
     <div class="testi-card">
       <div class="stars">★★★★★</div>
       <p class="testi-text">"Runjob Stores is my favourite shop around Kamiti! The tomatoes are always fresh and the prices are very fair. I shop here every week."</p>
-      <div class="testi-author">
-        <div class="avatar">M</div>
-        <div><div class="author-name">Mary W.</div><div class="author-sub">Regular Customer</div></div>
-      </div>
+      <div class="testi-author"><div class="avatar">M</div><div><div class="author-name">Mary W.</div><div class="author-sub">Regular Customer</div></div></div>
     </div>
     <div class="testi-card">
       <div class="stars">★★★★★</div>
       <p class="testi-text">"Very friendly service and the shop is always well stocked. I can find everything I need in one place. Highly recommended!"</p>
-      <div class="testi-author">
-        <div class="avatar">J</div>
-        <div><div class="author-name">James N.</div><div class="author-sub">Nearby Resident</div></div>
-      </div>
+      <div class="testi-author"><div class="avatar">J</div><div><div class="author-name">James N.</div><div class="author-sub">Nearby Resident</div></div></div>
     </div>
     <div class="testi-card">
       <div class="stars">★★★★☆</div>
       <p class="testi-text">"Quick, convenient and affordable. I love that I can WhatsApp my order and it'll be ready when I arrive. Makes life so much easier!"</p>
-      <div class="testi-author">
-        <div class="avatar">A</div>
-        <div><div class="author-name">Aisha K.</div><div class="author-sub">WhatsApp Customer</div></div>
-      </div>
+      <div class="testi-author"><div class="avatar">A</div><div><div class="author-name">Aisha K.</div><div class="author-sub">WhatsApp Customer</div></div></div>
     </div>
   </div>
 </section>
@@ -624,250 +937,514 @@
   </div>
 </footer>
 
+<!-- ═══════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
 <script>
-  const products = [
-    { name: "Tomatoes", unit: "per piece", price: "Ksh 10", cost: 10, emoji: "🍅", cat: "vegetables", badge: "Ksh 10!" },
-    { name: "Tomatoes", unit: "per kg", price: "Ksh 80", cost: 80, emoji: "🍅", cat: "vegetables" },
-    { name: "Sukuma Wiki", unit: "per bunch", price: "Ksh 10", cost: 10, emoji: "🥬", cat: "vegetables" },
-    { name: "Onions", unit: "per kg", price: "Ksh 90", cost: 100, emoji: "🧅", cat: "vegetables" },
-    { name: "Garlic", unit: "per piece", price: "Ksh 25", cost: 25, emoji: "🧄", cat: "vegetables" },
-    { name: "Ginger", unit: "per 100g", price: "Ksh 20", cost: 20, emoji: "🫚", cat: "vegetables" },
-    { name: "Potatoes", unit: "per kg", price: "Ksh 90", cost: 90, emoji: "🥔", cat: "vegetables" },
-    { name: "Potatoes", unit: "per bucket", price: "Ksh 900", cost: 900, emoji: "🥔", cat: "vegetables" },
-    { name: "Potatoes", unit: "per 2kg kasuku", price: "Ksh 200", cost: 200, emoji: "🥔", cat: "vegetables" },
-    { name: "Carrots", unit: "per 2kg kasuku", price: "Ksh 80", cost: 80, emoji: "🥕", cat: "vegetables" },
-    { name: "Cabbage", unit: "per head", price: "Ksh 80", cost: 70, emoji: "🥦", cat: "vegetables" },
-    { name: "Spinach", unit: "per bunch", price: "Ksh 15", cost: 15, emoji: "🌿", cat: "vegetables" },
-    { name: "Bananas", unit: "per bunch", price: "Ksh 100", cost: 100, emoji: "🍌", cat: "fruits" },
-    { name: "Green Bananas (Matoke)", unit: "per bunch", price: "Ksh 80", cost: 80, emoji: "🍌", cat: "fruits" },
-    { name: "Mangoes", unit: "per piece", price: "Ksh 25", cost: 25, emoji: "🥭", cat: "fruits", badge: "In Season" },
-    { name: "Avocado", unit: "per piece", price: "Ksh 30", cost: 30, emoji: "🥑", cat: "fruits" },
-    { name: "Pawpaw", unit: "per piece", price: "Ksh 100", cost: 100, emoji: "🍈", cat: "fruits" },
-    { name: "Seedless Oranges", unit: "per piece", price: "Ksh 50", cost: 50, emoji: "🍊", cat: "fruits" },
-    { name: "Apples", unit: "per piece", price: "Ksh 30", cost: 30, emoji: "🍎", cat: "fruits" },
-    { name: "Eggs Kienyeji", unit: "per tray (30)", price: "Ksh 600", cost: 600, emoji: "🥚", cat: "dairy" },
-    { name: "Mwea Pishori Rice", unit: "1 kg", price: "Ksh 190", cost: 190, emoji: "🍚", cat: "pantry", badge: "Best Seller" },
+// ── SESSION CONFIG ──
+const SESSION_DURATION = 60 * 60; // 1 hour in seconds
+const WARN_AT = 5 * 60;           // show warning at 5 min remaining
+
+// ── STATE ──
+let currentUser = null;
+let sessionEndTime = null;
+let sessionInterval = null;
+
+// ── PRODUCTS DATA ──
+const products = [
+  { name:"Tomatoes", unit:"per piece", price:"Ksh 10", cost:10, emoji:"🍅", cat:"vegetables", badge:"Ksh 10!" },
+  { name:"Tomatoes", unit:"per kg", price:"Ksh 80", cost:80, emoji:"🍅", cat:"vegetables" },
+  { name:"Sukuma Wiki", unit:"per bunch", price:"Ksh 10", cost:10, emoji:"🥬", cat:"vegetables" },
+  { name:"Onions", unit:"per kg", price:"Ksh 90", cost:100, emoji:"🧅", cat:"vegetables" },
+  { name:"Garlic", unit:"per piece", price:"Ksh 25", cost:25, emoji:"🧄", cat:"vegetables" },
+  { name:"Ginger", unit:"per 100g", price:"Ksh 20", cost:20, emoji:"🫚", cat:"vegetables" },
+  { name:"Potatoes", unit:"per kg", price:"Ksh 90", cost:90, emoji:"🥔", cat:"vegetables" },
+  { name:"Potatoes", unit:"per bucket", price:"Ksh 900", cost:900, emoji:"🥔", cat:"vegetables" },
+  { name:"Potatoes", unit:"per 2kg kasuku", price:"Ksh 200", cost:200, emoji:"🥔", cat:"vegetables" },
+  { name:"Carrots", unit:"per 2kg kasuku", price:"Ksh 80", cost:80, emoji:"🥕", cat:"vegetables" },
+  { name:"Cabbage", unit:"per head", price:"Ksh 80", cost:70, emoji:"🥦", cat:"vegetables" },
+  { name:"Spinach", unit:"per bunch", price:"Ksh 15", cost:15, emoji:"🌿", cat:"vegetables" },
+  { name:"Bananas", unit:"per bunch", price:"Ksh 100", cost:100, emoji:"🍌", cat:"fruits" },
+  { name:"Green Bananas (Matoke)", unit:"per bunch", price:"Ksh 80", cost:80, emoji:"🍌", cat:"fruits" },
+  { name:"Mangoes", unit:"per piece", price:"Ksh 25", cost:25, emoji:"🥭", cat:"fruits", badge:"In Season" },
+  { name:"Avocado", unit:"per piece", price:"Ksh 30", cost:30, emoji:"🥑", cat:"fruits" },
+  { name:"Pawpaw", unit:"per piece", price:"Ksh 100", cost:100, emoji:"🍈", cat:"fruits" },
+  { name:"Seedless Oranges", unit:"per piece", price:"Ksh 50", cost:50, emoji:"🍊", cat:"fruits" },
+  { name:"Apples", unit:"per piece", price:"Ksh 30", cost:30, emoji:"🍎", cat:"fruits" },
+  { name:"Eggs Kienyeji", unit:"per tray (30)", price:"Ksh 600", cost:600, emoji:"🥚", cat:"dairy" },
+  { name:"Mwea Pishori Rice", unit:"1 kg", price:"Ksh 190", cost:190, emoji:"🍚", cat:"pantry", badge:"Best Seller" },
+];
+
+let cart = {};
+
+// ══════════════════════════════════════
+//  AUTH FUNCTIONS
+// ══════════════════════════════════════
+
+function switchTab(tab) {
+  document.getElementById('loginForm').style.display   = tab === 'login'  ? 'block' : 'none';
+  document.getElementById('signupForm').style.display  = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('tabLogin').classList.toggle('active',  tab === 'login');
+  document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+}
+
+function openAuth(isTimeout) {
+  document.getElementById('sessionBanner').classList.toggle('hidden', !isTimeout);
+  document.getElementById('authOverlay').classList.remove('hidden');
+  stopSession();
+}
+
+function closeAuth() {
+  document.getElementById('authOverlay').classList.add('hidden');
+}
+
+// Validate email
+function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+
+// Validate Kenyan phone
+function isValidPhone(p) { return /^(07|01)\d{8}$/.test(p.replace(/\s/g,'').replace('+254','0')); }
+
+function showErr(id, msg) {
+  const el = document.getElementById(id + 'Err');
+  if (el) { el.textContent = msg || el.textContent; el.classList.add('show'); }
+  const inp = document.getElementById(id);
+  if (inp) inp.classList.add('error');
+}
+
+function clearErr(id) {
+  const el = document.getElementById(id + 'Err');
+  if (el) el.classList.remove('show');
+  const inp = document.getElementById(id);
+  if (inp) inp.classList.remove('error');
+}
+
+function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw    = document.getElementById('loginPw').value;
+  let ok = true;
+  if (!isValidEmail(email)) { showErr('loginEmail'); ok = false; }
+  if (!pw) { showErr('loginPw'); ok = false; }
+  if (!ok) return;
+
+  // Check localStorage for registered user
+  const stored = getStoredUser(email);
+  if (!stored) {
+    showErr('loginEmail', 'No account found with this email.');
+    return;
+  }
+  if (stored.password !== btoa(pw)) {
+    showErr('loginPw', 'Incorrect password.');
+    return;
+  }
+
+  loginSuccess(stored);
+}
+
+function handleSignup() {
+  const fn    = document.getElementById('firstName').value.trim();
+  const ln    = document.getElementById('lastName').value.trim();
+  const dob   = document.getElementById('dob').value;
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pw    = document.getElementById('signupPw').value;
+  const cpw   = document.getElementById('confirmPw').value;
+  let ok = true;
+
+  if (!fn || !ln) { showErr('firstName', 'First and last name are required.'); ok = false; }
+  if (!dob) { showErr('dob', 'Please enter your date of birth.'); ok = false; }
+  if (!isValidPhone(phone)) { showErr('phone', 'Enter a valid Kenyan phone number (e.g. 0712345678).'); ok = false; }
+  if (!isValidEmail(email)) { showErr('signupEmail', 'Enter a valid email address.'); ok = false; }
+  if (pw.length < 8) { showErr('signupPw', 'Password must be at least 8 characters.'); ok = false; }
+  if (pw !== cpw) { showErr('confirmPw', 'Passwords do not match.'); ok = false; }
+  if (!ok) return;
+
+  // Check duplicate
+  if (getStoredUser(email)) {
+    showErr('signupEmail', 'An account with this email already exists.');
+    return;
+  }
+
+  const mn = document.getElementById('middleName').value.trim();
+  const user = {
+    firstName: fn, middleName: mn, lastName: ln,
+    dob, phone, email,
+    password: btoa(pw),
+    createdAt: Date.now()
+  };
+  saveUser(user);
+  loginSuccess(user);
+  showToast('🎉 Account created! Welcome to Runjob Stores.');
+}
+
+function continueWithGoogle() {
+  // Simulate Google OAuth (UI demo)
+  const mockUser = {
+    firstName: 'Google',
+    middleName: '',
+    lastName: 'User',
+    email: 'googleuser@gmail.com',
+    phone: '0700000000',
+    dob: '1990-01-01',
+    googleAuth: true
+  };
+  loginSuccess(mockUser);
+  showToast('✅ Signed in with Google');
+}
+
+function loginSuccess(user) {
+  currentUser = user;
+  closeAuth();
+  updateNavUser(user);
+  startSession();
+  prefillOrderForm(user);
+  showToast(`👋 Welcome back, ${user.firstName}!`);
+}
+
+function signOut() {
+  currentUser = null;
+  stopSession();
+  closeDropdown();
+  // Show sign in button, hide user pill
+  document.getElementById('navSigninBtn').style.display = 'block';
+  document.getElementById('navUserWrap').style.display = 'none';
+  document.getElementById('sessionTimer').classList.add('hidden');
+  openAuth(false);
+}
+
+// ── localStorage helpers ──
+function saveUser(user) {
+  const all = JSON.parse(localStorage.getItem('runjob_users') || '{}');
+  all[user.email] = user;
+  localStorage.setItem('runjob_users', JSON.stringify(all));
+}
+function getStoredUser(email) {
+  const all = JSON.parse(localStorage.getItem('runjob_users') || '{}');
+  return all[email] || null;
+}
+
+// ── Update nav with user info ──
+function updateNavUser(user) {
+  const initials = (user.firstName[0] + user.lastName[0]).toUpperCase();
+  document.getElementById('navAvatar').textContent = initials;
+  document.getElementById('navName').textContent = user.firstName;
+  document.getElementById('ddName').textContent = `${user.firstName} ${user.middleName ? user.middleName + ' ' : ''}${user.lastName}`;
+  document.getElementById('ddEmail').textContent = user.email;
+  document.getElementById('navSigninBtn').style.display = 'none';
+  document.getElementById('navUserWrap').style.display = 'block';
+}
+
+// ── Prefill order form ──
+function prefillOrderForm(user) {
+  const fn = document.getElementById('orderFirstName');
+  const ln = document.getElementById('orderLastName');
+  const ph = document.getElementById('orderPhone');
+  if (fn) fn.value = user.firstName + (user.middleName ? ' ' + user.middleName : '');
+  if (ln) ln.value = user.lastName;
+  if (ph) ph.value = user.phone || '';
+}
+
+// ── Forgot password ──
+function forgotPassword() {
+  const email = document.getElementById('loginEmail').value.trim();
+  if (!isValidEmail(email)) {
+    showToast('📧 Enter your email first, then tap "Forgot password".');
+    return;
+  }
+  showToast(`📬 Password reset instructions sent to ${email} (demo)`);
+}
+
+// ── Dropdown toggle ──
+function toggleDropdown() {
+  document.getElementById('userDropdown').classList.toggle('open');
+}
+function closeDropdown() {
+  document.getElementById('userDropdown').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#navUserWrap')) closeDropdown();
+});
+
+// ── Profile view ──
+function showProfile() {
+  if (!currentUser) return;
+  const dob = currentUser.dob ? new Date(currentUser.dob).toLocaleDateString('en-KE', {year:'numeric',month:'long',day:'numeric'}) : '—';
+  showToast(`👤 ${currentUser.firstName} ${currentUser.lastName} | 📞 ${currentUser.phone} | 🎂 ${dob}`);
+  closeDropdown();
+}
+
+// ══════════════════════════════════════
+//  SESSION TIMER
+// ══════════════════════════════════════
+
+function startSession() {
+  sessionEndTime = Date.now() + SESSION_DURATION * 1000;
+  const timerEl = document.getElementById('sessionTimer');
+  timerEl.classList.remove('hidden');
+  clearInterval(sessionInterval);
+
+  sessionInterval = setInterval(() => {
+    const remaining = Math.max(0, Math.floor((sessionEndTime - Date.now()) / 1000));
+    const mins = String(Math.floor(remaining / 60)).padStart(2,'0');
+    const secs = String(remaining % 60).padStart(2,'0');
+    document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+
+    if (remaining <= WARN_AT) {
+      timerEl.classList.add('warning');
+      if (remaining === WARN_AT) showToast(`⚠️ Session expires in 5 minutes!`);
+    }
+
+    if (remaining === 0) {
+      clearInterval(sessionInterval);
+      timerEl.classList.add('hidden');
+      // Auto sign out
+      currentUser = null;
+      document.getElementById('navSigninBtn').style.display = 'block';
+      document.getElementById('navUserWrap').style.display = 'none';
+      openAuth(true);
+    }
+  }, 1000);
+}
+
+function stopSession() {
+  clearInterval(sessionInterval);
+  sessionInterval = null;
+  sessionEndTime = null;
+  document.getElementById('sessionTimer').classList.add('hidden');
+  document.getElementById('sessionTimer').classList.remove('warning');
+}
+
+// Reset timer on user activity
+['click','keydown','scroll','mousemove','touchstart'].forEach(evt =>
+  document.addEventListener(evt, () => {
+    if (currentUser && sessionEndTime) {
+      sessionEndTime = Date.now() + SESSION_DURATION * 1000;
+      document.getElementById('sessionTimer').classList.remove('warning');
+    }
+  }, { passive: true })
+);
+
+// ══════════════════════════════════════
+//  PASSWORD UTILITIES
+// ══════════════════════════════════════
+
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+function checkStrength() {
+  const pw = document.getElementById('signupPw').value;
+  const fill = document.getElementById('strengthFill');
+  const label = document.getElementById('strengthLabel');
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  const levels = [
+    { pct:'0%',   color:'#ef4444', text:'' },
+    { pct:'25%',  color:'#ef4444', text:'Weak' },
+    { pct:'50%',  color:'#f59e0b', text:'Fair' },
+    { pct:'75%',  color:'#3b82f6', text:'Good' },
+    { pct:'100%', color:'#22c55e', text:'Strong 🔒' },
   ];
+  const l = levels[score];
+  fill.style.width = l.pct;
+  fill.style.background = l.color;
+  label.textContent = l.text;
+  label.style.color = l.color;
+}
 
-  let cart = {};
+// ══════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
 
-  /* ── PRODUCTS ── */
-  function renderProducts(filter) {
-    if (filter === undefined) filter = getCurrentFilter();
-    const grid = document.getElementById('productsGrid');
-    const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
-    grid.innerHTML = filtered.map(p => {
-      const qty = cart[p.name + '|' + p.unit] || 0;
-      return `
-        <div class="product-card">
-          ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
-          <span class="product-emoji">${p.emoji}</span>
-          <div class="product-name">${p.name}</div>
-          <div class="product-unit">${p.unit}</div>
-          <div class="product-price">${p.price}</div>
-          ${qty > 0
-            ? `<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;">
-                <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',-1)">−</button>
-                <span class="qty-num" style="font-size:1rem;font-weight:700;color:var(--green);">${qty}</span>
-                <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',1)">+</button>
-               </div>`
-            : `<button class="add-btn" onclick="addToCart('${p.name}','${p.unit}')">+ Add to Cart</button>`
-          }
-        </div>`;
-    }).join('');
-  }
+// ══════════════════════════════════════
+//  PRODUCTS
+// ══════════════════════════════════════
 
-  function filterProducts(cat, btn) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    btn.setAttribute('data-cat', cat);
-    renderProducts(cat);
-  }
-
-  function getCurrentFilter() {
-    const active = document.querySelector('.tab.active');
-    return active ? (active.getAttribute('data-cat') || 'all') : 'all';
-  }
-
-  /* ── CART LOGIC ── */
-  function addToCart(name, unit) {
-    const key = name + '|' + unit;
-    cart[key] = (cart[key] || 0) + 1;
-    updateCart();
-    renderProducts();
-  }
-
-  function changeQty(name, unit, delta) {
-    const key = name + '|' + unit;
-    cart[key] = (cart[key] || 0) + delta;
-    if (cart[key] <= 0) delete cart[key];
-    updateCart();
-    renderProducts();
-  }
-
-  function removeFromCart(key) {
-    delete cart[key];
-    updateCart();
-    renderProducts();
-  }
-
-  function clearCart() {
-    cart = {};
-    updateCart();
-    renderProducts();
-  }
-
-  function getProductByKey(key) {
-    const [name, unit] = key.split('|');
-    return products.find(p => p.name === name && p.unit === unit);
-  }
-
-  /* ── UPDATE CART DISPLAY ── */
-  function updateCart() {
-    const entries = Object.entries(cart);
-    const totalQty = entries.reduce((s, [, q]) => s + q, 0);
-    const subtotal = entries.reduce((s, [key, qty]) => {
-      const p = getProductByKey(key);
-      return s + (p ? p.cost * qty : 0);
-    }, 0);
-
-    const DISCOUNT_THRESHOLD = 7500;
-    const DISCOUNT_RATE = 0.03;
-    const hasDiscount = subtotal >= DISCOUNT_THRESHOLD;
-    const discountAmt = hasDiscount ? Math.round(subtotal * DISCOUNT_RATE) : 0;
-    const finalTotal = subtotal - discountAmt;
-
-    // Badge
-    const badge = document.getElementById('cartCount');
-    if (totalQty > 0) {
-      badge.style.display = 'flex';
-      badge.textContent = totalQty;
-    } else {
-      badge.style.display = 'none';
-    }
-
-    const body = document.getElementById('cartBody');
-    const footer = document.getElementById('cartFooter');
-
-    if (entries.length === 0) {
-      body.innerHTML = `<div class="cart-empty"><div class="big">🛒</div><p>Your cart is empty.<br/>Add items from the products section!</p></div>`;
-      footer.style.display = 'none';
-    } else {
-      body.innerHTML = entries.map(([key, qty]) => {
-        const p = getProductByKey(key);
-        return `
-          <div class="cart-item">
-            <div class="cart-item-emoji">${p.emoji}</div>
-            <div class="cart-item-info">
-              <div class="cart-item-name">${p.name} <span style="font-size:0.75rem;color:var(--muted);">(${p.unit})</span></div>
-              <div class="cart-item-price">Ksh ${p.cost} × ${qty} = <strong>Ksh ${p.cost * qty}</strong></div>
-              <div class="cart-item-qty">
-                <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',-1)">−</button>
-                <span class="qty-num">${qty}</span>
-                <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',1)">+</button>
-              </div>
-            </div>
-            <button class="cart-item-remove" onclick="removeFromCart('${key}')" title="Remove">🗑</button>
-          </div>`;
-      }).join('');
-
-      document.getElementById('cartSubtotal').textContent = `Ksh ${subtotal}`;
-
-      const discountRow = document.getElementById('discountRow');
-      const bulkHint = document.getElementById('bulkHint');
-      if (hasDiscount) {
-        discountRow.style.display = 'flex';
-        document.getElementById('discountAmt').textContent = `− Ksh ${discountAmt}`;
-        bulkHint.style.display = 'none';
-      } else {
-        discountRow.style.display = 'none';
-        bulkHint.style.display = 'block';
+function renderProducts(filter) {
+  if (filter === undefined) filter = getCurrentFilter();
+  const grid = document.getElementById('productsGrid');
+  const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+  grid.innerHTML = filtered.map(p => {
+    const qty = cart[p.name + '|' + p.unit] || 0;
+    return `<div class="product-card">
+      ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+      <span class="product-emoji">${p.emoji}</span>
+      <div class="product-name">${p.name}</div>
+      <div class="product-unit">${p.unit}</div>
+      <div class="product-price">${p.price}</div>
+      ${qty > 0
+        ? `<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;">
+            <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',-1)">−</button>
+            <span class="qty-num" style="font-size:1rem;font-weight:700;color:var(--green);">${qty}</span>
+            <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',1)">+</button>
+           </div>`
+        : `<button class="add-btn" onclick="addToCart('${p.name}','${p.unit}')">+ Add to Cart</button>`
       }
+    </div>`;
+  }).join('');
+}
 
-      document.getElementById('cartTotal').textContent = `Ksh ${finalTotal}`;
-      footer.style.display = 'block';
-    }
-  }
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  btn.setAttribute('data-cat', cat);
+  renderProducts(cat);
+}
 
-  function toggleCart() {
-    document.getElementById('cartDrawer').classList.toggle('open');
-    document.getElementById('cartOverlay').classList.toggle('open');
-  }
+function getCurrentFilter() {
+  const active = document.querySelector('.tab.active');
+  return active ? (active.getAttribute('data-cat') || 'all') : 'all';
+}
 
-  /* ── CHECKOUT ── */
-  function checkoutCart() {
-    const entries = Object.entries(cart);
-    if (entries.length === 0) return;
-    const summary = entries.map(([key, qty]) => {
+// ══════════════════════════════════════
+//  CART
+// ══════════════════════════════════════
+
+function addToCart(name, unit) {
+  const key = name + '|' + unit;
+  cart[key] = (cart[key] || 0) + 1;
+  updateCart(); renderProducts();
+}
+
+function changeQty(name, unit, delta) {
+  const key = name + '|' + unit;
+  cart[key] = (cart[key] || 0) + delta;
+  if (cart[key] <= 0) delete cart[key];
+  updateCart(); renderProducts();
+}
+
+function removeFromCart(key) { delete cart[key]; updateCart(); renderProducts(); }
+function clearCart() { cart = {}; updateCart(); renderProducts(); }
+function getProductByKey(key) {
+  const [name, unit] = key.split('|');
+  return products.find(p => p.name === name && p.unit === unit);
+}
+
+function updateCart() {
+  const entries = Object.entries(cart);
+  const totalQty = entries.reduce((s,[,q]) => s+q, 0);
+  const subtotal = entries.reduce((s,[key,qty]) => {
+    const p = getProductByKey(key); return s + (p ? p.cost*qty : 0);
+  }, 0);
+  const hasDiscount = subtotal >= 7500;
+  const discountAmt = hasDiscount ? Math.round(subtotal*0.03) : 0;
+  const finalTotal = subtotal - discountAmt;
+
+  const badge = document.getElementById('cartCount');
+  badge.style.display = totalQty > 0 ? 'flex' : 'none';
+  badge.textContent = totalQty;
+
+  const body = document.getElementById('cartBody');
+  const footer = document.getElementById('cartFooter');
+  if (entries.length === 0) {
+    body.innerHTML = `<div class="cart-empty"><div class="big">🛒</div><p>Your cart is empty.<br/>Add items from the products section!</p></div>`;
+    footer.style.display = 'none';
+  } else {
+    body.innerHTML = entries.map(([key,qty]) => {
       const p = getProductByKey(key);
-      return `${qty}× ${p.name} (${p.unit}) — Ksh ${p.cost * qty}`;
-    }).join(', ');
-    const subtotal = entries.reduce((s, [key, qty]) => {
-      const p = getProductByKey(key);
-      return s + p.cost * qty;
-    }, 0);
-    const hasDiscount = subtotal >= 7500;
-    const discountAmt = hasDiscount ? Math.round(subtotal * 0.03) : 0;
-    const finalTotal = subtotal - discountAmt;
-    const discountNote = hasDiscount
-      ? ` | 🎉 3% Bulk Discount: −Ksh ${discountAmt} | TOTAL TO PAY: Ksh ${finalTotal}`
-      : ` | Total: Ksh ${subtotal}`;
-
-    document.getElementById('items').value = summary + discountNote;
-    toggleCart();
-    document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => {
-      const msg = document.getElementById('successMsg');
-      msg.style.display = 'block';
-      msg.style.background = hasDiscount ? '#d6f0e0' : '#fff3cd';
-      msg.style.borderColor = hasDiscount ? 'var(--green)' : '#ffc107';
-      msg.style.color = hasDiscount ? 'var(--green)' : '#856404';
-      msg.textContent = hasDiscount
-        ? `🎉 Bulk discount applied! You save Ksh ${discountAmt}. Total to pay: Ksh ${finalTotal}. Fill in your details and place your order!`
-        : `🛒 Cart total: Ksh ${subtotal}. Fill in your details and place your order!`;
-      setTimeout(() => { msg.style.display = 'none'; }, 8000);
-    }, 600);
-  }
-
-  /* ── ORDER FORM ── */
-  function submitOrder() {
-    const fn = document.getElementById('firstName').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const items = document.getElementById('items').value.trim();
-    if (!fn || !phone || !items) {
-      alert('Please fill in your name, phone number, and the items you need.');
-      return;
+      return `<div class="cart-item">
+        <div class="cart-item-emoji">${p.emoji}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${p.name} <span style="font-size:0.75rem;color:var(--muted);">(${p.unit})</span></div>
+          <div class="cart-item-price">Ksh ${p.cost} × ${qty} = <strong>Ksh ${p.cost*qty}</strong></div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',-1)">−</button>
+            <span class="qty-num">${qty}</span>
+            <button class="qty-btn" onclick="changeQty('${p.name}','${p.unit}',1)">+</button>
+          </div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart('${key}')" title="Remove">🗑</button>
+      </div>`;
+    }).join('');
+    document.getElementById('cartSubtotal').textContent = `Ksh ${subtotal}`;
+    const discountRow = document.getElementById('discountRow');
+    const bulkHint = document.getElementById('bulkHint');
+    if (hasDiscount) {
+      discountRow.style.display = 'flex';
+      document.getElementById('discountAmt').textContent = `− Ksh ${discountAmt}`;
+      bulkHint.style.display = 'none';
+    } else {
+      discountRow.style.display = 'none';
+      bulkHint.style.display = 'block';
     }
+    document.getElementById('cartTotal').textContent = `Ksh ${finalTotal}`;
+    footer.style.display = 'block';
+  }
+}
+
+function toggleCart() {
+  document.getElementById('cartDrawer').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
+function checkoutCart() {
+  const entries = Object.entries(cart);
+  if (entries.length === 0) return;
+  const summary = entries.map(([key,qty]) => {
+    const p = getProductByKey(key);
+    return `${qty}× ${p.name} (${p.unit}) — Ksh ${p.cost*qty}`;
+  }).join(', ');
+  const subtotal = entries.reduce((s,[key,qty]) => { const p=getProductByKey(key); return s+p.cost*qty; }, 0);
+  const hasDiscount = subtotal >= 7500;
+  const discountAmt = hasDiscount ? Math.round(subtotal*0.03) : 0;
+  const finalTotal = subtotal - discountAmt;
+  const discountNote = hasDiscount
+    ? ` | 🎉 3% Bulk Discount: −Ksh ${discountAmt} | TOTAL TO PAY: Ksh ${finalTotal}`
+    : ` | Total: Ksh ${subtotal}`;
+  document.getElementById('items').value = summary + discountNote;
+  toggleCart();
+  document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
     const msg = document.getElementById('successMsg');
-    msg.style.background = '';
-    msg.style.borderColor = '';
-    msg.style.color = '';
-    msg.textContent = '✅ Order received! We\'ll call you on your number to confirm. Thank you for choosing Runjo Stores!';
     msg.style.display = 'block';
-    setTimeout(() => msg.style.display = 'none', 6000);
-    ['firstName','lastName','phone','delivType','payMethod','address','items'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    clearCart();
-  }
+    msg.textContent = hasDiscount
+      ? `🎉 Bulk discount applied! You save Ksh ${discountAmt}. Total: Ksh ${finalTotal}. Fill in your details and place your order!`
+      : `🛒 Cart total: Ksh ${subtotal}. Fill in your details and place your order!`;
+    setTimeout(() => { msg.style.display='none'; }, 8000);
+  }, 600);
+}
 
-  // Init tabs with data-cat
-  document.querySelectorAll('.tab').forEach(btn => {
-    const txt = btn.textContent.trim().toLowerCase();
-    if (txt.includes('veg')) btn.setAttribute('data-cat','vegetables');
-    else if (txt.includes('fruit')) btn.setAttribute('data-cat','fruits');
-    else if (txt.includes('dairy')) btn.setAttribute('data-cat','dairy');
-    else if (txt.includes('pantry')) btn.setAttribute('data-cat','pantry');
-    else btn.setAttribute('data-cat','all');
+function submitOrder() {
+  const fn    = document.getElementById('orderFirstName').value.trim();
+  const phone = document.getElementById('orderPhone').value.trim();
+  const items = document.getElementById('items').value.trim();
+  if (!fn || !phone || !items) { alert('Please fill in your name, phone number, and the items you need.'); return; }
+  const msg = document.getElementById('successMsg');
+  msg.style.background = ''; msg.style.borderColor = ''; msg.style.color = '';
+  msg.textContent = '✅ Order received! We\'ll call you on your number to confirm. Thank you for choosing Runjob Stores!';
+  msg.style.display = 'block';
+  setTimeout(() => msg.style.display='none', 6000);
+  ['orderFirstName','orderLastName','orderPhone','delivType','payMethod','address','items'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value='';
   });
+  clearCart();
+}
 
-  renderProducts('all');
+// ── INIT ──
+document.querySelectorAll('.tab').forEach(btn => {
+  const txt = btn.textContent.trim().toLowerCase();
+  if (txt.includes('veg')) btn.setAttribute('data-cat','vegetables');
+  else if (txt.includes('fruit')) btn.setAttribute('data-cat','fruits');
+  else if (txt.includes('dairy')) btn.setAttribute('data-cat','dairy');
+  else if (txt.includes('pantry')) btn.setAttribute('data-cat','pantry');
+  else btn.setAttribute('data-cat','all');
+});
+
+renderProducts('all');
+// Show auth on load
+document.getElementById('authOverlay').classList.remove('hidden');
 </script>
 </body>
 </html>
-
-
-
-
-
