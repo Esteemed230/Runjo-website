@@ -832,6 +832,43 @@
   </div>
 </nav>
 
+<!-- Customer Profile Modal -->
+<div id="profileModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);overflow-y:auto;padding:20px;">
+  <div style="background:white;border-radius:16px;width:100%;max-width:500px;margin:40px auto;padding:32px;box-shadow:0 8px 32px rgba(0,0,0,0.15);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <h2 style="font-size:1.4rem;font-weight:800;color:var(--green);margin:0;">👤 My Profile</h2>
+      <button onclick="closeProfile()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);">✕</button>
+    </div>
+    
+    <div style="text-align:center;margin-bottom:24px;">
+      <div id="profileAvatarLarge" style="width:80px;height:80px;border-radius:50%;background:var(--green);color:white;font-size:32px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">?</div>
+      <div id="profileUsername" style="font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:4px;">—</div>
+      <div id="profileEmail" style="font-size:0.9rem;color:var(--muted);">—</div>
+    </div>
+    
+    <div style="background:#f9fafb;border-radius:12px;padding:16px;margin-bottom:20px;">
+      <div style="margin-bottom:16px;">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Full Name</div>
+        <div id="profileFullName" style="font-size:0.95rem;color:var(--text);">—</div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Email Address</div>
+        <div id="profileEmailDetail" style="font-size:0.95rem;color:var(--text);">—</div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Phone Number</div>
+        <div id="profilePhone" style="font-size:0.95rem;color:var(--text);">—</div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Date of Birth</div>
+        <div id="profileDOB" style="font-size:0.95rem;color:var(--text);">—</div>
+      </div>
+    </div>
+    
+    <button onclick="closeProfile()" style="width:100%;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;">← Back</button>
+  </div>
+</div>
+
 <!-- Admin Panel (Hidden by default) -->
 <div id="adminPanel">
   <div class="admin-modal">
@@ -1427,11 +1464,25 @@ function prefillOrderForm(user){
 
 function showProfile(){
   if(!currentUser)return;
-  const fn=currentUser.firstName||currentUser.first_name||'';
-  const ln=currentUser.lastName||currentUser.last_name||'';
-  const dob=currentUser.dob?new Date(currentUser.dob).toLocaleDateString('en-KE',{year:'numeric',month:'long',day:'numeric'}):'—';
-  showToast('👤 '+fn+' '+ln+' | 📞 '+(currentUser.phone||'—')+' | 🎂 '+dob);
   closeDropdown();
+  const fn=currentUser.firstName||currentUser.first_name||'';
+  const mn=currentUser.middleName||currentUser.middle_name||'';
+  const ln=currentUser.lastName||currentUser.last_name||'';
+  const fullName=fn+(mn?' '+mn:'')+' '+ln;
+  const email=currentUser.email||'—';
+  const phone=currentUser.phone||'—';
+  const dob=currentUser.dob?new Date(currentUser.dob).toLocaleDateString('en-KE',{year:'numeric',month:'long',day:'numeric'}):'—';
+  document.getElementById('profileAvatarLarge').textContent=(fn[0]||'?').toUpperCase();
+  document.getElementById('profileUsername').textContent=fn||'User';
+  document.getElementById('profileEmail').textContent=email;
+  document.getElementById('profileFullName').textContent=fullName;
+  document.getElementById('profileEmailDetail').textContent=email;
+  document.getElementById('profilePhone').textContent=phone;
+  document.getElementById('profileDOB').textContent=dob;
+  document.getElementById('profileModal').style.display='flex';
+}
+function closeProfile(){
+  document.getElementById('profileModal').style.display='none';
 }
 
 function toggleDropdown(){document.getElementById('userDropdown').classList.toggle('open');}
