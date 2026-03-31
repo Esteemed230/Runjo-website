@@ -11,10 +11,14 @@
     :root{--green:#1a6b3c;--green-light:#3cb371;--green-pale:#d6f0e0;--cream:#fffdf5;--brown:#4a2c1a;--orange:#e8572a;--text:#1a1a1a;--muted:#6b7280;--white:#ffffff}
     html{scroll-behavior:smooth}
     body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
-    /* AUTH OVERLAY - no blur, scrollable modal */
-    #authOverlay{position:fixed;inset:0;z-index:9999;background:rgba(10,40,20,0.78);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;animation:fadeIn 0.3s ease}
+    body.auth-required{background:#000;overflow:hidden}
+    body.auth-required nav,body.auth-required section,body.auth-required footer,body.auth-required .whatsapp-float{display:none !important}
+    /* FIX: Prevent body scroll when auth is open */
+    body.auth-open{overflow:hidden}
+    /* AUTH OVERLAY - Full screen standalone interface */
+    #authOverlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;animation:fadeIn 0.3s ease}
     #authOverlay.hidden{display:none}
-    .auth-modal{background:var(--white);border-radius:28px;width:100%;max-width:480px;margin:auto;box-shadow:0 32px 80px rgba(0,0,0,0.3);overflow:hidden;max-height:calc(100vh - 32px);display:flex;flex-direction:column;animation:slideUp 0.38s cubic-bezier(.22,1,.36,1)}
+    .auth-modal{background:var(--white);border-radius:28px;width:100%;max-width:480px;margin:auto;box-shadow:0 32px 80px rgba(0,0,0,0.4);display:flex;flex-direction:column;max-height:90vh;overflow:hidden;animation:slideUp 0.38s cubic-bezier(.22,1,.36,1)}
     .auth-header{background:linear-gradient(135deg,var(--green) 0%,#0f4a28 100%);padding:28px 36px 20px;text-align:center;flex-shrink:0}
     .auth-header-logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--white);margin-bottom:4px}
     .auth-header-logo span{color:#7ee8a2}
@@ -22,8 +26,8 @@
     .auth-tabs{display:flex;border-bottom:1px solid #e5e7eb;background:var(--cream);flex-shrink:0}
     .auth-tab{flex:1;padding:14px;font-size:0.88rem;font-weight:600;border:none;background:none;cursor:pointer;color:var(--muted);transition:all 0.2s;border-bottom:3px solid transparent;letter-spacing:0.02em}
     .auth-tab.active{color:var(--green);border-bottom-color:var(--green);background:var(--white)}
-    /* Scrollable form body */
-    .auth-body{padding:24px 32px 28px;overflow-y:auto;flex:1}
+    /* FIX: Scrollable form body with smooth scrolling */
+    .auth-body{padding:24px 32px 28px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
     .google-btn{width:100%;padding:12px 20px;border:1.5px solid #e2e8f0;border-radius:50px;background:var(--white);display:flex;align-items:center;justify-content:center;gap:10px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all 0.2s;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
     .google-btn:hover{border-color:#4285F4;box-shadow:0 4px 16px rgba(66,133,244,0.18);transform:translateY(-1px)}
     .google-icon{width:20px;height:20px;flex-shrink:0}
@@ -102,102 +106,34 @@
     .feat-item .icon{font-size:1.3rem}
     .feat-item span{font-size:0.88rem;font-weight:500}
     section{padding:80px 5vw}
-    .section-tag{display:inline-block;background:var(--green-pale);color:var(--green);padding:5px 14px;border-radius:50px;font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem}
-    .section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:var(--text);margin-bottom:0.6rem;line-height:1.2}
-    .section-sub{font-size:1rem;color:var(--muted);max-width:500px;line-height:1.6}
-    #products{background:var(--white)}
-    .products-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
-    .category-tabs{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem}
-    .tab{padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:500;border:1.5px solid #e5e7eb;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.2s}
-    .tab.active,.tab:hover{background:var(--green);color:var(--white);border-color:var(--green)}
-    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.4rem}
-    .product-card{background:var(--cream);border-radius:20px;padding:1.4rem;text-align:center;transition:transform 0.25s,box-shadow 0.25s;position:relative;overflow:hidden}
-    .product-card:hover{transform:translateY(-5px);box-shadow:0 12px 36px rgba(0,0,0,0.1)}
-    .product-badge{position:absolute;top:12px;right:12px;background:var(--orange);color:var(--white);font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:20px}
-    .product-emoji{font-size:3rem;margin-bottom:0.8rem;display:block}
-    .product-name{font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.3rem}
-    .product-unit{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem}
-    .product-price{font-size:1.3rem;font-weight:700;color:var(--green);margin-bottom:1rem}
-    .add-btn{width:100%;padding:10px;border-radius:50px;background:var(--green);color:var(--white);border:none;font-size:0.85rem;font-weight:500;cursor:pointer;transition:background 0.2s,transform 0.15s}
-    .add-btn:hover{background:var(--green-light);transform:scale(1.03)}
-    #order{background:var(--green-pale)}
-    .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-    .steps{display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem}
-    .step{display:flex;gap:1rem;align-items:flex-start}
-    .step-num{width:36px;height:36px;border-radius:50%;background:var(--green);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0}
-    .step-text h4{font-size:0.95rem;font-weight:600;margin-bottom:0.2rem}
-    .step-text p{font-size:0.85rem;color:var(--muted)}
-    .order-form{background:var(--white);border-radius:24px;padding:2.4rem;box-shadow:0 8px 40px rgba(0,0,0,0.08)}
-    .order-form h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:1.6rem}
-    .form-group{margin-bottom:1.2rem}
-    .form-group label{display:block;font-size:0.82rem;font-weight:500;margin-bottom:0.4rem}
-    .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border:1.5px solid #e5e7eb;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;background:var(--cream);color:var(--text);transition:border-color 0.2s;outline:none}
-    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green)}
-    .form-group textarea{resize:vertical;min-height:90px}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-    .submit-btn{width:100%;padding:14px;background:var(--green);color:var(--white);border:none;border-radius:50px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.2s,transform 0.15s;box-shadow:0 4px 20px rgba(26,107,60,0.25)}
-    .submit-btn:hover{background:var(--green-light);transform:translateY(-2px)}
-    .success-msg{display:none;background:var(--green-pale);border:1px solid var(--green-light);border-radius:12px;padding:14px 18px;margin-top:1rem;font-size:0.9rem;color:var(--green);text-align:center}
-    #info{background:var(--cream)}
-    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;margin-top:2.5rem}
-    .info-card{background:var(--white);border-radius:20px;padding:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.05)}
-    .info-card .icon{font-size:2rem;margin-bottom:1rem}
-    .info-card h3{font-size:1.05rem;font-weight:700;margin-bottom:0.8rem}
-    .info-card p{font-size:0.88rem;color:var(--muted);line-height:1.8}
-    .hours-list{list-style:none}
-    .hours-list li{display:flex;justify-content:space-between;font-size:0.85rem;color:var(--muted);padding:6px 0;border-bottom:1px solid #f3f4f6}
-    .hours-list li:last-child{border-bottom:none}
-    .hours-list .day{font-weight:600;color:var(--text)}
-    .closed{color:var(--orange)!important}
-    #testimonials{background:var(--white)}
-    .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.6rem;margin-top:2.5rem}
-    .testi-card{background:var(--cream);border-radius:20px;padding:1.8rem}
-    .stars{color:#f59e0b;font-size:1rem;margin-bottom:0.8rem}
-    .testi-text{font-size:0.92rem;color:var(--text);line-height:1.7;margin-bottom:1.2rem;font-style:italic}
-    .testi-author{display:flex;align-items:center;gap:0.8rem}
-    .avatar{width:42px;height:42px;border-radius:50%;background:var(--green);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem}
-    .author-name{font-size:0.88rem;font-weight:600}
-    .author-sub{font-size:0.78rem;color:var(--muted)}
-    footer{background:var(--brown);color:rgba(255,255,255,0.85);padding:50px 5vw 30px}
-    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
-    .footer-brand .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--white);margin-bottom:0.8rem}
-    .footer-brand .logo span{color:var(--green-light)}
-    .footer-brand p{font-size:0.85rem;line-height:1.7;color:rgba(255,255,255,0.6);max-width:280px}
-    .footer-col h4{font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--white);margin-bottom:1rem}
-    .footer-col ul{list-style:none}
-    .footer-col ul li{margin-bottom:0.6rem}
-    .footer-col ul li a{font-size:0.85rem;color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s}
-    .footer-col ul li a:hover{color:var(--green-light)}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:1.4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-    .footer-bottom p{font-size:0.8rem;color:rgba(255,255,255,0.4)}
-    #payment{background:var(--white)}
-    .payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:2.5rem}
-    .mpesa-card{background:linear-gradient(135deg,#00a651 0%,#007a3d 100%);border-radius:24px;padding:2.4rem;color:white;text-align:center;box-shadow:0 12px 40px rgba(0,166,81,0.3);position:relative;overflow:hidden}
-    .mpesa-card::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none}
-    .mpesa-logo{font-size:2.8rem;margin-bottom:0.5rem}
-    .mpesa-title{font-size:1.1rem;font-weight:700;margin-bottom:1.6rem;letter-spacing:0.02em;opacity:0.9}
-    .mpesa-detail{background:rgba(255,255,255,0.15);border-radius:14px;padding:1rem 1.4rem;margin-bottom:1rem;text-align:left}
-    .mpesa-detail-label{font-size:0.72rem;opacity:0.75;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem}
-    .mpesa-detail-value{font-size:1.5rem;font-weight:900;letter-spacing:0.05em}
-    .mpesa-detail-value.small{font-size:1.1rem}
-    .mpesa-note{font-size:0.8rem;opacity:0.75;margin-top:1.2rem;line-height:1.6}
-    .payment-steps{display:flex;flex-direction:column;gap:1.2rem}
-    .pay-step{display:flex;gap:1rem;align-items:flex-start;background:var(--cream);border-radius:16px;padding:1.1rem 1.3rem}
-    .pay-step-num{width:32px;height:32px;border-radius:50%;background:#00a651;color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0}
-    .pay-step-text h4{font-size:0.92rem;font-weight:600;margin-bottom:0.2rem;color:var(--text)}
-    .pay-step-text p{font-size:0.82rem;color:var(--muted);line-height:1.5}
-    .pay-step-text strong{color:#00a651}
-    .whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:999;background:#25d366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;transition:transform 0.2s,box-shadow 0.2s}
-    .whatsapp-float:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(37,211,102,0.5)}
-    .cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200}
-    .cart-overlay.open{display:block}
-    .cart-drawer{position:fixed;top:0;right:-420px;width:380px;max-width:95vw;height:100vh;background:var(--white);z-index:201;box-shadow:-8px 0 40px rgba(0,0,0,0.15);display:flex;flex-direction:column;transition:right 0.35s cubic-bezier(.4,0,.2,1)}
-    .cart-drawer.open{right:0}
-    .cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #f0f0f0;background:var(--green);color:white}
-    .cart-header h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700}
-    .cart-close{background:rgba(255,255,255,0.2);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:1.1rem;cursor:pointer;transition:background 0.2s}
-    .cart-close:hover{background:rgba(255,255,255,0.35)}
-    .cart-body{flex:1;overflow-y:auto;padding:16px 20px}
+    .section-tag{display:inline-block;background:var(--green-pale);color:var(--green);padding:5px 14px;border-radius:50px;font-size:0.75rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem}
+    h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:900;margin-bottom:3rem;color:var(--text)}
+    .product-tabs{display:flex;gap:1rem;margin-bottom:2.5rem;flex-wrap:wrap}
+    .tab{background:transparent;border:2px solid #e5e7eb;color:var(--text);padding:10px 20px;border-radius:50px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s}
+    .tab:hover{border-color:var(--green)}
+    .tab.active{background:var(--green);color:var(--white);border-color:var(--green)}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1.5rem}
+    .product-card{background:var(--white);border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.2s,box-shadow 0.2s;position:relative}
+    .product-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+    .product-badge{position:absolute;top:8px;right:8px;background:var(--orange);color:white;font-size:0.65rem;font-weight:700;padding:4px 8px;border-radius:20px;text-transform:uppercase}
+    .product-emoji{font-size:2.4rem;display:block;margin-bottom:0.6rem}
+    .product-name{font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:0.2rem}
+    .product-unit{font-size:0.75rem;color:var(--muted);margin-bottom:0.6rem}
+    .product-price{font-size:1.1rem;font-weight:700;color:var(--green);margin-bottom:0.8rem}
+    .add-btn{width:100%;padding:8px;background:var(--green);color:white;border:none;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:background 0.2s}
+    .add-btn:hover{background:var(--green-light)}
+    .qty-btn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--green);background:transparent;color:var(--green);font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;line-height:1}
+    .qty-btn:hover{background:var(--green);color:white}
+    .qty-num{font-size:0.9rem;font-weight:600;min-width:18px;text-align:center}
+    .cart-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:200;display:none;opacity:0;transition:opacity 0.3s}
+    .cart-overlay.open{display:block;opacity:1}
+    .cart-drawer{position:fixed;right:0;top:0;bottom:0;width:100%;max-width:420px;background:var(--white);z-index:250;transform:translateX(100%);transition:transform 0.3s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,0.15)}
+    .cart-drawer.open{transform:translateX(0)}
+    .cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid #e5e7eb;flex-shrink:0}
+    .cart-header h3{font-size:1.1rem;font-weight:700;color:var(--text)}
+    .cart-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);transition:color 0.2s}
+    .cart-close:hover{color:var(--text)}
+    .cart-body{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch}
     .cart-empty{text-align:center;padding:60px 20px;color:var(--muted)}
     .cart-empty .big{font-size:3rem;margin-bottom:1rem}
     .cart-empty p{font-size:0.9rem}
@@ -207,12 +143,9 @@
     .cart-item-name{font-size:0.9rem;font-weight:600;color:var(--text)}
     .cart-item-price{font-size:0.8rem;color:var(--green);font-weight:500;margin-top:2px}
     .cart-item-qty{display:flex;align-items:center;gap:8px;margin-top:6px}
-    .qty-btn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--green);background:transparent;color:var(--green);font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;line-height:1}
-    .qty-btn:hover{background:var(--green);color:white}
-    .qty-num{font-size:0.9rem;font-weight:600;min-width:18px;text-align:center}
     .cart-item-remove{background:none;border:none;color:#ccc;font-size:1.1rem;cursor:pointer;padding:4px;transition:color 0.2s}
     .cart-item-remove:hover{color:var(--orange)}
-    .cart-footer{padding:16px 20px;border-top:2px solid #f0f0f0;background:var(--cream)}
+    .cart-footer{padding:16px 20px;border-top:2px solid #f0f0f0;background:var(--cream);flex-shrink:0}
     .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
     .cart-total span{font-size:0.95rem;font-weight:700;color:var(--text)}
     .cart-total .amount{font-size:1.2rem;color:var(--green);font-weight:900}
@@ -220,6 +153,44 @@
     .cart-checkout-btn:hover{background:var(--green-light);transform:translateY(-1px)}
     .cart-clear{width:100%;padding:8px;background:none;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer;margin-top:8px;text-decoration:underline}
     .cart-clear:hover{color:var(--orange)}
+    .whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:var(--green);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;text-decoration:none;box-shadow:0 4px 16px rgba(26,107,60,0.3);transition:transform 0.2s,box-shadow 0.2s;z-index:99}
+    .whatsapp-float:hover{transform:scale(1.1);box-shadow:0 8px 24px rgba(26,107,60,0.4)}
+    .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .form-group{margin-bottom:1.5rem}
+    .form-group label{display:block;font-size:0.9rem;font-weight:600;margin-bottom:0.5rem;color:var(--text)}
+    .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:var(--cream);outline:none;transition:border-color 0.2s,box-shadow 0.2s}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,107,60,0.1)}
+    .form-group textarea{resize:vertical;min-height:100px}
+    .submit-btn{width:100%;padding:14px;background:var(--green);color:white;border:none;border-radius:50px;font-size:0.95rem;font-weight:600;cursor:pointer;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(26,107,60,0.25)}
+    .submit-btn:hover{background:var(--green-light);transform:translateY(-2px)}
+    .success-msg{background:var(--green-pale);border:1.5px solid var(--green);border-radius:12px;padding:14px 16px;margin-bottom:1.5rem;font-size:0.9rem;color:var(--green);display:none;animation:slideUp 0.3s ease}
+    .payment-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+    .payment-option{padding:1.2rem;border:2px solid #e5e7eb;border-radius:14px;text-align:center;cursor:pointer;transition:all 0.2s}
+    .payment-option:hover{border-color:var(--green);background:var(--green-pale)}
+    .payment-option .emoji{font-size:2rem;margin-bottom:0.6rem}
+    .payment-option .label{font-size:0.9rem;font-weight:600;color:var(--text)}
+    .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
+    .testi-card{background:var(--white);border-radius:16px;padding:1.8rem;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:transform 0.2s}
+    .testi-card:hover{transform:translateY(-4px)}
+    .stars{font-size:1rem;color:var(--orange);margin-bottom:1rem}
+    .testi-text{font-size:0.95rem;color:var(--text);line-height:1.6;margin-bottom:1.2rem;font-style:italic}
+    .testi-author{display:flex;align-items:center;gap:12px}
+    .avatar{width:40px;height:40px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;flex-shrink:0}
+    .author-name{font-size:0.9rem;font-weight:600;color:var(--text)}
+    .author-sub{font-size:0.8rem;color:var(--muted)}
+    footer{background:var(--text);color:var(--white);padding:60px 5vw 30px}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+    .footer-brand{max-width:300px}
+    .footer-brand .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;margin-bottom:1rem}
+    .footer-brand .logo span{color:var(--orange)}
+    .footer-brand p{font-size:0.85rem;line-height:1.6;opacity:0.8}
+    .footer-col h4{font-size:0.95rem;font-weight:700;margin-bottom:1rem}
+    .footer-col ul{list-style:none}
+    .footer-col li{margin-bottom:0.7rem}
+    .footer-col a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;transition:color 0.2s}
+    .footer-col a:hover{color:var(--white)}
+    .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:2rem;font-size:0.8rem;opacity:0.7}
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     @keyframes slideUp{from{opacity:0;transform:translateY(40px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -314,13 +285,23 @@
         </div>
         <div class="auth-form-group">
           <label>Password *</label>
+          <div style="background:var(--green-pale);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:0.78rem;color:var(--green);">
+            <strong>Password Requirements:</strong>
+            <ul style="margin:6px 0 0 16px;padding:0;">
+              <li id="req-length">✓ At least 8 characters</li>
+              <li id="req-upper">✓ One uppercase letter (A-Z)</li>
+              <li id="req-lower">✓ One lowercase letter (a-z)</li>
+              <li id="req-number">✓ One number (0-9)</li>
+              <li id="req-special">✓ One special character (!@#$%^&*)</li>
+            </ul>
+          </div>
           <div class="password-wrap">
-            <input type="password" id="signupPw" placeholder="Min. 8 characters" oninput="checkStrength();clearErr('signupPw')"/>
+            <input type="password" id="signupPw" placeholder="Create a strong password" oninput="checkStrength();clearErr('signupPw')"/>
             <button type="button" class="toggle-pw" onclick="togglePw('signupPw',this)">👁</button>
           </div>
           <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
           <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;" id="strengthLabel"></div>
-          <div class="field-error" id="signupPwErr">Password must be at least 8 characters.</div>
+          <div class="field-error" id="signupPwErr">Password must meet all requirements.</div>
         </div>
         <div class="auth-form-group">
           <label>Confirm Password *</label>
@@ -330,9 +311,7 @@
           </div>
           <div class="field-error" id="confirmPwErr">Passwords do not match.</div>
         </div>
-        <div style="background:var(--green-pale);border-radius:10px;padding:10px 14px;font-size:0.78rem;color:var(--green);margin-bottom:4px;">
-          🔒 Sessions automatically expire after <strong>1 hour</strong> of inactivity for your security.
-        </div>
+
         <button class="auth-submit-btn" id="signupBtn" onclick="handleSignup()">✨ Create Account</button>
         <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:14px;">
           Already have an account? <button onclick="switchTab('login')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign in →</button>
@@ -393,111 +372,175 @@
         <button class="dropdown-item danger" onclick="signOut()">🚪 Sign Out</button>
       </div>
     </div>
-    <a href="#order" class="nav-cta">Order Now</a>
   </div>
 </nav>
 
 <section class="hero" id="home">
-  <div class="hero-content">
-    <div class="hero-eyebrow">🌿 Fresh Daily · Kamiti Corner</div>
-    <h1>Welcome to <em>Runjob Stores</em></h1>
-    <p>Your go-to grocery shop at Kamiti Corner, opposite Mkwaju. Fresh produce, everyday essentials, and friendly service — right in your neighbourhood.</p>
-    <div class="hero-btns"><a href="#products" class="btn-primary">Shop Now</a><a href="#order" class="btn-secondary">Place an Order</a></div>
+  <div>
+    <span class="hero-eyebrow">🌿 Fresh from Kamiti</span>
+    <h1>Your <em>Neighbourhood Grocery</em> Reimagined</h1>
+    <p>Fresh produce, everyday essentials, and friendly service. Shop online or visit us at Kamiti Corner, opposite Mkwaju. Open Mon–Sat, 8am–8pm.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">🛍️ Shop Now</button>
+      <button class="btn-secondary" onclick="openAuth(false)">📱 Sign In</button>
+    </div>
   </div>
   <div class="hero-visual">
-    <div class="hero-card"><div class="emoji">🍅</div><h3>Fresh Tomatoes</h3><p>Ripe, juicy tomatoes — only Ksh 10</p><span class="tag">In Stock</span></div>
-    <div class="hero-card"><div class="emoji">🥬</div><h3>Fresh Vegetables</h3><p>Locally sourced, harvested daily</p><span class="tag">Daily Fresh</span></div>
-    <div class="hero-card"><div class="emoji">🥚</div><h3>Fresh Eggs Kienyeji</h3><p>Farm-fresh tray of 30</p><span class="tag">Best Seller</span></div>
-    <div class="hero-card"><div class="emoji">🍚</div><h3>Mwea Pishori</h3><p>Premium rice — Ksh 190/kg</p><span class="tag">Top Quality</span></div>
+    <div class="hero-card">
+      <div class="emoji">🥬</div>
+      <h3>Fresh Vegetables</h3>
+      <p>Hand-picked daily from local suppliers. Tomatoes, sukuma wiki, onions, and more.</p>
+      <span class="tag">Always Fresh</span>
+    </div>
+    <div class="hero-card">
+      <div class="emoji">🍌</div>
+      <h3>Ripe Fruits</h3>
+      <p>Seasonal fruits at their peak. Mangoes, bananas, avocados, and more.</p>
+      <span class="tag">In Season</span>
+    </div>
+    <div class="hero-card">
+      <div class="emoji">🥚</div>
+      <h3>Dairy & Eggs</h3>
+      <p>Quality dairy products and fresh kienyeji eggs. Supporting local farmers.</p>
+      <span class="tag">Local</span>
+    </div>
+    <div class="hero-card">
+      <div class="emoji">🍚</div>
+      <h3>Pantry Staples</h3>
+      <p>Rice, beans, flour, and everyday essentials. Everything you need in one place.</p>
+      <span class="tag">Convenient</span>
+    </div>
   </div>
 </section>
 
 <div class="features-bar">
-  <div class="feat-item"><span class="icon">📍</span><span>Kamiti Corner, opp. Mkwaju</span></div>
-  <div class="feat-item"><span class="icon">🕐</span><span>Open Mon–Sat, 8am–8pm</span></div>
-  <div class="feat-item"><span class="icon">📞</span><span>0702 148 068</span></div>
-  <div class="feat-item"><span class="icon">🌱</span><span>Always Fresh Guarantee</span></div>
-  <div class="feat-item"><span class="icon">💚</span><span>M-Pesa Pochi la Biashara: 0712 778 283</span></div>
-  <div class="feat-item"><span class="icon">💬</span><span>WhatsApp Orders Welcome</span></div>
+  <div class="feat-item"><div class="icon">📍</div><span>Kamiti Corner, opp. Mkwaju</span></div>
+  <div class="feat-item"><div class="icon">⏰</div><span>Mon–Sat: 8am – 8pm</span></div>
+  <div class="feat-item"><div class="icon">📞</div><span>0702 148 068</span></div>
+  <div class="feat-item"><div class="icon">💬</div><span>WhatsApp Orders Welcome</span></div>
 </div>
 
 <section id="products">
-  <div class="products-header"><div><span class="section-tag">Our Products</span><h2 class="section-title">Fresh Picks at Runjob Stores</h2><p class="section-sub">All prices in Kenyan Shillings (Ksh)</p></div></div>
-  <div class="category-tabs">
-    <button class="tab active" onclick="filterProducts('all',this)">All Items</button>
-    <button class="tab" onclick="filterProducts('vegetables',this)">🥬 Vegetables</button>
-    <button class="tab" onclick="filterProducts('fruits',this)">🍎 Fruits</button>
-    <button class="tab" onclick="filterProducts('dairy',this)">🥚 Dairy</button>
-    <button class="tab" onclick="filterProducts('pantry',this)">🍚 Pantry</button>
+  <span class="section-tag">🛒 Our Products</span>
+  <h2>Shop Fresh, Shop Local</h2>
+  <div class="product-tabs">
+    <button class="tab active" data-cat="all" onclick="filterProducts('all',this)">All Items</button>
+    <button class="tab" data-cat="vegetables" onclick="filterProducts('vegetables',this)">🥬 Vegetables</button>
+    <button class="tab" data-cat="fruits" onclick="filterProducts('fruits',this)">🍌 Fruits</button>
+    <button class="tab" data-cat="dairy" onclick="filterProducts('dairy',this)">🥚 Dairy</button>
+    <button class="tab" data-cat="pantry" onclick="filterProducts('pantry',this)">🍚 Pantry</button>
   </div>
   <div class="products-grid" id="productsGrid"></div>
 </section>
 
 <section id="order">
+  <span class="section-tag">📦 Place Your Order</span>
+  <h2>Order & We'll Deliver</h2>
   <div class="order-grid">
-    <div class="order-info">
-      <span class="section-tag">Place Your Order</span>
-      <h2 class="section-title">Call, WhatsApp or Order Online</h2>
-      <p class="section-sub">Fill in the form below or reach us directly on <strong>0702 148 068</strong> and we'll have your items ready.</p>
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><div class="step-text"><h4>Pick Your Items</h4><p>Browse our products and tap "Add to Cart"</p></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-text"><h4>Fill the Form</h4><p>Tell us your name, phone, and what you need</p></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-text"><h4>Pick Up or We Deliver</h4><p>Collect at Kamiti Corner or arrange delivery</p></div></div>
-      </div>
+    <div>
+      <div class="success-msg" id="successMsg"></div>
+      <form onsubmit="submitOrder();return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="orderFirstName" placeholder="Your name" required/>
+          </div>
+          <div class="form-group">
+            <label>Last Name (optional)</label>
+            <input type="text" id="orderLastName" placeholder="Last name"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="orderPhone" placeholder="0712 345 678" required/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Delivery Type</label>
+            <select id="delivType">
+              <option>Pickup at Store</option>
+              <option>Home Delivery</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select id="payMethod">
+              <option>M-Pesa</option>
+              <option>Cash on Pickup</option>
+              <option>Bank Transfer</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Delivery Address (if applicable)</label>
+          <input type="text" id="address" placeholder="Your address"/>
+        </div>
+        <div class="form-group">
+          <label>Items & Total *</label>
+          <textarea id="items" placeholder="Your cart items will appear here..." required readonly></textarea>
+        </div>
+        <button type="submit" class="submit-btn">✅ Confirm Order</button>
+      </form>
     </div>
-    <div class="order-form">
-      <h3>🛒 New Order</h3>
-      <div class="form-row">
-        <div class="form-group"><label>First Name *</label><input type="text" placeholder="e.g. John" id="orderFirstName"/></div>
-        <div class="form-group"><label>Last Name</label><input type="text" placeholder="e.g. Kamau" id="orderLastName"/></div>
+    <div>
+      <span class="section-tag">💳 Payment Options</span>
+      <h3 style="font-size:1.4rem;margin-bottom:1.5rem;">How to Pay</h3>
+      <div class="payment-grid">
+        <div class="payment-option">
+          <div class="emoji">📱</div>
+          <div class="label">M-Pesa</div>
+        </div>
+        <div class="payment-option">
+          <div class="emoji">💵</div>
+          <div class="label">Cash</div>
+        </div>
+        <div class="payment-option">
+          <div class="emoji">🏦</div>
+          <div class="label">Bank</div>
+        </div>
       </div>
-      <div class="form-group"><label>Phone Number *</label><input type="tel" placeholder="e.g. 0712 345 678" id="orderPhone"/></div>
-      <div class="form-group"><label>Pickup or Delivery?</label><select id="delivType"><option value="">Select option</option><option>I'll pick up at the store</option><option>I need delivery</option></select></div>
-      <div class="form-group"><label>Delivery Address (if applicable)</label><input type="text" placeholder="e.g. Near Kamiti Road, House No. 4" id="address"/></div>
-      <div class="form-group"><label>Payment Method</label><select id="payMethod"><option value="">Select payment</option><option>M-Pesa Pochi la Biashara (0712 778 283)</option><option>Pay on Pickup</option></select></div>
-      <div class="form-group"><label>Items Needed *</label><textarea placeholder="e.g. 5 buckets of potatoes, 5 Kg of tomatoes, 2 kg rice..." id="items"></textarea></div>
-      <div style="background:var(--green-pale);border-radius:12px;padding:12px 16px;margin-bottom:1rem;font-size:0.85rem;color:var(--green);text-align:center;">
-        🎉 <strong>Orders above Ksh 7,500</strong> automatically get a <strong>3% discount</strong> on your total!
+      <div style="background:var(--green-pale);border-radius:16px;padding:1.5rem;margin-top:2rem;color:var(--green);">
+        <p style="font-size:0.9rem;line-height:1.6;">
+          <strong>📞 Call us to confirm:</strong> We'll call you on the number you provide to confirm your order, discuss delivery options, and finalize payment details. Fast, friendly, and convenient!
+        </p>
       </div>
-      <button class="submit-btn" onclick="submitOrder()">📦 Place Order</button>
-      <div class="success-msg" id="successMsg">✅ Order received! We'll call you at your number to confirm. Thank you for choosing Runjob Stores!</div>
     </div>
   </div>
 </section>
 
-<section id="payment">
-  <span class="section-tag">Payment</span>
-  <h2 class="section-title">Pay via M-Pesa</h2>
-  <p class="section-sub">Fast, safe and easy — pay for your order using M-Pesa Pochi la Biashara before pickup or delivery.</p>
-  <div class="payment-grid">
-    <div class="mpesa-card">
-      <div class="mpesa-logo">📱</div><div class="mpesa-title">Pochi la Biashara</div>
-      <div class="mpesa-detail"><div class="mpesa-detail-label">Send Money To</div><div class="mpesa-detail-value">0712 778 283</div></div>
-      <div class="mpesa-detail"><div class="mpesa-detail-label">Business Name</div><div class="mpesa-detail-value small">Ruth Njoki</div></div>
-      <div class="mpesa-detail"><div class="mpesa-detail-label">Payment Type</div><div class="mpesa-detail-value small">Pochi la Biashara</div></div>
-      <p class="mpesa-note">💡 Send the exact amount for your order, then WhatsApp your M-Pesa confirmation to us so we can process it quickly!</p>
+<section id="info" style="background:var(--green-pale);">
+  <span class="section-tag">📍 Find Us</span>
+  <h2>Visit Runjob Stores</h2>
+  <div class="order-grid">
+    <div>
+      <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">📍 Location</h3>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:1.5rem;">
+        <strong>Kamiti Corner, opposite Mkwaju</strong><br/>
+        Nairobi, Kenya
+      </p>
+      <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">⏰ Hours</h3>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);">
+        <strong>Monday – Saturday:</strong> 8:00 AM – 8:00 PM<br/>
+        <strong>Sunday:</strong> Closed
+      </p>
     </div>
-    <div class="payment-steps">
-      <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:0.5rem;">How to Pay</h3>
-      <div class="pay-step"><div class="pay-step-num">1</div><div class="pay-step-text"><h4>Open M-Pesa on your phone</h4><p>Go to <strong>M-Pesa → Send Money</strong></p></div></div>
-      <div class="pay-step"><div class="pay-step-num">2</div><div class="pay-step-text"><h4>Enter the number</h4><p>Send to: <strong>0712 778 283</strong> (Ruth Gachoki)</p></div></div>
-      <div class="pay-step"><div class="pay-step-num">3</div><div class="pay-step-text"><h4>Enter Amount &amp; Confirm</h4><p>Enter the total for your order and confirm with your M-Pesa PIN</p></div></div>
-      <div class="pay-step"><div class="pay-step-num">4</div><div class="pay-step-text"><h4>Send Us Confirmation</h4><p>WhatsApp your M-Pesa SMS to <strong>0702 148 068</strong> and we'll process your order right away!</p></div></div>
+    <div>
+      <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">📞 Contact Us</h3>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:1.5rem;">
+        <strong>Phone:</strong> <a href="tel:0702148068" style="color:var(--green);text-decoration:none;">0702 148 068</a><br/>
+        <strong>WhatsApp:</strong> <a href="https://wa.me/254702148068" target="_blank" style="color:var(--green);text-decoration:none;">Message us</a>
+      </p>
+      <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">💬 Quick Order</h3>
+      <p style="font-size:0.95rem;color:var(--text);">
+        WhatsApp us your shopping list anytime. We'll prepare your order and let you know when it's ready for pickup or delivery!
+      </p>
     </div>
-  </div>
-</section>
-
-<section id="info">
-  <span class="section-tag">Find Us</span><h2 class="section-title">Store Information</h2>
-  <div class="info-grid">
-    <div class="info-card"><div class="icon">📍</div><h3>Our Location</h3><p><strong>Runjob Stores</strong><br/>Kamiti Corner<br/>Opposite Mkwaju<br/>Nairobi, Kenya</p><br/><a href="https://maps.google.com/?q=Kamiti+Corner+Nairobi" target="_blank" class="btn-primary" style="font-size:0.82rem;padding:8px 20px;display:inline-block;">Get Directions →</a></div>
-    <div class="info-card"><div class="icon">🕐</div><h3>Opening Hours</h3><ul class="hours-list"><li><span class="day">Monday</span><span>8:00 AM – 8:00 PM</span></li><li><span class="day">Tuesday</span><span>8:00 AM – 8:00 PM</span></li><li><span class="day">Wednesday</span><span>8:00 AM – 8:00 PM</span></li><li><span class="day">Thursday</span><span>8:00 AM – 8:00 PM</span></li><li><span class="day">Friday</span><span>8:00 AM – 8:00 PM</span></li><li><span class="day">Saturday</span><span>8:00 AM – 8:00 PM</span></li><li><span class="day">Sunday</span><span class="closed">Closed</span></li></ul></div>
-    <div class="info-card"><div class="icon">📞</div><h3>Contact Us</h3><p><strong>Phone / WhatsApp:</strong><br/><a href="tel:0702148068" style="color:var(--green);font-weight:600;text-decoration:none;font-size:1.05rem;">0702 148 068</a><br/><br/><strong>Location:</strong><br/>Kamiti Corner, opp. Mkwaju<br/>Nairobi, Kenya<br/><br/><strong>Hours:</strong><br/>Mon – Sat &nbsp;|&nbsp; 8:00 AM – 8:00 PM</p></div>
   </div>
 </section>
 
 <section id="testimonials">
-  <div style="text-align:center;margin-bottom:2.5rem;"><span class="section-tag">Customer Reviews</span><h2 class="section-title">What Our Customers Say</h2></div>
+  <span class="section-tag">⭐ What Our Customers Say</span>
+  <h2>Loved by Our Community</h2>
   <div class="testimonials-grid">
     <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Runjob Stores is my favourite shop around Kamiti! The tomatoes are always fresh and the prices are very fair. I shop here every week."</p><div class="testi-author"><div class="avatar">M</div><div><div class="author-name">Mary W.</div><div class="author-sub">Regular Customer</div></div></div></div>
     <div class="testi-card"><div class="stars">★★★★★</div><p class="testi-text">"Very friendly service and the shop is always well stocked. I can find everything I need in one place. Highly recommended!"</p><div class="testi-author"><div class="avatar">J</div><div><div class="author-name">James N.</div><div class="author-sub">Nearby Resident</div></div></div></div>
@@ -561,9 +604,13 @@ function switchTab(tab){
 function openAuth(isTimeout){
   document.getElementById('sessionBanner').classList.toggle('hidden',!isTimeout);
   document.getElementById('authOverlay').classList.remove('hidden');
+  document.body.classList.add('auth-open');
   stopSession();
 }
-function closeAuth(){document.getElementById('authOverlay').classList.add('hidden');}
+function closeAuth(){
+  document.getElementById('authOverlay').classList.add('hidden');
+  document.body.classList.remove('auth-open');
+}
 function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 function isValidPhone(p){return /^(07|01)\d{8}$/.test(p.replace(/\s/g,'').replace('+254','0'));}
 function showErr(id,msg){
@@ -611,7 +658,7 @@ async function handleSignup(){
   if(!ok)return;
   const btn=document.getElementById('signupBtn');
   btn.disabled=true;btn.textContent='⏳ Creating account…';
-  const{data,error}=await _supabase.auth.signUp({email,password:pw});
+  const{data,error}=await _supabase.auth.signUp({email,password:pw,options:{emailRedirectTo:window.location.href}});
   if(error){
     btn.disabled=false;btn.textContent='✨ Create Account';
     showErr('signupEmail',error.message.toLowerCase().includes('already')?'An account with this email already exists.':error.message);
@@ -623,8 +670,8 @@ async function handleSignup(){
   });
   btn.disabled=false;btn.textContent='✨ Create Account';
   if(pe){showToast('⚠️ Profile save failed: '+pe.message);return;}
-  loginSuccess({id:data.user.id,firstName:fn,middleName:mn,lastName:ln,dob,phone,email});
-  showToast('🎉 Account created! Welcome to Runjob Stores.');
+  showToast('📧 Confirmation email sent! Please check your email to verify your account.');
+  setTimeout(()=>{switchTab('login');document.getElementById('loginEmail').value=email;},2000);
 }
 
 async function continueWithGoogle(){
@@ -633,7 +680,14 @@ async function continueWithGoogle(){
 }
 
 function loginSuccess(user){
-  currentUser=user;closeAuth();updateNavUser(user);startSession();prefillOrderForm(user);
+  currentUser=user;
+  // Show website content after successful login
+  document.body.classList.remove('auth-required');
+  document.body.classList.remove('auth-open');
+  closeAuth();
+  updateNavUser(user);
+  startSession();
+  prefillOrderForm(user);
   showToast('👋 Welcome, '+(user.firstName||'there')+'!');
 }
 
@@ -649,7 +703,11 @@ async function forgotPassword(){
   const email=document.getElementById('loginEmail').value.trim();
   if(!isValidEmail(email)){showToast('📧 Enter your email first, then tap "Forgot password".');return;}
   const{error}=await _supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});
-  showToast(error?'❌ '+error.message:'📬 Password reset email sent to '+email);
+  if(error){
+    showToast('❌ '+error.message);
+  }else{
+    showToast('📬 Password reset link sent to '+email+'. Check your email to reset your password.');
+  }
 }
 
 function updateNavUser(user){
@@ -696,8 +754,7 @@ function startSession(){
   timerEl.classList.remove('hidden');clearInterval(sessionInterval);
   sessionInterval=setInterval(()=>{
     const rem=Math.max(0,Math.floor((sessionEndTime-Date.now())/1000));
-    const m=String(Math.floor(rem/60)).padStart(2,'0');
-    const s=String(rem%60).padStart(2,'0');
+    const m=Math.floor(rem/60);const s=(rem%60).toString().padStart(2,'0');
     document.getElementById('timerDisplay').textContent=m+':'+s;
     if(rem<=WARN_AT){timerEl.classList.add('warning');if(rem===WARN_AT)showToast('⚠️ Session expires in 5 minutes!');}
     if(rem===0){
@@ -733,10 +790,23 @@ function checkStrength(){
   const pw=document.getElementById('signupPw').value;
   const fill=document.getElementById('strengthFill');
   const label=document.getElementById('strengthLabel');
+  const hasLength=pw.length>=8;
+  const hasUpper=/[A-Z]/.test(pw);
+  const hasLower=/[a-z]/.test(pw);
+  const hasNumber=/[0-9]/.test(pw);
+  const hasSpecial=/[!@#$%^&*()_+=\[\]{};:'"\\|,.<>\/?-]/.test(pw);
+  document.getElementById('req-length').style.color=hasLength?'var(--green)':'var(--muted)';
+  document.getElementById('req-upper').style.color=hasUpper?'var(--green)':'var(--muted)';
+  document.getElementById('req-lower').style.color=hasLower?'var(--green)':'var(--muted)';
+  document.getElementById('req-number').style.color=hasNumber?'var(--green)':'var(--muted)';
+  document.getElementById('req-special').style.color=hasSpecial?'var(--green)':'var(--muted)';
   let score=0;
-  if(pw.length>=8)score++;if(/[A-Z]/.test(pw))score++;
-  if(/[0-9]/.test(pw))score++;if(/[^A-Za-z0-9]/.test(pw))score++;
-  const L=[{p:'0%',c:'#ef4444',t:''},{p:'25%',c:'#ef4444',t:'Weak'},{p:'50%',c:'#f59e0b',t:'Fair'},{p:'75%',c:'#3b82f6',t:'Good'},{p:'100%',c:'#22c55e',t:'Strong 🔒'}];
+  if(hasLength)score++;
+  if(hasUpper)score++;
+  if(hasLower)score++;
+  if(hasNumber)score++;
+  if(hasSpecial)score++;
+  const L=[{p:'0%',c:'#ef4444',t:''},{p:'20%',c:'#ef4444',t:'Weak'},{p:'40%',c:'#f59e0b',t:'Fair'},{p:'60%',c:'#3b82f6',t:'Good'},{p:'80%',c:'#10b981',t:'Very Good'},{p:'100%',c:'#22c55e',t:'Strong 🔒'}];
   fill.style.width=L[score].p;fill.style.background=L[score].c;
   label.textContent=L[score].t;label.style.color=L[score].c;
 }
@@ -842,6 +912,11 @@ function submitOrder(){
 }
 
 // ── INIT ──
+// Hide website content until authenticated
+document.body.classList.add('auth-required');
+document.getElementById('authOverlay').classList.remove('hidden');
+document.body.classList.add('auth-open');
+
 document.querySelectorAll('.tab').forEach(btn=>{
   const txt=btn.textContent.trim().toLowerCase();
   if(txt.includes('veg'))btn.setAttribute('data-cat','vegetables');
@@ -854,14 +929,12 @@ document.querySelectorAll('.tab').forEach(btn=>{
 document.getElementById('navUserWrap').style.display='none';
 renderProducts('all');
 
-// ── Restore Supabase session ──
+// -- Restore Supabase session --
 (async()=>{
   const{data:{session}}=await _supabase.auth.getSession();
   if(session&&session.user){
     const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
     loginSuccess({...(p||{}),firstName:p?.first_name||'',middleName:p?.middle_name||'',lastName:p?.last_name||'',email:session.user.email,id:session.user.id});
-  }else{
-    document.getElementById('authOverlay').classList.remove('hidden');
   }
 })();
 
@@ -876,3 +949,4 @@ _supabase.auth.onAuthStateChange(async(event,session)=>{
 </script>
 </body>
 </html>
+ml>
