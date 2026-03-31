@@ -126,8 +126,43 @@
     .password-wrap input{padding-right:42px}
     .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;line-height:1;padding:2px}
 
-    /* ── PASSWORD SUGGESTION ── */
-    .pw-suggest-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    /* ── FORGOT PASSWORD SUCCESS BANNER ── */
+    .reset-sent-banner{
+      display:none;background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+      border:1.5px solid #6ee7b7;border-radius:14px;
+      padding:16px 18px;margin-bottom:16px;
+    }
+    .reset-sent-banner.show{display:block;}
+    .reset-sent-banner .rsb-title{font-size:0.92rem;font-weight:700;color:#065f46;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+    .reset-sent-banner .rsb-body{font-size:0.8rem;color:#047857;line-height:1.6;}
+    .reset-sent-banner .rsb-email{font-weight:700;color:#065f46;}
+    .reset-sent-banner .rsb-spam{margin-top:8px;font-size:0.78rem;background:rgba(255,255,255,0.6);border-radius:8px;padding:7px 10px;color:#065f46;border:1px dashed #6ee7b7;}
+
+    /* ── SAVE PASSWORD BANNER (after signup) ── */
+    .save-pw-banner{
+      display:none;background:linear-gradient(135deg,#fffbeb,#fef3c7);
+      border:1.5px solid #fcd34d;border-radius:14px;
+      padding:14px 16px;margin-top:12px;
+    }
+    .save-pw-banner.show{display:block;animation:slideUp 0.3s ease;}
+    .save-pw-banner .spb-title{font-size:0.85rem;font-weight:700;color:#92400e;margin-bottom:6px;}
+    .save-pw-banner .spb-box{
+      background:white;border:1px solid #fcd34d;border-radius:8px;
+      padding:8px 12px;font-family:monospace;font-size:0.88rem;
+      color:#1a1a1a;letter-spacing:0.04em;word-break:break-all;
+      display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;
+    }
+    .spb-copy-btn{
+      background:var(--green);color:white;border:none;border-radius:6px;
+      padding:4px 10px;font-size:0.73rem;font-weight:700;cursor:pointer;
+      font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;
+      transition:background 0.18s;
+    }
+    .spb-copy-btn:hover{background:var(--green-light);}
+    .save-pw-banner .spb-note{font-size:0.76rem;color:#92400e;line-height:1.5;}
+
+    /* ── PASSWORD SUGGESTION always visible ── */
+    .pw-suggest-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
     .pw-suggest-btn{
       display:inline-flex;align-items:center;gap:6px;
       background:none;border:1.5px solid var(--green);
@@ -144,7 +179,7 @@
     .pw-generated-pill{
       display:none;align-items:center;gap:8px;
       background:var(--green-pale);border:1.5px solid rgba(26,107,60,0.25);
-      border-radius:12px;padding:9px 13px;margin-top:8px;
+      border-radius:12px;padding:9px 13px;margin-bottom:8px;
     }
     .pw-generated-pill.show{display:flex;}
     .pw-generated-text{
@@ -164,6 +199,9 @@
       transition:transform 0.3s;
     }
     .pw-refresh-btn:hover{transform:rotate(180deg);}
+
+    /* manual entry hint */
+    .pw-manual-hint{font-size:0.76rem;color:var(--muted);margin-bottom:8px;padding:0 2px;}
 
     /* ── PASSWORD REQUIREMENTS BOX ── */
     .pw-requirements{
@@ -361,21 +399,36 @@
 
       <!-- ── LOGIN FORM ── -->
       <div id="loginForm">
+        <!-- Forgot password success banner -->
+        <div class="reset-sent-banner" id="resetSentBanner">
+          <div class="rsb-title">📬 Reset link sent!</div>
+          <div class="rsb-body">
+            We've emailed a password reset link to <span class="rsb-email" id="resetSentEmail"></span>
+            <div class="rsb-spam">📁 <strong>Can't find it?</strong> Check your <strong>Spam</strong> or <strong>Junk</strong> folder — it may have landed there. The link expires in 1 hour.</div>
+          </div>
+        </div>
         <div class="auth-form-group">
           <label>Email Address</label>
-          <input type="email" id="loginEmail" placeholder="you@example.com" oninput="clearErr('loginEmail')"/>
+          <input type="email" id="loginEmail" placeholder="you@example.com"
+            autocomplete="email" oninput="clearErr('loginEmail');hideResetBanner()"/>
           <div class="field-error" id="loginEmailErr">Please enter a valid email.</div>
         </div>
         <div class="auth-form-group">
           <label>Password</label>
           <div class="password-wrap">
-            <input type="password" id="loginPw" placeholder="Your password" oninput="clearErr('loginPw')"/>
+            <input type="password" id="loginPw" placeholder="Your password"
+              autocomplete="current-password" oninput="clearErr('loginPw')"/>
             <button type="button" class="toggle-pw" onclick="togglePw('loginPw',this)">👁</button>
           </div>
           <div class="field-error" id="loginPwErr">Password is required.</div>
         </div>
-        <div style="text-align:right;margin-top:-6px;margin-bottom:4px;">
-          <button onclick="forgotPassword()" style="background:none;border:none;color:var(--green);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Forgot password?</button>
+        <!-- Remember me + forgot password row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:-4px;margin-bottom:10px;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--muted);cursor:pointer;font-weight:400;">
+            <input type="checkbox" id="rememberMe" style="width:15px;height:15px;accent-color:var(--green);cursor:pointer;"/>
+            Remember me
+          </label>
+          <button onclick="forgotPassword()" style="background:none;border:none;color:var(--green);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">Forgot password?</button>
         </div>
         <button class="auth-submit-btn" id="loginBtn" onclick="handleLogin()">🔑 Sign In</button>
         <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:14px;">
@@ -416,15 +469,17 @@
             <label style="margin-bottom:0;">Password *</label>
             <button type="button" class="pw-suggest-btn" onclick="suggestPassword()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Suggest Strong Password
+              Generate Strong Password
             </button>
           </div>
-          <!-- Generated password preview -->
+          <!-- Always-visible generated password pill -->
           <div class="pw-generated-pill" id="pwGeneratedPill">
             <span class="pw-generated-text" id="pwGeneratedText"></span>
             <button type="button" class="pw-refresh-btn" onclick="suggestPassword()" title="Generate another">↻</button>
             <button type="button" class="pw-use-btn" onclick="useGeneratedPassword()">Use this</button>
           </div>
+          <!-- Manual entry hint -->
+          <p class="pw-manual-hint">✏️ Or type your own password below — it must meet all requirements:</p>
           <div class="pw-requirements">
             <p>🔐 Your password must include:</p>
             <ul class="pw-req-list">
@@ -436,7 +491,8 @@
             </ul>
           </div>
           <div class="password-wrap">
-            <input type="password" id="signupPw" placeholder="Create a strong password" oninput="checkStrength();clearErr('signupPw')"/>
+            <input type="password" id="signupPw" placeholder="Create a strong password"
+              autocomplete="new-password" oninput="checkStrength();clearErr('signupPw')"/>
             <button type="button" class="toggle-pw" onclick="togglePw('signupPw',this)">👁</button>
           </div>
           <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
@@ -447,10 +503,21 @@
         <div class="auth-form-group">
           <label>Confirm Password *</label>
           <div class="password-wrap">
-            <input type="password" id="confirmPw" placeholder="Repeat password" oninput="clearErr('confirmPw')"/>
+            <input type="password" id="confirmPw" placeholder="Repeat password"
+              autocomplete="new-password" oninput="clearErr('confirmPw')"/>
             <button type="button" class="toggle-pw" onclick="togglePw('confirmPw',this)">👁</button>
           </div>
           <div class="field-error" id="confirmPwErr">Passwords do not match.</div>
+        </div>
+
+        <!-- Save password reminder banner (shown after successful account creation) -->
+        <div class="save-pw-banner" id="savePwBanner">
+          <div class="spb-title">💾 Save your password before continuing!</div>
+          <div class="spb-box">
+            <span id="savePwText">—</span>
+            <button class="spb-copy-btn" onclick="copyPassword()">Copy</button>
+          </div>
+          <div class="spb-note">📌 Store this in a safe place (notes app, password manager, or written down). You'll need it to sign in next time.</div>
         </div>
 
         <button class="auth-submit-btn" id="signupBtn" onclick="handleSignup()">✨ Create Account</button>
@@ -700,6 +767,7 @@ function clearErr(id){
 async function handleLogin(){
   const email=document.getElementById('loginEmail').value.trim();
   const pw=document.getElementById('loginPw').value;
+  const remember=document.getElementById('rememberMe').checked;
   let ok=true;
   if(!isValidEmail(email)){showErr('loginEmail');ok=false;}
   if(!pw){showErr('loginPw');ok=false;}
@@ -709,6 +777,12 @@ async function handleLogin(){
   const{data,error}=await _supabase.auth.signInWithPassword({email,password:pw});
   btn.disabled=false;btn.textContent='🔑 Sign In';
   if(error){showErr('loginPw','Incorrect email or password.');return;}
+  // Save email if remember me checked
+  if(remember){
+    try{localStorage.setItem('runjob_saved_email',email);}catch(e){}
+  } else {
+    try{localStorage.removeItem('runjob_saved_email');}catch(e){}
+  }
   const{data:p}=await _supabase.from('profiles').select('*').eq('id',data.user.id).single();
   loginSuccess({...(p||{}),firstName:p?.first_name||'',middleName:p?.middle_name||'',lastName:p?.last_name||'',email:data.user.email,id:data.user.id});
 }
@@ -732,7 +806,10 @@ async function handleSignup(){
   if(!ok)return;
   const btn=document.getElementById('signupBtn');
   btn.disabled=true;btn.textContent='⏳ Creating account…';
-  const{data,error}=await _supabase.auth.signUp({email,password:pw,options:{emailRedirectTo:window.location.href}});
+  const{data,error}=await _supabase.auth.signUp({
+    email,password:pw,
+    options:{emailRedirectTo:'https://esteemed230.github.io/Runjo-website'}
+  });
   if(error){
     btn.disabled=false;btn.textContent='✨ Create Account';
     showErr('signupEmail',error.message.toLowerCase().includes('already')?'An account with this email already exists.':error.message);
@@ -744,8 +821,18 @@ async function handleSignup(){
   });
   btn.disabled=false;btn.textContent='✨ Create Account';
   if(pe){showToast('⚠️ Profile save failed: '+pe.message);return;}
-  showToast('📧 Confirmation email sent! Please check your email to verify your account.');
-  setTimeout(()=>{switchTab('login');document.getElementById('loginEmail').value=email;},2000);
+
+  // Show save-password banner so user can record their password
+  document.getElementById('savePwText').textContent=pw;
+  document.getElementById('savePwBanner').classList.add('show');
+
+  showToast('📧 Confirmation email sent! Check your inbox.');
+  // After 6 seconds switch to login with email prefilled
+  setTimeout(()=>{
+    switchTab('login');
+    document.getElementById('loginEmail').value=email;
+    document.getElementById('savePwBanner').classList.remove('show');
+  },6000);
 }
 
 async function continueWithGoogle(){
@@ -774,10 +861,28 @@ async function signOut(){
 
 async function forgotPassword(){
   const email=document.getElementById('loginEmail').value.trim();
-  if(!isValidEmail(email)){showToast('📧 Enter your email first, then tap "Forgot password".');return;}
-  const{error}=await _supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});
-  if(error){showToast('❌ '+error.message);}
-  else{showToast('📬 Password reset link sent to '+email+'. Check your email.');}
+  if(!isValidEmail(email)){
+    showErr('loginEmail','Please enter your email address first.');
+    return;
+  }
+  const btn = document.querySelector('[onclick="forgotPassword()"]');
+  if(btn){btn.textContent='⏳ Sending…';btn.disabled=true;}
+  const{error}=await _supabase.auth.resetPasswordForEmail(email,{
+    redirectTo:'https://esteemed230.github.io/Runjo-website'
+  });
+  if(btn){btn.textContent='Forgot password?';btn.disabled=false;}
+  if(error){
+    showToast('❌ '+error.message);
+  } else {
+    // Show the full in-form success banner
+    document.getElementById('resetSentEmail').textContent=email;
+    document.getElementById('resetSentBanner').classList.add('show');
+    // Scroll banner into view
+    document.getElementById('resetSentBanner').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+function hideResetBanner(){
+  document.getElementById('resetSentBanner').classList.remove('show');
 }
 
 function updateNavUser(user){
@@ -852,13 +957,11 @@ function stopSession(){
 
 // ── PASSWORD GENERATOR ──
 function generateStrongPassword(){
-  const upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';   // no I,O (confusing)
-  const lower   = 'abcdefghjkmnpqrstuvwxyz';     // no i,l,o
-  const numbers = '23456789';                     // no 0,1
+  const upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const lower   = 'abcdefghjkmnpqrstuvwxyz';
+  const numbers = '23456789';
   const special = '!@#$%^&*-_+=?';
   const all = upper + lower + numbers + special;
-
-  // Guarantee at least one of each required class
   let pw = [
     upper[Math.floor(Math.random()*upper.length)],
     upper[Math.floor(Math.random()*upper.length)],
@@ -869,9 +972,7 @@ function generateStrongPassword(){
     special[Math.floor(Math.random()*special.length)],
     special[Math.floor(Math.random()*special.length)],
   ];
-  // Fill to 14 chars
   for(let i=pw.length;i<14;i++) pw.push(all[Math.floor(Math.random()*all.length)]);
-  // Shuffle
   for(let i=pw.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
     [pw[i],pw[j]]=[pw[j],pw[i]];
@@ -885,7 +986,6 @@ function suggestPassword(){
   const txt  = document.getElementById('pwGeneratedText');
   txt.textContent = pw;
   pill.classList.add('show');
-  // Animate the refresh icon spin
   const btn = pill.querySelector('.pw-refresh-btn');
   btn.style.transform='rotate(360deg)';
   setTimeout(()=>btn.style.transform='',350);
@@ -900,14 +1000,33 @@ function useGeneratedPassword(){
   const confInp= document.getElementById('confirmPw');
   inp.value    = pw;
   confInp.value= pw;
-  // Show password so user can see what was set
   inp.type = 'text';
-  document.querySelector('#signupPw ~ .toggle-pw') && (document.querySelector('#signupPw').nextElementSibling.textContent='🙈');
+  const toggleBtn = inp.parentElement.querySelector('.toggle-pw');
+  if(toggleBtn) toggleBtn.textContent='🙈';
   checkStrength();
   clearErr('signupPw');
   clearErr('confirmPw');
+  // Show save banner immediately so user can copy
+  document.getElementById('savePwText').textContent=pw;
+  document.getElementById('savePwBanner').classList.add('show');
   pill.classList.remove('show');
-  showToast('✅ Password applied! Make sure to save it somewhere safe.');
+  showToast('✅ Password applied! Save it before you continue.');
+}
+
+function copyPassword(){
+  const text = document.getElementById('savePwText').textContent;
+  if(!text||text==='—') return;
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast('📋 Password copied to clipboard!');
+    document.querySelector('.spb-copy-btn').textContent='Copied ✓';
+    setTimeout(()=>document.querySelector('.spb-copy-btn').textContent='Copy',2000);
+  }).catch(()=>{
+    // Fallback for older browsers
+    const ta=document.createElement('textarea');
+    ta.value=text;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    showToast('📋 Password copied!');
+  });
 }
 
 
@@ -1075,6 +1194,24 @@ document.querySelectorAll('.tab').forEach(btn=>{
 });
 document.getElementById('navUserWrap').style.display='none';
 renderProducts('all');
+
+// Restore saved email from "Remember me"
+try{
+  const saved=localStorage.getItem('runjob_saved_email');
+  if(saved){
+    document.getElementById('loginEmail').value=saved;
+    document.getElementById('rememberMe').checked=true;
+  }
+}catch(e){}
+
+// Auto-generate a password suggestion when signup tab opens
+document.getElementById('tabSignup').addEventListener('click',()=>{
+  setTimeout(()=>{
+    if(!document.getElementById('pwGeneratedPill').classList.contains('show')){
+      suggestPassword();
+    }
+  },200);
+});
 
 // Restore Supabase session
 (async()=>{
