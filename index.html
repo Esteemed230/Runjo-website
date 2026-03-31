@@ -348,6 +348,92 @@
     .footer-col a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;transition:color 0.2s}
     .footer-col a:hover{color:var(--white)}
     .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:2rem;font-size:0.8rem;opacity:0.7}
+    /* ── FORGOT PASSWORD MULTI-STEP PANEL ── */
+    #forgotPanel{
+      display:none;
+      animation:slideUp 0.32s cubic-bezier(.22,1,.36,1);
+    }
+    #forgotPanel.show{display:block;}
+
+    /* Step indicator */
+    .fp-steps{
+      display:flex;align-items:center;justify-content:center;
+      gap:0;margin-bottom:24px;
+    }
+    .fp-step{
+      display:flex;flex-direction:column;align-items:center;gap:4px;
+      flex:1;
+    }
+    .fp-step-circle{
+      width:32px;height:32px;border-radius:50%;
+      border:2px solid #e2e8f0;
+      background:var(--white);
+      display:flex;align-items:center;justify-content:center;
+      font-size:0.78rem;font-weight:700;color:var(--muted);
+      transition:all 0.3s;
+      position:relative;z-index:1;
+    }
+    .fp-step.active .fp-step-circle{
+      background:var(--green);border-color:var(--green);color:white;
+    }
+    .fp-step.done .fp-step-circle{
+      background:var(--green-light);border-color:var(--green-light);color:white;
+    }
+    .fp-step-label{
+      font-size:0.68rem;font-weight:600;color:var(--muted);text-align:center;
+      white-space:nowrap;
+    }
+    .fp-step.active .fp-step-label{color:var(--green);}
+    .fp-step.done .fp-step-label{color:var(--green-light);}
+    .fp-connector{
+      flex:1;height:2px;background:#e2e8f0;margin-bottom:18px;transition:background 0.3s;
+    }
+    .fp-connector.done{background:var(--green-light);}
+
+    /* individual step screens */
+    .fp-screen{display:none;}
+    .fp-screen.active{display:block;animation:fadeIn 0.25s ease;}
+
+    .fp-title{
+      font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:4px;
+    }
+    .fp-subtitle{
+      font-size:0.8rem;color:var(--muted);margin-bottom:18px;line-height:1.5;
+    }
+
+    /* back link */
+    .fp-back-btn{
+      background:none;border:none;color:var(--green);font-size:0.8rem;
+      font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
+      display:flex;align-items:center;gap:4px;padding:0;margin-bottom:16px;
+    }
+    .fp-back-btn:hover{text-decoration:underline;}
+
+    /* success screen */
+    .fp-success-icon{
+      width:64px;height:64px;border-radius:50%;
+      background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+      border:2px solid #6ee7b7;
+      display:flex;align-items:center;justify-content:center;
+      font-size:2rem;margin:0 auto 16px;
+    }
+    .fp-success-title{
+      font-size:1.1rem;font-weight:800;color:#065f46;text-align:center;margin-bottom:8px;
+    }
+    .fp-success-body{
+      font-size:0.82rem;color:#047857;text-align:center;line-height:1.6;margin-bottom:20px;
+    }
+
+    /* not-found error banner */
+    .fp-notfound-banner{
+      display:none;
+      background:linear-gradient(135deg,#fef2f2,#fee2e2);
+      border:1.5px solid #fca5a5;border-radius:12px;
+      padding:12px 14px;margin-bottom:14px;
+      font-size:0.82rem;color:#991b1b;line-height:1.5;
+    }
+    .fp-notfound-banner.show{display:block;animation:fadeIn 0.2s ease;}
+
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     @keyframes slideUp{from{opacity:0;transform:translateY(40px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -428,13 +514,130 @@
             <input type="checkbox" id="rememberMe" style="width:15px;height:15px;accent-color:var(--green);cursor:pointer;"/>
             Remember me
           </label>
-          <button onclick="forgotPassword()" style="background:none;border:none;color:var(--green);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">Forgot password?</button>
+          <button onclick="openForgotPanel()" style="background:none;border:none;color:var(--green);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">Forgot password?</button>
         </div>
         <button class="auth-submit-btn" id="loginBtn" onclick="handleLogin()">🔑 Sign In</button>
         <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:14px;">
           No account? <button onclick="switchTab('signup')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Create one →</button>
         </p>
-      </div>
+      </div><!-- /loginForm -->
+
+      <!-- ══════════════ FORGOT PASSWORD PANEL (multi-step) ══════════════ -->
+      <div id="forgotPanel">
+
+        <!-- Step progress indicator -->
+        <div class="fp-steps">
+          <div class="fp-step active" id="fpStep1">
+            <div class="fp-step-circle">1</div>
+            <div class="fp-step-label">Verify Email</div>
+          </div>
+          <div class="fp-connector" id="fpConn1"></div>
+          <div class="fp-step" id="fpStep2">
+            <div class="fp-step-circle">2</div>
+            <div class="fp-step-label">New Password</div>
+          </div>
+          <div class="fp-connector" id="fpConn2"></div>
+          <div class="fp-step" id="fpStep3">
+            <div class="fp-step-circle">3</div>
+            <div class="fp-step-label">Done</div>
+          </div>
+        </div>
+
+        <!-- ── SCREEN 1: Enter email ── -->
+        <div class="fp-screen active" id="fpScreen1">
+          <button class="fp-back-btn" onclick="closeForgotPanel()">&#8592; Back to Sign In</button>
+          <div class="fp-title">&#128274; Forgot your password?</div>
+          <div class="fp-subtitle">Enter the email address linked to your account and we'll verify it before letting you set a new password.</div>
+
+          <!-- Not-found banner -->
+          <div class="fp-notfound-banner" id="fpNotFoundBanner">
+            &#128683; <strong>Username not found.</strong> No account is registered with this email address. Please check the email or <button onclick="closeForgotPanel();switchTab('signup')" style="background:none;border:none;color:#991b1b;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;text-decoration:underline;padding:0;">create a new account</button>.
+          </div>
+
+          <div class="auth-form-group">
+            <label>Email Address</label>
+            <input type="email" id="fpEmail" placeholder="you@example.com"
+              autocomplete="email" oninput="clearFpError()"/>
+            <div class="field-error" id="fpEmailErr">Please enter a valid email address.</div>
+          </div>
+          <button class="auth-submit-btn" id="fpVerifyBtn" onclick="fpVerifyEmail()">&#128269; Verify Email</button>
+        </div>
+
+        <!-- ── SCREEN 2: Create new password ── -->
+        <div class="fp-screen" id="fpScreen2">
+          <button class="fp-back-btn" onclick="fpGoToStep(1)">&#8592; Back</button>
+          <div class="fp-title">&#128273; Create New Password</div>
+          <div class="fp-subtitle">Choose a strong password for your account. Use the generator below or type your own.</div>
+
+          <!-- Optional password generator (only here and on signup) -->
+          <div class="auth-form-group">
+            <div class="pw-suggest-row">
+              <label style="margin-bottom:0;">New Password *</label>
+              <button type="button" class="pw-suggest-btn" onclick="suggestResetPassword()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Generate Password
+              </button>
+            </div>
+            <!-- Generated password pill (optional, only shown when Generate is clicked) -->
+            <div class="pw-generated-pill" id="fpGeneratedPill">
+              <span class="pw-generated-text" id="fpGeneratedText"></span>
+              <button type="button" class="pw-refresh-btn" onclick="suggestResetPassword()" title="Generate another">↻</button>
+              <button type="button" class="pw-use-btn" onclick="useResetGeneratedPassword()">Use this</button>
+            </div>
+            <p class="pw-manual-hint">&#9999;&#65039; Or type your own password below:</p>
+            <!-- Password requirements -->
+            <div class="pw-requirements">
+              <p>&#128272; Your password must include:</p>
+              <ul class="pw-req-list">
+                <li class="pw-req-item" id="fp-req-length"><span class="pw-req-icon">✓</span> At least 8 characters</li>
+                <li class="pw-req-item" id="fp-req-upper"><span class="pw-req-icon">✓</span> One uppercase letter (A–Z)</li>
+                <li class="pw-req-item" id="fp-req-lower"><span class="pw-req-icon">✓</span> One lowercase letter (a–z)</li>
+                <li class="pw-req-item" id="fp-req-number"><span class="pw-req-icon">✓</span> One number (0–9)</li>
+                <li class="pw-req-item" id="fp-req-special"><span class="pw-req-icon">✓</span> One special character (!@#$%^&amp;*)</li>
+              </ul>
+            </div>
+            <div class="password-wrap">
+              <input type="password" id="fpNewPw" placeholder="Create a strong password"
+                autocomplete="new-password" oninput="checkResetStrength();clearFpPwError()"/>
+              <button type="button" class="toggle-pw" onclick="togglePw('fpNewPw',this)">&#128065;</button>
+            </div>
+            <div class="strength-bar"><div class="strength-fill" id="fpStrengthFill"></div></div>
+            <div class="strength-label" id="fpStrengthLabel"></div>
+            <div class="field-error" id="fpNewPwErr">Password must meet all requirements above.</div>
+          </div>
+
+          <div class="auth-form-group">
+            <label>Confirm New Password *</label>
+            <div class="password-wrap">
+              <input type="password" id="fpConfirmPw" placeholder="Repeat your new password"
+                autocomplete="new-password" oninput="clearFpConfirmError()"/>
+              <button type="button" class="toggle-pw" onclick="togglePw('fpConfirmPw',this)">&#128065;</button>
+            </div>
+            <div class="field-error" id="fpConfirmPwErr">Passwords do not match.</div>
+          </div>
+
+          <!-- Save password reminder -->
+          <div class="save-pw-banner" id="fpSavePwBanner">
+            <div class="spb-title">&#128190; Save your new password before continuing!</div>
+            <div class="spb-box">
+              <span id="fpSavePwText">—</span>
+              <button class="spb-copy-btn" onclick="copyResetPassword()">Copy</button>
+            </div>
+            <div class="spb-note">&#128204; Store this in a safe place. You'll need it to sign in.</div>
+          </div>
+
+          <button class="auth-submit-btn" id="fpResetBtn" onclick="fpSubmitNewPassword()">&#128274; Set New Password</button>
+        </div>
+
+        <!-- ── SCREEN 3: Success ── -->
+        <div class="fp-screen" id="fpScreen3">
+          <div class="fp-success-icon">&#10003;</div>
+          <div class="fp-success-title">Password Updated!</div>
+          <div class="fp-success-body">Your password has been successfully changed. You can now sign in with your new password.</div>
+          <button class="auth-submit-btn" onclick="fpGoToSignIn()">&#128273; Proceed to Sign In</button>
+        </div>
+
+      </div><!-- /forgotPanel -->
 
       <!-- ── SIGNUP FORM ── -->
       <div id="signupForm" style="display:none;">
@@ -731,6 +934,11 @@ let cart = {};
 
 // ── AUTH ──
 function switchTab(tab){
+  // Hide forgot panel if open
+  document.getElementById('forgotPanel').classList.remove('show');
+  document.querySelector('.auth-tabs').style.display = 'flex';
+  document.querySelector('.google-btn').style.display = 'flex';
+  document.querySelector('.auth-divider').style.display = 'flex';
   document.getElementById('loginForm').style.display  = tab==='login'  ? 'block':'none';
   document.getElementById('signupForm').style.display = tab==='signup' ? 'block':'none';
   document.getElementById('tabLogin').classList.toggle('active',  tab==='login');
@@ -859,28 +1067,225 @@ async function signOut(){
   openAuth(false);
 }
 
-async function forgotPassword(){
-  const email=document.getElementById('loginEmail').value.trim();
+// ── FORGOT PASSWORD PANEL ──
+function openForgotPanel(){
+  // Pre-fill email from login field if valid
+  const loginEmail = document.getElementById('loginEmail').value.trim();
+  if(isValidEmail(loginEmail)){
+    document.getElementById('fpEmail').value = loginEmail;
+  }
+  // Hide login/signup forms and tabs, show panel
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('signupForm').style.display = 'none';
+  document.querySelector('.auth-tabs').style.display = 'none';
+  document.querySelector('.google-btn').style.display = 'none';
+  document.querySelector('.auth-divider').style.display = 'none';
+  document.getElementById('sessionBanner').classList.add('hidden');
+  // Reset panel to step 1
+  fpGoToStep(1);
+  document.getElementById('forgotPanel').classList.add('show');
+  document.getElementById('authOverlay').scrollTop = 0;
+}
+
+function closeForgotPanel(){
+  document.getElementById('forgotPanel').classList.remove('show');
+  document.querySelector('.auth-tabs').style.display = 'flex';
+  document.querySelector('.google-btn').style.display = 'flex';
+  document.querySelector('.auth-divider').style.display = 'flex';
+  switchTab('login');
+  // Clear all panel fields
+  document.getElementById('fpEmail').value = '';
+  document.getElementById('fpNewPw').value = '';
+  document.getElementById('fpConfirmPw').value = '';
+  document.getElementById('fpNotFoundBanner').classList.remove('show');
+  document.getElementById('fpGeneratedPill').classList.remove('show');
+  document.getElementById('fpSavePwBanner').classList.remove('show');
+  clearFpError(); clearFpPwError(); clearFpConfirmError();
+}
+
+function fpGoToStep(step){
+  // Update screens
+  ['fpScreen1','fpScreen2','fpScreen3'].forEach((id,i)=>{
+    document.getElementById(id).classList.toggle('active', i+1===step);
+  });
+  // Update step circles
+  ['fpStep1','fpStep2','fpStep3'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i+1 === step) el.classList.add('active');
+    else if(i+1 < step) el.classList.add('done');
+  });
+  // Update connectors
+  document.getElementById('fpConn1').classList.toggle('done', step > 1);
+  document.getElementById('fpConn2').classList.toggle('done', step > 2);
+  document.getElementById('authOverlay').scrollTop = 0;
+}
+
+function clearFpError(){
+  document.getElementById('fpEmailErr').classList.remove('show');
+  document.getElementById('fpEmail').classList.remove('error');
+  document.getElementById('fpNotFoundBanner').classList.remove('show');
+}
+function clearFpPwError(){
+  document.getElementById('fpNewPwErr').classList.remove('show');
+  document.getElementById('fpNewPw').classList.remove('error');
+}
+function clearFpConfirmError(){
+  document.getElementById('fpConfirmPwErr').classList.remove('show');
+  document.getElementById('fpConfirmPw').classList.remove('error');
+}
+
+async function fpVerifyEmail(){
+  const email = document.getElementById('fpEmail').value.trim();
   if(!isValidEmail(email)){
-    showErr('loginEmail','Please enter your email address first.');
+    document.getElementById('fpEmailErr').classList.add('show');
+    document.getElementById('fpEmail').classList.add('error');
     return;
   }
-  const btn = document.querySelector('[onclick="forgotPassword()"]');
-  if(btn){btn.textContent='⏳ Sending…';btn.disabled=true;}
-  const{error}=await _supabase.auth.resetPasswordForEmail(email,{
-    redirectTo:'https://esteemed230.github.io/Runjo-website'
-  });
-  if(btn){btn.textContent='Forgot password?';btn.disabled=false;}
-  if(error){
-    showToast('❌ '+error.message);
-  } else {
-    // Show the full in-form success banner
-    document.getElementById('resetSentEmail').textContent=email;
-    document.getElementById('resetSentBanner').classList.add('show');
-    // Scroll banner into view
-    document.getElementById('resetSentBanner').scrollIntoView({behavior:'smooth',block:'nearest'});
+  const btn = document.getElementById('fpVerifyBtn');
+  btn.disabled = true; btn.textContent = '⏳ Checking…';
+
+  // Check if email exists in profiles table
+  const { data: profileData, error: profileError } = await _supabase
+    .from('profiles')
+    .select('id')
+    .eq('email', email)
+    .maybeSingle();
+
+  btn.disabled = false; btn.innerHTML = '&#128269; Verify Email';
+
+  if(profileError || !profileData){
+    // Email not found — show username not found banner
+    document.getElementById('fpNotFoundBanner').classList.add('show');
+    document.getElementById('fpEmail').classList.add('error');
+    return;
   }
+
+  // Email found — advance to step 2
+  document.getElementById('fpNotFoundBanner').classList.remove('show');
+  fpGoToStep(2);
 }
+
+// Password generator for reset flow
+function suggestResetPassword(){
+  const pw = generateStrongPassword();
+  const pill = document.getElementById('fpGeneratedPill');
+  const txt  = document.getElementById('fpGeneratedText');
+  txt.textContent = pw;
+  pill.classList.add('show');
+  const btn = pill.querySelector('.pw-refresh-btn');
+  btn.style.transform = 'rotate(360deg)';
+  setTimeout(()=>btn.style.transform='', 350);
+  pill._generated = pw;
+}
+
+function useResetGeneratedPassword(){
+  const pill = document.getElementById('fpGeneratedPill');
+  const pw   = pill._generated;
+  if(!pw) return;
+  const inp     = document.getElementById('fpNewPw');
+  const confInp = document.getElementById('fpConfirmPw');
+  inp.value     = pw;
+  confInp.value = pw;
+  inp.type = 'text';
+  const toggleBtn = inp.parentElement.querySelector('.toggle-pw');
+  if(toggleBtn) toggleBtn.textContent = '🙈';
+  checkResetStrength();
+  clearFpPwError(); clearFpConfirmError();
+  // Show save banner
+  document.getElementById('fpSavePwText').textContent = pw;
+  document.getElementById('fpSavePwBanner').classList.add('show');
+  pill.classList.remove('show');
+  showToast('✅ Password applied! Save it before you continue.');
+}
+
+function copyResetPassword(){
+  const text = document.getElementById('fpSavePwText').textContent;
+  if(!text || text==='—') return;
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast('📋 Password copied to clipboard!');
+    document.querySelector('#fpSavePwBanner .spb-copy-btn').textContent='Copied ✓';
+    setTimeout(()=>{
+      const btn=document.querySelector('#fpSavePwBanner .spb-copy-btn');
+      if(btn) btn.textContent='Copy';
+    },2000);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=text;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    showToast('📋 Password copied!');
+  });
+}
+
+function checkResetStrength(){
+  const pw = document.getElementById('fpNewPw').value;
+  const hasLength  = pw.length >= 8;
+  const hasUpper   = /[A-Z]/.test(pw);
+  const hasLower   = /[a-z]/.test(pw);
+  const hasNumber  = /[0-9]/.test(pw);
+  const hasSpecial = /[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
+  const setFpReq=(id,met)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.classList.toggle('met',met);
+  };
+  setFpReq('fp-req-length',  hasLength);
+  setFpReq('fp-req-upper',   hasUpper);
+  setFpReq('fp-req-lower',   hasLower);
+  setFpReq('fp-req-number',  hasNumber);
+  setFpReq('fp-req-special', hasSpecial);
+  const score=[hasLength,hasUpper,hasLower,hasNumber,hasSpecial].filter(Boolean).length;
+  const fill  = document.getElementById('fpStrengthFill');
+  const label = document.getElementById('fpStrengthLabel');
+  const levels=[
+    {p:'0%',  c:'#e5e7eb', t:''},
+    {p:'20%', c:'#ef4444', t:'Weak'},
+    {p:'40%', c:'#f59e0b', t:'Fair'},
+    {p:'60%', c:'#3b82f6', t:'Good'},
+    {p:'80%', c:'#10b981', t:'Very Good'},
+    {p:'100%',c:'#22c55e', t:'Strong 🔒'},
+  ];
+  fill.style.width      = levels[score].p;
+  fill.style.background = levels[score].c;
+  label.textContent     = levels[score].t;
+  label.style.color     = levels[score].c;
+}
+
+async function fpSubmitNewPassword(){
+  const pw  = document.getElementById('fpNewPw').value;
+  const cpw = document.getElementById('fpConfirmPw').value;
+  let ok = true;
+  if(!passwordMeetsAll(pw)){
+    document.getElementById('fpNewPwErr').classList.add('show');
+    document.getElementById('fpNewPw').classList.add('error');
+    ok = false;
+  }
+  if(pw !== cpw){
+    document.getElementById('fpConfirmPwErr').classList.add('show');
+    document.getElementById('fpConfirmPw').classList.add('error');
+    ok = false;
+  }
+  if(!ok) return;
+
+  const btn = document.getElementById('fpResetBtn');
+  btn.disabled = true; btn.textContent = '⏳ Updating…';
+
+  const { error } = await _supabase.auth.updateUser({ password: pw });
+  btn.disabled = false; btn.innerHTML = '&#128274; Set New Password';
+
+  if(error){
+    showToast('❌ ' + error.message);
+    return;
+  }
+  // Advance to success screen
+  fpGoToStep(3);
+}
+
+function fpGoToSignIn(){
+  closeForgotPanel();
+  switchTab('login');
+}
+
 function hideResetBanner(){
   document.getElementById('resetSentBanner').classList.remove('show');
 }
@@ -1222,8 +1627,21 @@ document.getElementById('tabSignup').addEventListener('click',()=>{
   }
 })();
 
-// Google OAuth callback
+// Google OAuth callback + Password Recovery handler
 _supabase.auth.onAuthStateChange(async(event,session)=>{
+  if(event==='PASSWORD_RECOVERY'){
+    // User clicked the reset link in their email — open the reset panel at step 2
+    openAuth(false);
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('signupForm').style.display = 'none';
+    document.querySelector('.auth-tabs').style.display = 'none';
+    document.querySelector('.google-btn').style.display = 'none';
+    document.querySelector('.auth-divider').style.display = 'flex';
+    fpGoToStep(2);
+    document.getElementById('forgotPanel').classList.add('show');
+    showToast('🔒 Enter your new password below.');
+    return;
+  }
   if(event==='SIGNED_IN'&&session&&!currentUser){
     const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
     const meta=session.user.user_metadata||{};const parts=(meta.full_name||'').split(' ');
