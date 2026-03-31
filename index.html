@@ -981,9 +981,7 @@ const SUPABASE_URL  = 'https://ztteqanmfwefeobsqekh.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp0dGVxYW5tZndlZmVvYnNxZWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDQwNzcsImV4cCI6MjA5MDQ4MDA3N30.bFZSvZmnc4UmP2vzIRRw0jwDgrd5CYx97WjT3gTgr08';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const SESSION_DURATION = 60 * 60;
-const WARN_AT = 5 * 60;
-let currentUser = null, sessionEndTime = null, sessionInterval = null;
+let currentUser = null;
 
 const products = [
   {name:"Tomatoes",unit:"per piece",price:"Ksh 10",cost:10,emoji:"🍅",cat:"vegetables",badge:"Ksh 10!"},
@@ -1803,13 +1801,56 @@ document.getElementById('tabSignup').addEventListener('click',()=>{
     }
   },200);
 });
+// ── SESSION PERSISTENCE & INACTIVITY TIMEOUT ──
+let sessionTimeout;
+const SESSION_DURATION = 3600000; // 1 hour in milliseconds
 
-// Restore Supabase session
+function startSession(){
+  // Store the last activity time
+  localStorage.setItem('lastActivityTime', Date.now().toString());
+  
+  // Clear any existing timeout
+  if(sessionTimeout) clearTimeout(sessionTimeout);
+  
+  // Set a new timeout for 1 hour
+  sessionTimeout = setTimeout(()=>{
+    if(currentUser){
+      showToast('⏰ Your session has expired. Please sign in again.');
+      signOut();
+    }
+  }, SESSION_DURATION);
+  
+  // Update activity on user interaction
+  document.addEventListener('click', resetSessionTimer, true);
+  document.addEventListener('keypress', resetSessionTimer, true);
+}
+
+function resetSessionTimer(){
+  if(!currentUser) return;
+  localStorage.setItem('lastActivityTime', Date.now().toString());
+  if(sessionTimeout) clearTimeout(sessionTimeout);
+  sessionTimeout = setTimeout(()=>{
+    showToast('⏰ Your session has expired. Please sign in again.');
+    signOut();
+  }, SESSION_DURATION);
+}
+
+function stopSession(){
+  if(sessionTimeout) clearTimeout(sessionTimeout);
+  document.removeEventListener('click', resetSessionTimer, true);
+  document.removeEventListener('keypress', resetSessionTimer, true);
+}
+
+// Restore Supabase session on page load
 (async()=>{
   const{data:{session}}=await _supabase.auth.getSession();
   if(session&&session.user){
-    const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
-    loginSuccess({...(p||{}),firstName:p?.first_name||'',middleName:p?.middle_name||'',lastName:p?.last_name||'',email:session.user.email,id:session.user.id});
+    try{
+      const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
+      loginSuccess({...(p||{}),firstName:p?.first_name||'',middleName:p?.middle_name||'',lastName:p?.last_name||'',email:session.user.email,id:session.user.id});
+    }catch(e){
+      console.error('Error restoring session:', e);
+    }
   }
 })();
 
