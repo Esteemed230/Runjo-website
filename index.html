@@ -434,6 +434,41 @@
     }
     .fp-notfound-banner.show{display:block;animation:fadeIn 0.2s ease;}
 
+    /* ── ORDER MANAGEMENT STYLES ── */
+    #adminPanel{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);overflow-y:auto;padding:20px;}
+    #adminPanel.show{display:flex;align-items:flex-start;justify-content:center;}
+    .admin-modal{background:white;border-radius:16px;width:100%;max-width:900px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);}
+    .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:2px solid #e5e7eb;padding-bottom:16px;}
+    .admin-header h2{font-size:1.4rem;font-weight:800;color:var(--green);}
+    .admin-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);}
+    .orders-table{width:100%;border-collapse:collapse;}
+    .orders-table th{background:var(--green-pale);padding:12px;text-align:left;font-weight:700;color:var(--green);border-bottom:2px solid var(--green);}
+    .orders-table td{padding:12px;border-bottom:1px solid #e5e7eb;}
+    .orders-table tr:hover{background:#f9fafb;}
+    .status-badge{display:inline-block;padding:6px 12px;border-radius:50px;font-size:0.75rem;font-weight:700;}
+    .status-received{background:#fef3c7;color:#92400e;}
+    .status-packed{background:#dbeafe;color:#1e40af;}
+    .status-transport{background:#fce7f3;color:#831843;}
+    .status-delivered{background:#dcfce7;color:#166534;}
+    .status-dropdown{padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:0.85rem;cursor:pointer;}
+    .update-btn{background:var(--green);color:white;border:none;padding:8px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;}
+    .update-btn:hover{background:var(--green-light);}
+
+    /* Order History for Customers */
+    #orderHistory{display:none;}
+    #orderHistory.show{display:block;}
+    .order-item{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;transition:all 0.2s;}
+    .order-item:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+    .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+    .order-id{font-size:0.85rem;color:var(--muted);font-weight:600;}
+    .order-date{font-size:0.8rem;color:var(--muted);}
+    .order-status{display:inline-block;padding:6px 12px;border-radius:50px;font-size:0.75rem;font-weight:700;}
+    .order-details{font-size:0.9rem;color:var(--text);margin-bottom:12px;line-height:1.6;}
+    .order-total{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:12px;}
+    .confirm-delivery-btn{background:var(--green);color:white;border:none;padding:10px 16px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;}
+    .confirm-delivery-btn:hover{background:var(--green-light);}
+    .confirm-delivery-btn:disabled{background:#ccc;cursor:not-allowed;}
+
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     @keyframes slideUp{from{opacity:0;transform:translateY(40px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -789,11 +824,45 @@
       <div class="user-dropdown" id="userDropdown">
         <div class="dropdown-info"><div class="name" id="ddName">—</div><div class="email" id="ddEmail">—</div></div>
         <button class="dropdown-item" onclick="showProfile()">👤 My Profile</button>
+        <button class="dropdown-item" onclick="showMyOrders()">📦 My Orders</button>
+        <button class="dropdown-item" id="adminBtn" onclick="openAdminPanel()" style="display:none;">🛠 Admin Panel</button>
         <button class="dropdown-item danger" onclick="signOut()">🚪 Sign Out</button>
       </div>
     </div>
   </div>
 </nav>
+
+<!-- Admin Panel (Hidden by default) -->
+<div id="adminPanel">
+  <div class="admin-modal">
+    <div class="admin-header">
+      <h2>📦 Manage Orders</h2>
+      <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+    </div>
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Phone</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="adminOrdersBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Order History for Customers (shown in profile area) -->
+<div id="orderHistory" style="padding:80px 5vw;">
+  <span class="section-tag">📦 Order Tracking</span>
+  <h2>My Orders</h2>
+  <div id="orderHistoryBody"></div>
+  <button onclick="closeOrderHistory()" style="margin-top:20px;padding:10px 20px;background:var(--muted);color:white;border:none;border-radius:8px;cursor:pointer;">← Back</button>
+</div>
 
 <section class="hero" id="home">
   <div>
@@ -1329,12 +1398,21 @@ function updateNavUser(user){
   const fn=user.firstName||user.first_name||'?';
   const ln=user.lastName||user.last_name||'?';
   const mn=user.middleName||user.middle_name||'';
-  document.getElementById('navAvatar').textContent=(fn[0]+ln[0]).toUpperCase();
+  // Use only the first letter of the first name for the avatar
+  document.getElementById('navAvatar').textContent=(fn[0]||'?').toUpperCase();
   document.getElementById('navName').textContent=fn;
   document.getElementById('ddName').textContent=fn+(mn?' '+mn:'')+' '+ln;
   document.getElementById('ddEmail').textContent=user.email;
   document.getElementById('navSigninBtn').style.display='none';
   document.getElementById('navUserWrap').style.display='block';
+
+  // ── ADMIN SECURITY CHECK ──
+  // Replace 'evidencegach332@gmail.com' with your actual admin email
+  const adminEmail = 'evidencegach332@gmail.com'; 
+  const adminBtn = document.getElementById('adminBtn');
+  if(adminBtn) {
+    adminBtn.style.display = (user.email === adminEmail) ? 'flex' : 'none';
+  }
 }
 
 function prefillOrderForm(user){
@@ -1359,6 +1437,68 @@ function showProfile(){
 }
 
 function toggleDropdown(){document.getElementById('userDropdown').classList.toggle('open');}
+// ── ADMIN PANEL ──
+function openAdminPanel(){
+  // Double-check security before opening
+  const adminEmail = 'evidencegach332@gmail.com';
+  if(!currentUser || currentUser.email !== adminEmail) {
+    showToast('🚫 Access Denied: Admin only.');
+    return;
+  }
+  closeDropdown();
+  loadAdminOrders();
+  document.getElementById('adminPanel').classList.add('show');
+}
+function closeAdminPanel(){
+  document.getElementById('adminPanel').classList.remove('show');
+}
+async function loadAdminOrders(){
+  const{data:orders,error}=await _supabase.from('orders').select('*').order('created_at',{ascending:false});
+  if(error){showToast('❌ Error loading orders: '+error.message);return;}
+  const body=document.getElementById('adminOrdersBody');
+  if(!orders||orders.length===0){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;">No orders yet.</td></tr>';return;}
+  body.innerHTML=orders.map(o=>{
+    const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');
+    return '<tr><td>'+o.id.substring(0,8)+'...</td><td>'+o.customer_name+'</td><td>'+o.phone+'</td><td>'+o.items.substring(0,30)+'...</td><td>Ksh '+o.total_price+'</td><td><span class="status-badge '+statusClass+'">'+o.status+'</span></td><td><select class="status-dropdown" onchange="updateOrderStatus(\''+o.id+'\',this.value)"><option value="Received" '+(o.status==='Received'?'selected':'')+'>Received</option><option value="Packed" '+(o.status==='Packed'?'selected':'')+'>Packed</option><option value="In Transport" '+(o.status==='In Transport'?'selected':'')+'>In Transport</option><option value="Delivered" '+(o.status==='Delivered'?'selected':'')+'>Delivered</option></select></td></tr>';
+  }).join('');
+}
+async function updateOrderStatus(orderId,newStatus){
+  const{error}=await _supabase.from('orders').update({status:newStatus,updated_at:new Date().toISOString()}).eq('id',orderId);
+  if(error){showToast('❌ Error updating order: '+error.message);return;}
+  showToast('✅ Order status updated to '+newStatus);
+  loadAdminOrders();
+}
+
+// ── CUSTOMER ORDER HISTORY ──
+async function showMyOrders(){
+  if(!currentUser)return;
+  closeDropdown();
+  const{data:orders,error}=await _supabase.from('orders').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+  if(error){showToast('❌ Error loading orders: '+error.message);return;}
+  const body=document.getElementById('orderHistoryBody');
+  if(!orders||orders.length===0){body.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);"><div style="font-size:2rem;margin-bottom:10px;">📦</div><p>You haven\'t placed any orders yet.</p></div>';}
+  else{
+    body.innerHTML=orders.map(o=>{
+      const date=new Date(o.created_at).toLocaleDateString('en-KE');
+      const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');
+      const isDelivered=o.status==='Delivered';
+      const confirmed=o.confirmed_by_customer||false;
+      return '<div class="order-item"><div class="order-header"><div><div class="order-id">Order #'+o.id.substring(0,8)+'</div><div class="order-date">'+date+'</div></div><span class="order-status '+statusClass+'">'+o.status+'</span></div><div class="order-details"><strong>Items:</strong> '+o.items+'<br/><strong>Delivery Address:</strong> '+(o.address||'Pickup at Store')+'</div><div class="order-total">Total: Ksh '+o.total_price+'</div>'+(isDelivered?'<button class="confirm-delivery-btn" onclick="confirmDelivery(\''+o.id+'\')" '+(confirmed?'disabled':'')+'>'+( confirmed?'✅ Delivery Confirmed':'👋 Confirm Delivery')+' </button>':'')+'</div>';
+    }).join('');
+  }
+  document.getElementById('orderHistory').classList.add('show');
+  document.getElementById('orderHistory').scrollIntoView({behavior:'smooth'});
+}
+function closeOrderHistory(){
+  document.getElementById('orderHistory').classList.remove('show');
+  document.getElementById('home').scrollIntoView({behavior:'smooth'});
+}
+async function confirmDelivery(orderId){
+  const{error}=await _supabase.from('orders').update({confirmed_by_customer:true,updated_at:new Date().toISOString()}).eq('id',orderId);
+  if(error){showToast('❌ Error confirming delivery: '+error.message);return;}
+  showToast('✅ Thank you! Delivery confirmed.');
+  showMyOrders();
+}
 function closeDropdown(){document.getElementById('userDropdown').classList.remove('open');}
 document.addEventListener('click',e=>{if(!e.target.closest('#navUserWrap'))closeDropdown();});
 
@@ -1609,15 +1749,26 @@ function checkoutCart(){
   },600);
 }
 
-function submitOrder(){
+async function submitOrder(){
   const fn=document.getElementById('orderFirstName').value.trim();
+  const ln=document.getElementById('orderLastName').value.trim();
   const phone=document.getElementById('orderPhone').value.trim();
+  const address=document.getElementById('address').value.trim();
   const items=document.getElementById('items').value.trim();
+  
   if(!fn||!phone||!items){alert('Please fill in your name, phone number, and the items you need.');return;}
+  
+  if(currentUser){
+    const totalText=document.getElementById('cartTotal').textContent;
+    const totalPrice=parseInt(totalText.replace(/[^0-9]/g,''))||0;
+    const{error}=await _supabase.from('orders').insert({user_id:currentUser.id,customer_name:fn+(ln?' '+ln:''),phone,address,items,total_price:totalPrice,status:'Received'});
+    if(error){alert('Error saving order: '+error.message);return;}
+  }
+  
   const msg=document.getElementById('successMsg');
   msg.textContent="✅ Order received! We'll call you on your number to confirm. Thank you for choosing Runjob Stores!";
   msg.style.display='block';setTimeout(()=>msg.style.display='none',6000);
-  ['orderFirstName','orderLastName','orderPhone','delivType','payMethod','address','items'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['orderFirstName','orderLastName','orderPhone','delivType','payMethod','address','items'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
   clearCart();
 }
 
