@@ -11,30 +11,74 @@
     :root{--green:#1a6b3c;--green-light:#3cb371;--green-pale:#d6f0e0;--cream:#fffdf5;--brown:#4a2c1a;--orange:#e8572a;--text:#1a1a1a;--muted:#6b7280;--white:#ffffff}
     html{scroll-behavior:smooth}
     body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
-    body.auth-required{background:#000;overflow:hidden}
-    body.auth-required nav,body.auth-required section,body.auth-required footer,body.auth-required .whatsapp-float{display:none !important}
-    /* FIX: Prevent body scroll when auth is open */
-    body.auth-open{overflow:hidden}
-    /* AUTH OVERLAY - Full screen standalone interface */
-    #authOverlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;animation:fadeIn 0.3s ease}
+
+    /* ── AUTH OVERLAY ── clean full-page landing screen */
+    #authOverlay{
+      position:fixed;inset:0;z-index:9999;
+      background:var(--cream);
+      display:flex;align-items:flex-start;justify-content:center;
+      overflow-y:auto;
+      padding:40px 20px 60px;
+      animation:fadeIn 0.3s ease;
+    }
     #authOverlay.hidden{display:none}
-    .auth-modal{background:var(--white);border-radius:28px;width:100%;max-width:480px;margin:auto;box-shadow:0 32px 80px rgba(0,0,0,0.4);display:flex;flex-direction:column;max-height:90vh;overflow:hidden;animation:slideUp 0.38s cubic-bezier(.22,1,.36,1)}
-    .auth-header{background:linear-gradient(135deg,var(--green) 0%,#0f4a28 100%);padding:28px 36px 20px;text-align:center;flex-shrink:0}
-    .auth-header-logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--white);margin-bottom:4px}
+
+    /* subtle leaf pattern overlay */
+    #authOverlay::before{
+      content:'';position:fixed;inset:0;pointer-events:none;
+      background-image:
+        radial-gradient(ellipse at 10% 10%, rgba(26,107,60,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 85%, rgba(60,179,113,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 60% 40%, rgba(214,240,224,0.5) 0%, transparent 60%);
+      z-index:0;
+    }
+
+    .auth-modal{
+      background:var(--white);
+      border-radius:28px;
+      width:100%;max-width:480px;
+      box-shadow:0 8px 48px rgba(26,107,60,0.1),0 2px 12px rgba(0,0,0,0.06),0 0 0 1px rgba(26,107,60,0.08);
+      display:flex;flex-direction:column;
+      animation:slideUp 0.38s cubic-bezier(.22,1,.36,1);
+      position:relative;z-index:1;
+      overflow:hidden;
+    }
+
+    .auth-header{
+      background:linear-gradient(135deg,var(--green) 0%,#1d8a4e 100%);
+      padding:28px 36px 22px;text-align:center;flex-shrink:0;
+      position:relative;overflow:hidden;
+    }
+    /* decorative circle accent in header */
+    .auth-header::after{
+      content:'';position:absolute;bottom:-30px;right:-30px;
+      width:120px;height:120px;border-radius:50%;
+      background:rgba(255,255,255,0.06);pointer-events:none;
+    }
+    .auth-header::before{
+      content:'';position:absolute;top:-20px;left:-20px;
+      width:80px;height:80px;border-radius:50%;
+      background:rgba(255,255,255,0.05);pointer-events:none;
+    }
+    .auth-header-logo{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--white);margin-bottom:6px;position:relative;z-index:1;}
     .auth-header-logo span{color:#7ee8a2}
-    .auth-header p{font-size:0.82rem;color:rgba(255,255,255,0.7)}
+    .auth-header p{font-size:0.83rem;color:rgba(255,255,255,0.78);line-height:1.5;position:relative;z-index:1;}
+
     .auth-tabs{display:flex;border-bottom:1px solid #e5e7eb;background:var(--cream);flex-shrink:0}
     .auth-tab{flex:1;padding:14px;font-size:0.88rem;font-weight:600;border:none;background:none;cursor:pointer;color:var(--muted);transition:all 0.2s;border-bottom:3px solid transparent;letter-spacing:0.02em}
     .auth-tab.active{color:var(--green);border-bottom-color:var(--green);background:var(--white)}
-    /* FIX: Scrollable form body with smooth scrolling */
-    .auth-body{padding:24px 32px 28px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
-    .google-btn{width:100%;padding:12px 20px;border:1.5px solid #e2e8f0;border-radius:50px;background:var(--white);display:flex;align-items:center;justify-content:center;gap:10px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all 0.2s;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+
+    /* auth body — no overflow hidden, just normal padding */
+    .auth-body{padding:28px 32px 32px;}
+
+    .google-btn{width:100%;padding:13px 20px;border:1.5px solid #e2e8f0;border-radius:50px;background:var(--white);display:flex;align-items:center;justify-content:center;gap:10px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all 0.2s;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
     .google-btn:hover{border-color:#4285F4;box-shadow:0 4px 16px rgba(66,133,244,0.18);transform:translateY(-1px)}
     .google-icon{width:20px;height:20px;flex-shrink:0}
-    .auth-divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+    .auth-divider{display:flex;align-items:center;gap:12px;margin:18px 0}
     .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
     .auth-divider span{font-size:0.78rem;color:var(--muted);font-weight:500;white-space:nowrap}
-    .auth-form-group{margin-bottom:13px}
+
+    .auth-form-group{margin-bottom:14px}
     .auth-form-group label{display:block;font-size:0.8rem;font-weight:600;margin-bottom:5px;color:var(--text)}
     .auth-form-group input,.auth-form-group select{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);background:var(--cream);outline:none;transition:border-color 0.2s,box-shadow 0.2s}
     .auth-form-group input:focus,.auth-form-group select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,107,60,0.1)}
@@ -42,14 +86,18 @@
     .field-error{font-size:0.74rem;color:#ef4444;margin-top:4px;display:none}
     .field-error.show{display:block}
     .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-    .auth-submit-btn{width:100%;padding:13px;background:var(--green);color:var(--white);border:none;border-radius:50px;font-size:0.92rem;font-weight:600;cursor:pointer;margin-top:16px;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(26,107,60,0.3);letter-spacing:0.01em}
+
+    .auth-submit-btn{width:100%;padding:14px;background:var(--green);color:var(--white);border:none;border-radius:50px;font-size:0.92rem;font-weight:600;cursor:pointer;margin-top:18px;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(26,107,60,0.3);letter-spacing:0.01em}
     .auth-submit-btn:hover{background:var(--green-light);transform:translateY(-2px)}
     .auth-submit-btn:disabled{opacity:0.65;cursor:not-allowed;transform:none}
+
     .session-banner{background:linear-gradient(90deg,#fff3cd 0%,#fff9e6 100%);border:1.5px solid #ffc107;border-radius:12px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:0.82rem;color:#856404}
     .session-banner.hidden{display:none}
+
     #sessionTimer{position:fixed;bottom:90px;right:24px;z-index:500;background:var(--green);color:white;border-radius:50px;padding:8px 16px;font-size:0.78rem;font-weight:600;box-shadow:0 4px 16px rgba(26,107,60,0.35);display:flex;align-items:center;gap:6px;transition:background 0.3s;cursor:default}
     #sessionTimer.warning{background:#e8572a}
     #sessionTimer.hidden{display:none}
+
     .user-nav-pill{display:flex;align-items:center;gap:8px;background:var(--green-pale);border-radius:50px;padding:6px 14px 6px 8px;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;color:var(--green);transition:background 0.2s}
     .user-nav-pill:hover{background:#b6e8ce}
     .user-avatar-sm{width:28px;height:28px;border-radius:50%;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0}
@@ -62,13 +110,72 @@
     .dropdown-item:hover{background:var(--cream)}
     .dropdown-item.danger{color:#ef4444}
     .dropdown-item.danger:hover{background:#fef2f2}
+
     .password-wrap{position:relative}
     .password-wrap input{padding-right:42px}
     .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;line-height:1;padding:2px}
-    .strength-bar{height:4px;border-radius:4px;background:#e5e7eb;margin-top:6px;overflow:hidden}
+
+    /* ── PASSWORD SUGGESTION ── */
+    .pw-suggest-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .pw-suggest-btn{
+      display:inline-flex;align-items:center;gap:6px;
+      background:none;border:1.5px solid var(--green);
+      color:var(--green);border-radius:50px;
+      padding:5px 13px;font-size:0.76rem;font-weight:600;
+      cursor:pointer;font-family:'DM Sans',sans-serif;
+      transition:background 0.18s,color 0.18s,transform 0.15s;
+      white-space:nowrap;
+    }
+    .pw-suggest-btn:hover{background:var(--green);color:white;transform:translateY(-1px);}
+    .pw-suggest-btn svg{flex-shrink:0;}
+
+    /* generated password preview pill */
+    .pw-generated-pill{
+      display:none;align-items:center;gap:8px;
+      background:var(--green-pale);border:1.5px solid rgba(26,107,60,0.25);
+      border-radius:12px;padding:9px 13px;margin-top:8px;
+    }
+    .pw-generated-pill.show{display:flex;}
+    .pw-generated-text{
+      flex:1;font-size:0.82rem;font-weight:700;color:var(--green);
+      font-family:monospace;letter-spacing:0.04em;word-break:break-all;
+    }
+    .pw-use-btn{
+      background:var(--green);color:white;border:none;border-radius:8px;
+      padding:5px 12px;font-size:0.76rem;font-weight:700;cursor:pointer;
+      font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;
+      transition:background 0.18s;
+    }
+    .pw-use-btn:hover{background:var(--green-light);}
+    .pw-refresh-btn{
+      background:none;border:none;color:var(--green);cursor:pointer;
+      font-size:1.1rem;padding:2px;line-height:1;flex-shrink:0;
+      transition:transform 0.3s;
+    }
+    .pw-refresh-btn:hover{transform:rotate(180deg);}
+
+    /* ── PASSWORD REQUIREMENTS BOX ── */
+    .pw-requirements{
+      background:var(--green-pale);
+      border:1.5px solid rgba(26,107,60,0.2);
+      border-radius:12px;
+      padding:12px 14px;
+      margin-bottom:10px;
+    }
+    .pw-requirements p{font-size:0.78rem;font-weight:700;color:var(--green);margin-bottom:8px;}
+    .pw-req-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;}
+    .pw-req-item{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);transition:color 0.25s;}
+    .pw-req-item.met{color:#16a34a;}
+    .pw-req-icon{width:16px;height:16px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.6rem;flex-shrink:0;transition:background 0.25s,border-color 0.25s;}
+    .pw-req-item.met .pw-req-icon{background:#16a34a;border-color:#16a34a;color:white;}
+
+    .strength-bar{height:5px;border-radius:4px;background:#e5e7eb;margin-top:8px;overflow:hidden}
     .strength-fill{height:100%;border-radius:4px;transition:width 0.3s,background 0.3s;width:0%}
+    .strength-label{font-size:0.72rem;color:var(--muted);margin-top:4px;}
+
     #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--text);color:white;border-radius:50px;padding:10px 24px;font-size:0.85rem;font-weight:500;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
     #toast.show{opacity:1}
+
     nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,253,245,0.93);backdrop-filter:blur(12px);border-bottom:1px solid rgba(26,107,60,0.12);display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:68px}
     .nav-logo{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--green);letter-spacing:-0.02em}
     .nav-logo span{color:var(--orange)}
@@ -80,6 +187,7 @@
     .nav-right{display:flex;align-items:center;gap:1rem;position:relative}
     .cart-wrap{position:relative;display:inline-block}
     .cart-count{position:absolute;top:-8px;right:-8px;background:var(--orange);color:var(--white);width:20px;height:20px;border-radius:50%;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+
     .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 5vw 60px;gap:4rem;background:linear-gradient(135deg,var(--cream) 55%,var(--green-pale) 100%);position:relative;overflow:hidden}
     .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(60,179,113,0.15) 0%,transparent 70%);pointer-events:none}
     .hero-eyebrow{display:inline-block;background:var(--green-pale);color:var(--green);padding:6px 16px;border-radius:50px;font-size:0.78rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.2rem;animation:fadeUp 0.6s ease both}
@@ -202,14 +310,18 @@
       .footer-grid{grid-template-columns:1fr}
       .nav-links{display:none}
       .form-row{grid-template-columns:1fr}
-      .form-row-3{grid-template-columns:1fr}
-      .auth-body{padding:16px 16px 20px}
+      .form-row-3{grid-template-columns:1fr 1fr}
+      .auth-body{padding:20px 18px 28px}
       #sessionTimer{bottom:90px}
+    }
+    @media(max-width:400px){
+      .form-row-3{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
 
+<!-- ══════════════ AUTH OVERLAY ══════════════ -->
 <div id="authOverlay">
   <div class="auth-modal">
     <div class="auth-header">
@@ -224,6 +336,7 @@
       <div class="session-banner hidden" id="sessionBanner">
         ⏰ <strong>Your session expired</strong> after 1 hour of inactivity. Please sign in again.
       </div>
+
       <button class="google-btn" onclick="continueWithGoogle()">
         <svg class="google-icon" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -234,7 +347,8 @@
         Continue with Google
       </button>
       <div class="auth-divider"><span>or continue with email</span></div>
-      <!-- LOGIN -->
+
+      <!-- ── LOGIN FORM ── -->
       <div id="loginForm">
         <div class="auth-form-group">
           <label>Email Address</label>
@@ -257,13 +371,14 @@
           No account? <button onclick="switchTab('signup')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Create one →</button>
         </p>
       </div>
-      <!-- SIGNUP -->
+
+      <!-- ── SIGNUP FORM ── -->
       <div id="signupForm" style="display:none;">
         <div class="auth-form-group">
           <label>Full Name</label>
           <div class="form-row-3">
             <input type="text" id="firstName" placeholder="First *" oninput="clearErr('firstName')"/>
-            <input type="text" id="middleName" placeholder="Middle (optional)"/>
+            <input type="text" id="middleName" placeholder="Middle (opt.)"/>
             <input type="text" id="lastName" placeholder="Last *" oninput="clearErr('lastName')"/>
           </div>
           <div class="field-error" id="firstNameErr">First and last name are required.</div>
@@ -283,16 +398,30 @@
           <input type="email" id="signupEmail" placeholder="you@example.com" oninput="clearErr('signupEmail')"/>
           <div class="field-error" id="signupEmailErr">Enter a valid email address.</div>
         </div>
+
+        <!-- PASSWORD with live requirements -->
         <div class="auth-form-group">
-          <label>Password *</label>
-          <div style="background:var(--green-pale);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:0.78rem;color:var(--green);">
-            <strong>Password Requirements:</strong>
-            <ul style="margin:6px 0 0 16px;padding:0;">
-              <li id="req-length">✓ At least 8 characters</li>
-              <li id="req-upper">✓ One uppercase letter (A-Z)</li>
-              <li id="req-lower">✓ One lowercase letter (a-z)</li>
-              <li id="req-number">✓ One number (0-9)</li>
-              <li id="req-special">✓ One special character (!@#$%^&*)</li>
+          <div class="pw-suggest-row">
+            <label style="margin-bottom:0;">Password *</label>
+            <button type="button" class="pw-suggest-btn" onclick="suggestPassword()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Suggest Strong Password
+            </button>
+          </div>
+          <!-- Generated password preview -->
+          <div class="pw-generated-pill" id="pwGeneratedPill">
+            <span class="pw-generated-text" id="pwGeneratedText"></span>
+            <button type="button" class="pw-refresh-btn" onclick="suggestPassword()" title="Generate another">↻</button>
+            <button type="button" class="pw-use-btn" onclick="useGeneratedPassword()">Use this</button>
+          </div>
+          <div class="pw-requirements">
+            <p>🔐 Your password must include:</p>
+            <ul class="pw-req-list">
+              <li class="pw-req-item" id="req-length"><span class="pw-req-icon">✓</span> At least 8 characters</li>
+              <li class="pw-req-item" id="req-upper"><span class="pw-req-icon">✓</span> One uppercase letter (A–Z)</li>
+              <li class="pw-req-item" id="req-lower"><span class="pw-req-icon">✓</span> One lowercase letter (a–z)</li>
+              <li class="pw-req-item" id="req-number"><span class="pw-req-icon">✓</span> One number (0–9)</li>
+              <li class="pw-req-item" id="req-special"><span class="pw-req-icon">✓</span> One special character (!@#$%^&amp;*)</li>
             </ul>
           </div>
           <div class="password-wrap">
@@ -300,9 +429,10 @@
             <button type="button" class="toggle-pw" onclick="togglePw('signupPw',this)">👁</button>
           </div>
           <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
-          <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;" id="strengthLabel"></div>
-          <div class="field-error" id="signupPwErr">Password must meet all requirements.</div>
+          <div class="strength-label" id="strengthLabel"></div>
+          <div class="field-error" id="signupPwErr">Password must meet all requirements above.</div>
         </div>
+
         <div class="auth-form-group">
           <label>Confirm Password *</label>
           <div class="password-wrap">
@@ -317,9 +447,9 @@
           Already have an account? <button onclick="switchTab('login')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign in →</button>
         </p>
       </div>
-    </div>
-  </div>
-</div>
+    </div><!-- /auth-body -->
+  </div><!-- /auth-modal -->
+</div><!-- /authOverlay -->
 
 <div id="sessionTimer" class="hidden">⏱ <span id="timerDisplay">60:00</span></div>
 <div id="toast"></div>
@@ -386,30 +516,10 @@
     </div>
   </div>
   <div class="hero-visual">
-    <div class="hero-card">
-      <div class="emoji">🥬</div>
-      <h3>Fresh Vegetables</h3>
-      <p>Hand-picked daily from local suppliers. Tomatoes, sukuma wiki, onions, and more.</p>
-      <span class="tag">Always Fresh</span>
-    </div>
-    <div class="hero-card">
-      <div class="emoji">🍌</div>
-      <h3>Ripe Fruits</h3>
-      <p>Seasonal fruits at their peak. Mangoes, bananas, avocados, and more.</p>
-      <span class="tag">In Season</span>
-    </div>
-    <div class="hero-card">
-      <div class="emoji">🥚</div>
-      <h3>Dairy & Eggs</h3>
-      <p>Quality dairy products and fresh kienyeji eggs. Supporting local farmers.</p>
-      <span class="tag">Local</span>
-    </div>
-    <div class="hero-card">
-      <div class="emoji">🍚</div>
-      <h3>Pantry Staples</h3>
-      <p>Rice, beans, flour, and everyday essentials. Everything you need in one place.</p>
-      <span class="tag">Convenient</span>
-    </div>
+    <div class="hero-card"><div class="emoji">🥬</div><h3>Fresh Vegetables</h3><p>Hand-picked daily from local suppliers. Tomatoes, sukuma wiki, onions, and more.</p><span class="tag">Always Fresh</span></div>
+    <div class="hero-card"><div class="emoji">🍌</div><h3>Ripe Fruits</h3><p>Seasonal fruits at their peak. Mangoes, bananas, avocados, and more.</p><span class="tag">In Season</span></div>
+    <div class="hero-card"><div class="emoji">🥚</div><h3>Dairy & Eggs</h3><p>Quality dairy products and fresh kienyeji eggs. Supporting local farmers.</p><span class="tag">Local</span></div>
+    <div class="hero-card"><div class="emoji">🍚</div><h3>Pantry Staples</h3><p>Rice, beans, flour, and everyday essentials. Everything you need in one place.</p><span class="tag">Convenient</span></div>
   </div>
 </section>
 
@@ -441,44 +551,16 @@
       <div class="success-msg" id="successMsg"></div>
       <form onsubmit="submitOrder();return false;">
         <div class="form-row">
-          <div class="form-group">
-            <label>Full Name *</label>
-            <input type="text" id="orderFirstName" placeholder="Your name" required/>
-          </div>
-          <div class="form-group">
-            <label>Last Name (optional)</label>
-            <input type="text" id="orderLastName" placeholder="Last name"/>
-          </div>
+          <div class="form-group"><label>Full Name *</label><input type="text" id="orderFirstName" placeholder="Your name" required/></div>
+          <div class="form-group"><label>Last Name (optional)</label><input type="text" id="orderLastName" placeholder="Last name"/></div>
         </div>
-        <div class="form-group">
-          <label>Phone Number *</label>
-          <input type="tel" id="orderPhone" placeholder="0712 345 678" required/>
-        </div>
+        <div class="form-group"><label>Phone Number *</label><input type="tel" id="orderPhone" placeholder="0712 345 678" required/></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Delivery Type</label>
-            <select id="delivType">
-              <option>Pickup at Store</option>
-              <option>Home Delivery</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Payment Method</label>
-            <select id="payMethod">
-              <option>M-Pesa</option>
-              <option>Cash on Pickup</option>
-              <option>Bank Transfer</option>
-            </select>
-          </div>
+          <div class="form-group"><label>Delivery Type</label><select id="delivType"><option>Pickup at Store</option><option>Home Delivery</option></select></div>
+          <div class="form-group"><label>Payment Method</label><select id="payMethod"><option>M-Pesa</option><option>Cash on Pickup</option><option>Bank Transfer</option></select></div>
         </div>
-        <div class="form-group">
-          <label>Delivery Address (if applicable)</label>
-          <input type="text" id="address" placeholder="Your address"/>
-        </div>
-        <div class="form-group">
-          <label>Items & Total *</label>
-          <textarea id="items" placeholder="Your cart items will appear here..." required readonly></textarea>
-        </div>
+        <div class="form-group"><label>Delivery Address (if applicable)</label><input type="text" id="address" placeholder="Your address"/></div>
+        <div class="form-group"><label>Items & Total *</label><textarea id="items" placeholder="Your cart items will appear here..." required readonly></textarea></div>
         <button type="submit" class="submit-btn">✅ Confirm Order</button>
       </form>
     </div>
@@ -486,23 +568,12 @@
       <span class="section-tag">💳 Payment Options</span>
       <h3 style="font-size:1.4rem;margin-bottom:1.5rem;">How to Pay</h3>
       <div class="payment-grid">
-        <div class="payment-option">
-          <div class="emoji">📱</div>
-          <div class="label">M-Pesa</div>
-        </div>
-        <div class="payment-option">
-          <div class="emoji">💵</div>
-          <div class="label">Cash</div>
-        </div>
-        <div class="payment-option">
-          <div class="emoji">🏦</div>
-          <div class="label">Bank</div>
-        </div>
+        <div class="payment-option"><div class="emoji">📱</div><div class="label">M-Pesa</div></div>
+        <div class="payment-option"><div class="emoji">💵</div><div class="label">Cash</div></div>
+        <div class="payment-option"><div class="emoji">🏦</div><div class="label">Bank</div></div>
       </div>
       <div style="background:var(--green-pale);border-radius:16px;padding:1.5rem;margin-top:2rem;color:var(--green);">
-        <p style="font-size:0.9rem;line-height:1.6;">
-          <strong>📞 Call us to confirm:</strong> We'll call you on the number you provide to confirm your order, discuss delivery options, and finalize payment details. Fast, friendly, and convenient!
-        </p>
+        <p style="font-size:0.9rem;line-height:1.6;"><strong>📞 Call us to confirm:</strong> We'll call you on the number you provide to confirm your order, discuss delivery options, and finalize payment details. Fast, friendly, and convenient!</p>
       </div>
     </div>
   </div>
@@ -514,26 +585,15 @@
   <div class="order-grid">
     <div>
       <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">📍 Location</h3>
-      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:1.5rem;">
-        <strong>Kamiti Corner, opposite Mkwaju</strong><br/>
-        Nairobi, Kenya
-      </p>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:1.5rem;"><strong>Kamiti Corner, opposite Mkwaju</strong><br/>Nairobi, Kenya</p>
       <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">⏰ Hours</h3>
-      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);">
-        <strong>Monday – Saturday:</strong> 8:00 AM – 8:00 PM<br/>
-        <strong>Sunday:</strong> Closed
-      </p>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);"><strong>Monday – Saturday:</strong> 8:00 AM – 8:00 PM<br/><strong>Sunday:</strong> Closed</p>
     </div>
     <div>
       <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">📞 Contact Us</h3>
-      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:1.5rem;">
-        <strong>Phone:</strong> <a href="tel:0702148068" style="color:var(--green);text-decoration:none;">0702 148 068</a><br/>
-        <strong>WhatsApp:</strong> <a href="https://wa.me/254702148068" target="_blank" style="color:var(--green);text-decoration:none;">Message us</a>
-      </p>
+      <p style="font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:1.5rem;"><strong>Phone:</strong> <a href="tel:0702148068" style="color:var(--green);text-decoration:none;">0702 148 068</a><br/><strong>WhatsApp:</strong> <a href="https://wa.me/254702148068" target="_blank" style="color:var(--green);text-decoration:none;">Message us</a></p>
       <h3 style="font-size:1.3rem;margin-bottom:1rem;color:var(--green);">💬 Quick Order</h3>
-      <p style="font-size:0.95rem;color:var(--text);">
-        WhatsApp us your shopping list anytime. We'll prepare your order and let you know when it's ready for pickup or delivery!
-      </p>
+      <p style="font-size:0.95rem;color:var(--text);">WhatsApp us your shopping list anytime. We'll prepare your order and let you know when it's ready for pickup or delivery!</p>
     </div>
   </div>
 </section>
@@ -558,9 +618,6 @@
 </footer>
 
 <script>
-// ══════════════════════════════════════
-//  SUPABASE — your live credentials
-// ══════════════════════════════════════
 const SUPABASE_URL  = 'https://ztteqanmfwefeobsqekh.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp0dGVxYW5tZndlZmVvYnNxZWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDQwNzcsImV4cCI6MjA5MDQ4MDA3N30.bFZSvZmnc4UmP2vzIRRw0jwDgrd5CYx97WjT3gTgr08';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -596,21 +653,26 @@ let cart = {};
 
 // ── AUTH ──
 function switchTab(tab){
-  document.getElementById('loginForm').style.display=tab==='login'?'block':'none';
-  document.getElementById('signupForm').style.display=tab==='signup'?'block':'none';
-  document.getElementById('tabLogin').classList.toggle('active',tab==='login');
-  document.getElementById('tabSignup').classList.toggle('active',tab==='signup');
+  document.getElementById('loginForm').style.display  = tab==='login'  ? 'block':'none';
+  document.getElementById('signupForm').style.display = tab==='signup' ? 'block':'none';
+  document.getElementById('tabLogin').classList.toggle('active',  tab==='login');
+  document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
+  // Scroll the overlay back to top when switching tabs
+  document.getElementById('authOverlay').scrollTop = 0;
 }
+
 function openAuth(isTimeout){
-  document.getElementById('sessionBanner').classList.toggle('hidden',!isTimeout);
+  document.getElementById('sessionBanner').classList.toggle('hidden', !isTimeout);
   document.getElementById('authOverlay').classList.remove('hidden');
-  document.body.classList.add('auth-open');
+  // Prevent main page from scrolling while auth is open
+  document.body.style.overflow = 'hidden';
   stopSession();
 }
 function closeAuth(){
   document.getElementById('authOverlay').classList.add('hidden');
-  document.body.classList.remove('auth-open');
+  document.body.style.overflow = '';
 }
+
 function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 function isValidPhone(p){return /^(07|01)\d{8}$/.test(p.replace(/\s/g,'').replace('+254','0'));}
 function showErr(id,msg){
@@ -653,7 +715,7 @@ async function handleSignup(){
   if(!dob){showErr('dob','Please enter your date of birth.');ok=false;}
   if(!isValidPhone(phone)){showErr('phone','Enter a valid Kenyan phone number (e.g. 0712345678).');ok=false;}
   if(!isValidEmail(email)){showErr('signupEmail','Enter a valid email address.');ok=false;}
-  if(pw.length<8){showErr('signupPw','Password must be at least 8 characters.');ok=false;}
+  if(!passwordMeetsAll(pw)){showErr('signupPw','Password must meet all requirements above.');ok=false;}
   if(pw!==cpw){showErr('confirmPw','Passwords do not match.');ok=false;}
   if(!ok)return;
   const btn=document.getElementById('signupBtn');
@@ -681,9 +743,7 @@ async function continueWithGoogle(){
 
 function loginSuccess(user){
   currentUser=user;
-  // Show website content after successful login
-  document.body.classList.remove('auth-required');
-  document.body.classList.remove('auth-open');
+  document.body.style.overflow='';
   closeAuth();
   updateNavUser(user);
   startSession();
@@ -703,11 +763,8 @@ async function forgotPassword(){
   const email=document.getElementById('loginEmail').value.trim();
   if(!isValidEmail(email)){showToast('📧 Enter your email first, then tap "Forgot password".');return;}
   const{error}=await _supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});
-  if(error){
-    showToast('❌ '+error.message);
-  }else{
-    showToast('📬 Password reset link sent to '+email+'. Check your email to reset your password.');
-  }
+  if(error){showToast('❌ '+error.message);}
+  else{showToast('📬 Password reset link sent to '+email+'. Check your email.');}
 }
 
 function updateNavUser(user){
@@ -780,35 +837,117 @@ function stopSession(){
   },{passive:true})
 );
 
-// ── PASSWORD ──
+// ── PASSWORD GENERATOR ──
+function generateStrongPassword(){
+  const upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';   // no I,O (confusing)
+  const lower   = 'abcdefghjkmnpqrstuvwxyz';     // no i,l,o
+  const numbers = '23456789';                     // no 0,1
+  const special = '!@#$%^&*-_+=?';
+  const all = upper + lower + numbers + special;
+
+  // Guarantee at least one of each required class
+  let pw = [
+    upper[Math.floor(Math.random()*upper.length)],
+    upper[Math.floor(Math.random()*upper.length)],
+    lower[Math.floor(Math.random()*lower.length)],
+    lower[Math.floor(Math.random()*lower.length)],
+    numbers[Math.floor(Math.random()*numbers.length)],
+    numbers[Math.floor(Math.random()*numbers.length)],
+    special[Math.floor(Math.random()*special.length)],
+    special[Math.floor(Math.random()*special.length)],
+  ];
+  // Fill to 14 chars
+  for(let i=pw.length;i<14;i++) pw.push(all[Math.floor(Math.random()*all.length)]);
+  // Shuffle
+  for(let i=pw.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pw[i],pw[j]]=[pw[j],pw[i]];
+  }
+  return pw.join('');
+}
+
+function suggestPassword(){
+  const pw = generateStrongPassword();
+  const pill = document.getElementById('pwGeneratedPill');
+  const txt  = document.getElementById('pwGeneratedText');
+  txt.textContent = pw;
+  pill.classList.add('show');
+  // Animate the refresh icon spin
+  const btn = pill.querySelector('.pw-refresh-btn');
+  btn.style.transform='rotate(360deg)';
+  setTimeout(()=>btn.style.transform='',350);
+  pill._generated = pw;
+}
+
+function useGeneratedPassword(){
+  const pill = document.getElementById('pwGeneratedPill');
+  const pw   = pill._generated;
+  if(!pw) return;
+  const inp    = document.getElementById('signupPw');
+  const confInp= document.getElementById('confirmPw');
+  inp.value    = pw;
+  confInp.value= pw;
+  // Show password so user can see what was set
+  inp.type = 'text';
+  document.querySelector('#signupPw ~ .toggle-pw') && (document.querySelector('#signupPw').nextElementSibling.textContent='🙈');
+  checkStrength();
+  clearErr('signupPw');
+  clearErr('confirmPw');
+  pill.classList.remove('show');
+  showToast('✅ Password applied! Make sure to save it somewhere safe.');
+}
+
+
 function togglePw(id,btn){
   const inp=document.getElementById(id);
   inp.type=inp.type==='password'?'text':'password';
   btn.textContent=inp.type==='password'?'👁':'🙈';
 }
+
+function passwordMeetsAll(pw){
+  return pw.length>=8 &&
+    /[A-Z]/.test(pw) &&
+    /[a-z]/.test(pw) &&
+    /[0-9]/.test(pw) &&
+    /[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
+}
+
+function setReq(id, met){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.toggle('met', met);
+  el.querySelector('.pw-req-icon').textContent = met ? '✓' : '✓';
+}
+
 function checkStrength(){
   const pw=document.getElementById('signupPw').value;
-  const fill=document.getElementById('strengthFill');
-  const label=document.getElementById('strengthLabel');
-  const hasLength=pw.length>=8;
-  const hasUpper=/[A-Z]/.test(pw);
-  const hasLower=/[a-z]/.test(pw);
-  const hasNumber=/[0-9]/.test(pw);
-  const hasSpecial=/[!@#$%^&*()_+=\[\]{};:'"\\|,.<>\/?-]/.test(pw);
-  document.getElementById('req-length').style.color=hasLength?'var(--green)':'var(--muted)';
-  document.getElementById('req-upper').style.color=hasUpper?'var(--green)':'var(--muted)';
-  document.getElementById('req-lower').style.color=hasLower?'var(--green)':'var(--muted)';
-  document.getElementById('req-number').style.color=hasNumber?'var(--green)':'var(--muted)';
-  document.getElementById('req-special').style.color=hasSpecial?'var(--green)':'var(--muted)';
-  let score=0;
-  if(hasLength)score++;
-  if(hasUpper)score++;
-  if(hasLower)score++;
-  if(hasNumber)score++;
-  if(hasSpecial)score++;
-  const L=[{p:'0%',c:'#ef4444',t:''},{p:'20%',c:'#ef4444',t:'Weak'},{p:'40%',c:'#f59e0b',t:'Fair'},{p:'60%',c:'#3b82f6',t:'Good'},{p:'80%',c:'#10b981',t:'Very Good'},{p:'100%',c:'#22c55e',t:'Strong 🔒'}];
-  fill.style.width=L[score].p;fill.style.background=L[score].c;
-  label.textContent=L[score].t;label.style.color=L[score].c;
+  const hasLength  = pw.length >= 8;
+  const hasUpper   = /[A-Z]/.test(pw);
+  const hasLower   = /[a-z]/.test(pw);
+  const hasNumber  = /[0-9]/.test(pw);
+  const hasSpecial = /[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
+
+  setReq('req-length',  hasLength);
+  setReq('req-upper',   hasUpper);
+  setReq('req-lower',   hasLower);
+  setReq('req-number',  hasNumber);
+  setReq('req-special', hasSpecial);
+
+  const score = [hasLength,hasUpper,hasLower,hasNumber,hasSpecial].filter(Boolean).length;
+  const fill  = document.getElementById('strengthFill');
+  const label = document.getElementById('strengthLabel');
+  const levels = [
+    {p:'0%',  c:'#e5e7eb', t:''},
+    {p:'20%', c:'#ef4444', t:'Weak'},
+    {p:'40%', c:'#f59e0b', t:'Fair'},
+    {p:'60%', c:'#3b82f6', t:'Good'},
+    {p:'80%', c:'#10b981', t:'Very Good'},
+    {p:'100%',c:'#22c55e', t:'Strong 🔒'},
+  ];
+  fill.style.width      = levels[score].p;
+  fill.style.background = levels[score].c;
+  label.textContent     = levels[score].t;
+  label.style.color     = levels[score].c;
 }
 
 // ── TOAST ──
@@ -832,13 +971,13 @@ function renderProducts(filter){
       '<div class="product-price">'+p.price+'</div>'+
       (qty>0
         ?'<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;"><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',-1)">−</button><span class="qty-num" style="font-size:1rem;font-weight:700;color:var(--green);">'+qty+'</span><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',1)">+</button></div>'
-        :'<button class="add-btn" onclick="addToCart(\''+p.name+'\',\''+p.unit+'\')">+ Add to Cart</button>'
+        :'<button class="add-btn" onclick="addToCart(\''+p.name+'\',\''+p.unit+'\')" >+ Add to Cart</button>'
       )+'</div>';
   }).join('');
 }
 function filterProducts(cat,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');btn.setAttribute('data-cat',cat);renderProducts(cat);
+  btn.classList.add('active');renderProducts(cat);
 }
 function getCurrentFilter(){
   const a=document.querySelector('.tab.active');return a?(a.getAttribute('data-cat')||'all'):'all';
@@ -904,7 +1043,6 @@ function submitOrder(){
   const items=document.getElementById('items').value.trim();
   if(!fn||!phone||!items){alert('Please fill in your name, phone number, and the items you need.');return;}
   const msg=document.getElementById('successMsg');
-  msg.style.background='';msg.style.borderColor='';msg.style.color='';
   msg.textContent="✅ Order received! We'll call you on your number to confirm. Thank you for choosing Runjob Stores!";
   msg.style.display='block';setTimeout(()=>msg.style.display='none',6000);
   ['orderFirstName','orderLastName','orderPhone','delivType','payMethod','address','items'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -912,10 +1050,7 @@ function submitOrder(){
 }
 
 // ── INIT ──
-// Hide website content until authenticated
-document.body.classList.add('auth-required');
-document.getElementById('authOverlay').classList.remove('hidden');
-document.body.classList.add('auth-open');
+openAuth(false);
 
 document.querySelectorAll('.tab').forEach(btn=>{
   const txt=btn.textContent.trim().toLowerCase();
@@ -925,11 +1060,10 @@ document.querySelectorAll('.tab').forEach(btn=>{
   else if(txt.includes('pantry'))btn.setAttribute('data-cat','pantry');
   else btn.setAttribute('data-cat','all');
 });
-// Hide navUserWrap until logged in
 document.getElementById('navUserWrap').style.display='none';
 renderProducts('all');
 
-// -- Restore Supabase session --
+// Restore Supabase session
 (async()=>{
   const{data:{session}}=await _supabase.auth.getSession();
   if(session&&session.user){
@@ -938,7 +1072,7 @@ renderProducts('all');
   }
 })();
 
-// ── Google OAuth callback ──
+// Google OAuth callback
 _supabase.auth.onAuthStateChange(async(event,session)=>{
   if(event==='SIGNED_IN'&&session&&!currentUser){
     const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
