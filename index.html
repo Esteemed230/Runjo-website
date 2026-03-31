@@ -547,7 +547,7 @@
         <div class="fp-screen active" id="fpScreen1">
           <button class="fp-back-btn" onclick="closeForgotPanel()">&#8592; Back to Sign In</button>
           <div class="fp-title">&#128274; Forgot your password?</div>
-          <div class="fp-subtitle">Enter the email address linked to your account and we'll verify it before letting you set a new password.</div>
+          <div class="fp-subtitle">Enter the email address linked to your account and we'll verify it before sending a reset link.</div>
 
           <!-- Not-found banner -->
           <div class="fp-notfound-banner" id="fpNotFoundBanner">
@@ -560,7 +560,16 @@
               autocomplete="email" oninput="clearFpError()"/>
             <div class="field-error" id="fpEmailErr">Please enter a valid email address.</div>
           </div>
-          <button class="auth-submit-btn" id="fpVerifyBtn" onclick="fpVerifyEmail()">&#128269; Verify Email</button>
+          <button class="auth-submit-btn" id="fpVerifyBtn" onclick="fpVerifyEmail()">&#128233; Send Reset Link</button>
+        </div>
+
+        <!-- ── SCREEN 1.5: Check Email ── -->
+        <div class="fp-screen" id="fpScreenCheckEmail">
+          <div class="fp-success-icon">&#128231;</div>
+          <div class="fp-success-title">Check your email!</div>
+          <div class="fp-success-body">We've sent a password reset link to <strong id="fpSentEmailDisplay"></strong>. Please click the link in the email to set your new password.</div>
+          <div class="rsb-spam" style="margin-bottom:20px;">📁 <strong>Can't find it?</strong> Check your <strong>Spam</strong> or <strong>Junk</strong> folder. The link expires in 1 hour.</div>
+          <button class="auth-submit-btn" onclick="closeForgotPanel()">&#8592; Back to Sign In</button>
         </div>
 
         <!-- ── SCREEN 2: Create new password ── -->
@@ -633,8 +642,8 @@
         <div class="fp-screen" id="fpScreen3">
           <div class="fp-success-icon">&#10003;</div>
           <div class="fp-success-title">Password Updated!</div>
-          <div class="fp-success-body">Your password has been successfully changed. You can now sign in with your new password.</div>
-          <button class="auth-submit-btn" onclick="fpGoToSignIn()">&#128273; Proceed to Sign In</button>
+          <div class="fp-success-body">Your password has been successfully changed. Please sign in now using your <strong>new password</strong> to access your account.</div>
+          <button class="auth-submit-btn" onclick="fpGoToSignIn()">&#128273; Sign In with New Password</button>
         </div>
 
       </div><!-- /forgotPanel -->
@@ -1143,27 +1152,44 @@ async function fpVerifyEmail(){
     return;
   }
   const btn = document.getElementById('fpVerifyBtn');
-  btn.disabled = true; btn.textContent = '⏳ Checking…';
+  btn.disabled = true; btn.textContent = '⏳ Verifying…';
 
-  // Check if email exists in profiles table
+  // 1. Check if email exists in profiles table
   const { data: profileData, error: profileError } = await _supabase
     .from('profiles')
     .select('id')
     .eq('email', email)
     .maybeSingle();
 
-  btn.disabled = false; btn.innerHTML = '&#128269; Verify Email';
-
   if(profileError || !profileData){
-    // Email not found — show username not found banner
+    btn.disabled = false; btn.innerHTML = '&#128233; Send Reset Link';
     document.getElementById('fpNotFoundBanner').classList.add('show');
     document.getElementById('fpEmail').classList.add('error');
     return;
   }
 
-  // Email found — advance to step 2
+  // 2. Email found — Send the actual Supabase reset link
+  const { error: resetError } = await _supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname
+  });
+
+  btn.disabled = false; btn.innerHTML = '&#128233; Send Reset Link';
+
+  if(resetError){
+    showToast('❌ ' + resetError.message);
+    return;
+  }
+
+  // 3. Show the "Check Email" screen
   document.getElementById('fpNotFoundBanner').classList.remove('show');
-  fpGoToStep(2);
+  document.getElementById('fpSentEmailDisplay').textContent = email;
+  
+  // Hide all screens, show check email screen
+  ['fpScreen1','fpScreen2','fpScreen3','fpScreenCheckEmail'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.remove('active');
+  });
+  document.getElementById('fpScreenCheckEmail').classList.add('active');
 }
 
 // Password generator for reset flow
@@ -1270,14 +1296,23 @@ async function fpSubmitNewPassword(){
   const btn = document.getElementById('fpResetBtn');
   btn.disabled = true; btn.textContent = '⏳ Updating…';
 
+  // 1. Update the password
   const { error } = await _supabase.auth.updateUser({ password: pw });
-  btn.disabled = false; btn.innerHTML = '&#128274; Set New Password';
-
+  
   if(error){
+    btn.disabled = false; btn.innerHTML = '&#128274; Set New Password';
     showToast('❌ ' + error.message);
     return;
   }
-  // Advance to success screen
+
+  // 2. IMPORTANT: Sign out immediately so the user MUST log in with the new password
+  await _supabase.auth.signOut();
+  currentUser = null;
+  stopSession();
+
+  btn.disabled = false; btn.innerHTML = '&#128274; Set New Password';
+  
+  // 3. Advance to success screen
   fpGoToStep(3);
 }
 
@@ -1636,10 +1671,17 @@ _supabase.auth.onAuthStateChange(async(event,session)=>{
     document.getElementById('signupForm').style.display = 'none';
     document.querySelector('.auth-tabs').style.display = 'none';
     document.querySelector('.google-btn').style.display = 'none';
-    document.querySelector('.auth-divider').style.display = 'flex';
+    document.querySelector('.auth-divider').style.display = 'none';
+    
+    // Reset panel state and go to step 2
     fpGoToStep(2);
     document.getElementById('forgotPanel').classList.add('show');
-    showToast('🔒 Enter your new password below.');
+    
+    // Clear any previous inputs
+    document.getElementById('fpNewPw').value = '';
+    document.getElementById('fpConfirmPw').value = '';
+    
+    showToast('🔒 Link verified! Please set your new password.');
     return;
   }
   if(event==='SIGNED_IN'&&session&&!currentUser){
