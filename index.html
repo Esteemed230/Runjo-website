@@ -1581,11 +1581,17 @@ document.getElementById('tabSignup').addEventListener('click',()=>{
   }
 })();
 
-// ── AUTH STATE CHANGE — Google OAuth + Password Recovery ──
+// ── AUTH STATE CHANGE ──
+// IMPORTANT: email/password login is handled directly in handleLogin().
+// onAuthStateChange only needs to handle:
+//   1. PASSWORD_RECOVERY (reset link clicked)
+//   2. Google OAuth SIGNED_IN (redirect back from Google)
+//   3. TOKEN_REFRESHED (silent session extension — no action needed)
+// We specifically skip 'email' provider SIGNED_IN to avoid calling
+// loginSuccess() twice (once here, once in handleLogin()).
 _supabase.auth.onAuthStateChange(async(event,session)=>{
 
-  // ✅ PASSWORD_RECOVERY: user clicked the reset link in email
-  // Opens the forgot-password panel directly at Step 2 (new password screen)
+  // ── PASSWORD_RECOVERY: user clicked the reset link in their email ──
   if(event==='PASSWORD_RECOVERY'){
     openAuth(false);
     document.getElementById('loginForm').style.display='none';
@@ -1601,9 +1607,15 @@ _supabase.auth.onAuthStateChange(async(event,session)=>{
     return;
   }
 
-  // ✅ SIGNED_IN: Google OAuth or session restore
-  // Reads user_metadata so Google users and trigger-created profiles both work
-  if(event==='SIGNED_IN'&&session&&!currentUser){
+  // ── SIGNED_IN: only handle Google OAuth here ──
+  // Email/password is handled by handleLogin().
+  // Page-load session restore is handled by the getSession() IIFE below.
+  if(event==='SIGNED_IN' && session && !currentUser){
+    const provider = session.user.app_metadata?.provider || 'email';
+    // Skip email — handleLogin() already calls loginSuccess() for this
+    if(provider === 'email') return;
+
+    // Google (or any other OAuth provider)
     const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
     const meta=session.user.user_metadata||{};
     const parts=(meta.full_name||'').split(' ');
