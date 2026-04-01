@@ -308,35 +308,66 @@
     /* ── ORDER MANAGEMENT ── */
     #adminPanel{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);overflow-y:auto;padding:20px;}
     #adminPanel.show{display:flex;align-items:flex-start;justify-content:center;}
-    .admin-modal{background:white;border-radius:16px;width:100%;max-width:900px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);}
-    .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:2px solid #e5e7eb;padding-bottom:16px;}
+    .admin-modal{background:white;border-radius:16px;width:100%;max-width:1000px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);}
+    .admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:2px solid #e5e7eb;padding-bottom:16px;flex-wrap:wrap;gap:12px;}
     .admin-header h2{font-size:1.4rem;font-weight:800;color:var(--green);}
+    .admin-header-right{display:flex;align-items:center;gap:10px;}
     .admin-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);}
+    .admin-refresh-btn{background:var(--green-pale);border:1.5px solid var(--green);color:var(--green);border-radius:8px;padding:7px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+    .admin-refresh-btn:hover{background:var(--green);color:white;}
+
+    /* Realtime live dot */
+    .live-dot{display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:600;color:#16a34a;background:#dcfce7;border-radius:50px;padding:4px 10px;}
+    .live-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:#16a34a;animation:pulse-dot 1.5s infinite;}
+    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
     .orders-table{width:100%;border-collapse:collapse;}
-    .orders-table th{background:var(--green-pale);padding:12px;text-align:left;font-weight:700;color:var(--green);border-bottom:2px solid var(--green);}
-    .orders-table td{padding:12px;border-bottom:1px solid #e5e7eb;}
+    .orders-table th{background:var(--green-pale);padding:11px 12px;text-align:left;font-weight:700;color:var(--green);border-bottom:2px solid var(--green);font-size:0.82rem;}
+    .orders-table td{padding:11px 12px;border-bottom:1px solid #e5e7eb;font-size:0.85rem;vertical-align:middle;}
     .orders-table tr:hover{background:#f9fafb;}
-    .status-badge{display:inline-block;padding:6px 12px;border-radius:50px;font-size:0.75rem;font-weight:700;}
+    .status-badge{display:inline-block;padding:5px 11px;border-radius:50px;font-size:0.73rem;font-weight:700;}
     .status-received{background:#fef3c7;color:#92400e;}
     .status-packed{background:#dbeafe;color:#1e40af;}
-    .status-transport{background:#fce7f3;color:#831843;}
+    .status-in-transport{background:#fce7f3;color:#831843;}
     .status-delivered{background:#dcfce7;color:#166534;}
-    .status-dropdown{padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:0.85rem;cursor:pointer;}
-    .update-btn{background:var(--green);color:white;border:none;padding:8px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;}
-    .update-btn:hover{background:var(--green-light);}
+    .status-confirmed{background:#bbf7d0;color:#065f46;}
+    .status-dropdown{padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:0.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+    /* Customer confirmed badge in admin */
+    .confirmed-badge{display:inline-flex;align-items:center;gap:4px;background:#bbf7d0;color:#065f46;border-radius:50px;padding:4px 9px;font-size:0.72rem;font-weight:700;margin-top:4px;}
+    .pending-confirm-badge{display:inline-flex;align-items:center;gap:4px;background:#fef3c7;color:#92400e;border-radius:50px;padding:4px 9px;font-size:0.72rem;font-weight:600;}
+
+    /* ── CUSTOMER ORDER HISTORY ── */
     #orderHistory{display:none;}
     #orderHistory.show{display:block;}
-    .order-item{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;transition:all 0.2s;}
-    .order-item:hover{box-shadow:0 4px 12px rgba(0,0,0,0.08);}
-    .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-    .order-id{font-size:0.85rem;color:var(--muted);font-weight:600;}
-    .order-date{font-size:0.8rem;color:var(--muted);}
-    .order-status{display:inline-block;padding:6px 12px;border-radius:50px;font-size:0.75rem;font-weight:700;}
-    .order-details{font-size:0.9rem;color:var(--text);margin-bottom:12px;line-height:1.6;}
-    .order-total{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:12px;}
-    .confirm-delivery-btn{background:var(--green);color:white;border:none;padding:10px 16px;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;}
-    .confirm-delivery-btn:hover{background:var(--green-light);}
-    .confirm-delivery-btn:disabled{background:#ccc;cursor:not-allowed;}
+    .order-item{background:white;border:1.5px solid #e5e7eb;border-radius:16px;padding:20px;margin-bottom:16px;transition:all 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+    .order-item:hover{box-shadow:0 6px 20px rgba(0,0,0,0.08);border-color:#d1d5db;}
+    .order-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+    .order-id{font-size:0.85rem;color:var(--muted);font-weight:700;}
+    .order-date{font-size:0.78rem;color:var(--muted);margin-top:2px;}
+    .order-status-pill{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:50px;font-size:0.75rem;font-weight:700;}
+    .order-details{font-size:0.88rem;color:var(--text);margin-bottom:12px;line-height:1.7;background:#f9fafb;border-radius:10px;padding:12px 14px;}
+    .order-total{font-size:1rem;font-weight:800;color:var(--green);margin-bottom:16px;}
+
+    /* ── ORDER PROGRESS TRACKER ── */
+    .order-tracker{margin:14px 0 18px;padding:14px 16px;background:var(--green-pale);border-radius:12px;border:1px solid rgba(26,107,60,0.15);}
+    .order-tracker-title{font-size:0.75rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;}
+    .tracker-steps{display:flex;align-items:center;gap:0;}
+    .tracker-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative;}
+    .tracker-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 14px);right:calc(-50% + 14px);height:2px;background:#d1d5db;z-index:0;}
+    .tracker-step.done:not(:last-child)::after,.tracker-step.active:not(:last-child)::after{background:var(--green);}
+    .tracker-dot{width:28px;height:28px;border-radius:50%;border:2.5px solid #d1d5db;background:white;display:flex;align-items:center;justify-content:center;font-size:0.7rem;z-index:1;position:relative;transition:all 0.3s;}
+    .tracker-step.done .tracker-dot{background:var(--green);border-color:var(--green);color:white;}
+    .tracker-step.active .tracker-dot{background:var(--orange);border-color:var(--orange);color:white;box-shadow:0 0 0 4px rgba(232,87,42,0.2);}
+    .tracker-label{font-size:0.64rem;font-weight:600;color:var(--muted);text-align:center;margin-top:5px;line-height:1.3;}
+    .tracker-step.done .tracker-label{color:var(--green);}
+    .tracker-step.active .tracker-label{color:var(--orange);font-weight:700;}
+
+    /* Confirm delivery button */
+    .confirm-delivery-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 20px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s,transform 0.15s;box-shadow:0 3px 12px rgba(26,107,60,0.25);}
+    .confirm-delivery-btn:hover{background:var(--green-light);transform:translateY(-1px);}
+    .confirm-delivery-btn:disabled{background:#9ca3af;cursor:not-allowed;transform:none;box-shadow:none;}
+    .delivery-confirmed-msg{display:inline-flex;align-items:center;gap:7px;background:#dcfce7;color:#166534;border-radius:10px;padding:10px 16px;font-size:0.85rem;font-weight:700;border:1.5px solid #86efac;}
 
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -674,11 +705,34 @@
 <!-- Admin Panel -->
 <div id="adminPanel">
   <div class="admin-modal">
-    <div class="admin-header"><h2>📦 Manage Orders</h2><button class="admin-close" onclick="closeAdminPanel()">✕</button></div>
-    <table class="orders-table">
-      <thead><tr><th>Order ID</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
-      <tbody id="adminOrdersBody"></tbody>
-    </table>
+    <div class="admin-header">
+      <div>
+        <h2>📦 Manage Orders</h2>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:3px;">Update order status — customers see changes instantly</div>
+      </div>
+      <div class="admin-header-right">
+        <span class="live-dot">Live</span>
+        <button class="admin-refresh-btn" onclick="loadAdminOrders()">↻ Refresh</button>
+        <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Customer</th>
+            <th>Update Status</th>
+          </tr>
+        </thead>
+        <tbody id="adminOrdersBody"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -686,8 +740,12 @@
 <div id="orderHistory" style="padding:80px 5vw;">
   <span class="section-tag">📦 Order Tracking</span>
   <h2>My Orders</h2>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+    <span class="live-dot">Live updates</span>
+    <span style="font-size:0.82rem;color:var(--muted);">Status changes appear automatically</span>
+  </div>
   <div id="orderHistoryBody"></div>
-  <button onclick="closeOrderHistory()" style="margin-top:20px;padding:10px 20px;background:var(--muted);color:white;border:none;border-radius:8px;cursor:pointer;">← Back</button>
+  <button onclick="closeOrderHistory()" style="margin-top:20px;padding:11px 22px;background:var(--muted);color:white;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">← Back to Shop</button>
 </div>
 
 <section class="hero" id="home">
@@ -1134,28 +1192,237 @@ function isAdminUser(){return currentUser&&currentUser.email===ADMIN_EMAIL;}
 function isAdminVerified(){if(!isAdminUser())return false;if(!adminVerified)return false;if(adminVerificationTime&&Date.now()-adminVerificationTime>ADMIN_VERIFICATION_TIMEOUT){adminVerified=false;return false;}return true;}
 function showAdminVerification(){const modal=document.createElement('div');modal.id='adminVerificationModal';modal.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;';modal.innerHTML=`<div style="background:white;border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.2);"><h2 style="font-size:1.2rem;font-weight:800;color:var(--green);margin:0 0 16px 0;">🔐 Admin Verification</h2><p style="color:var(--muted);margin-bottom:20px;">Enter your password to access the admin panel.</p><input type="password" id="adminVerifyPw" placeholder="Enter your password" style="width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:0.95rem;margin-bottom:16px;box-sizing:border-box;" /><div id="adminVerifyErr" style="color:#dc2626;font-size:0.85rem;margin-bottom:12px;display:none;">Incorrect password. Please try again.</div><div style="display:flex;gap:12px;"><button onclick="verifyAdminPassword()" style="flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Verify</button><button onclick="closeAdminVerification()" style="flex:1;padding:12px;background:#e5e7eb;color:var(--text);border:none;border-radius:8px;font-weight:600;cursor:pointer;">Cancel</button></div></div>`;document.body.appendChild(modal);document.getElementById('adminVerifyPw').focus();document.getElementById('adminVerifyPw').addEventListener('keypress',(e)=>{if(e.key==='Enter')verifyAdminPassword();});}
 function closeAdminVerification(){const modal=document.getElementById('adminVerificationModal');if(modal)modal.remove();}
-async function verifyAdminPassword(){const pw=document.getElementById('adminVerifyPw').value;if(!pw){document.getElementById('adminVerifyErr').style.display='block';return;}const{error}=await _supabase.auth.signInWithPassword({email:ADMIN_EMAIL,password:pw});if(error){document.getElementById('adminVerifyErr').style.display='block';return;}adminVerified=true;adminVerificationTime=Date.now();closeAdminVerification();loadAdminOrders();document.getElementById('adminPanel').classList.add('show');}
-function openAdminPanel(){if(!isAdminUser()){showToast('🚫 Access Denied: Admin only.');return;}if(!isAdminVerified()){showAdminVerification();return;}closeDropdown();loadAdminOrders();document.getElementById('adminPanel').classList.add('show');}
-function closeAdminPanel(){document.getElementById('adminPanel').classList.remove('show');}
-async function loadAdminOrders(){if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}const{data:orders,error}=await _supabase.from('orders').select('*').order('created_at',{ascending:false});if(error){showToast('❌ Error loading orders: '+error.message);return;}const body=document.getElementById('adminOrdersBody');if(!orders||orders.length===0){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;">No orders yet.</td></tr>';return;}body.innerHTML=orders.map(o=>{const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');return '<tr><td>'+o.id.substring(0,8)+'...</td><td>'+o.customer_name+'</td><td>'+o.phone+'</td><td>'+o.items.substring(0,30)+'...</td><td>Ksh '+o.total_price+'</td><td><span class="status-badge '+statusClass+'">'+o.status+'</span></td><td><select class="status-dropdown" onchange="updateOrderStatus(\''+o.id+'\',this.value)"><option value="Received" '+(o.status==='Received'?'selected':'')+'>Received</option><option value="Packed" '+(o.status==='Packed'?'selected':'')+'>Packed</option><option value="In Transport" '+(o.status==='In Transport'?'selected':'')+'>In Transport</option><option value="Delivered" '+(o.status==='Delivered'?'selected':'')+'>Delivered</option></select></td></tr>';}).join('');}
-async function updateOrderStatus(orderId,newStatus){if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}const{error}=await _supabase.from('orders').update({status:newStatus,updated_at:new Date().toISOString()}).eq('id',orderId);if(error){showToast('❌ Error updating order: '+error.message);return;}showToast('✅ Order status updated to '+newStatus);loadAdminOrders();}
+async function verifyAdminPassword(){
+  const pw=document.getElementById('adminVerifyPw').value;
+  if(!pw){document.getElementById('adminVerifyErr').style.display='block';return;}
+  const{error}=await _supabase.auth.signInWithPassword({email:ADMIN_EMAIL,password:pw});
+  if(error){document.getElementById('adminVerifyErr').style.display='block';return;}
+  adminVerified=true;adminVerificationTime=Date.now();
+  closeAdminVerification();
+  loadAdminOrders();
+  document.getElementById('adminPanel').classList.add('show');
+  subscribeAdminOrders(); // ✅ Start realtime for admin
+}
+function openAdminPanel(){
+  if(!isAdminUser()){showToast('🚫 Access Denied: Admin only.');return;}
+  if(!isAdminVerified()){showAdminVerification();return;}
+  closeDropdown();loadAdminOrders();
+  document.getElementById('adminPanel').classList.add('show');
+  subscribeAdminOrders();
+}
+function closeAdminPanel(){
+  document.getElementById('adminPanel').classList.remove('show');
+  unsubscribeAdminOrders();
+}
+
+// ── LOAD ADMIN ORDERS — shows status + customer confirmed column ──
+async function loadAdminOrders(){
+  if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}
+  const{data:orders,error}=await _supabase.from('orders').select('*').order('created_at',{ascending:false});
+  if(error){showToast('❌ Error loading orders: '+error.message);return;}
+  const body=document.getElementById('adminOrdersBody');
+  if(!orders||orders.length===0){
+    body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:28px;color:var(--muted);">📭 No orders yet.</td></tr>';
+    return;
+  }
+  body.innerHTML=orders.map(o=>{
+    const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');
+    const date=new Date(o.created_at).toLocaleDateString('en-KE',{day:'numeric',month:'short'});
+    const confirmed=o.confirmed_by_customer||false;
+    // Customer confirmation column
+    const custCol=confirmed
+      ? '<div class="confirmed-badge">✅ Confirmed</div>'
+      : (o.status==='Delivered'
+          ? '<div class="pending-confirm-badge">⏳ Awaiting</div>'
+          : '<div style="font-size:0.75rem;color:var(--muted);">—</div>');
+    return `<tr>
+      <td><div style="font-weight:700;font-size:0.78rem;color:var(--text);">#${o.id.substring(0,8)}</div><div style="font-size:0.72rem;color:var(--muted);">${date}</div></td>
+      <td><div style="font-weight:600;">${o.customer_name}</div></td>
+      <td><a href="tel:${o.phone}" style="color:var(--green);text-decoration:none;font-weight:500;">${o.phone}</a></td>
+      <td><div style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${o.items}">${o.items.substring(0,35)}${o.items.length>35?'…':''}</div></td>
+      <td><strong>Ksh ${o.total_price}</strong></td>
+      <td><span class="status-badge ${statusClass}">${o.status}</span></td>
+      <td>${custCol}</td>
+      <td>
+        <select class="status-dropdown" onchange="updateOrderStatus('${o.id}',this.value)">
+          <option value="Received" ${o.status==='Received'?'selected':''}>📥 Received</option>
+          <option value="Packed" ${o.status==='Packed'?'selected':''}>📦 Packed</option>
+          <option value="In Transport" ${o.status==='In Transport'?'selected':''}>🚚 In Transport</option>
+          <option value="Delivered" ${o.status==='Delivered'?'selected':''}>✅ Delivered</option>
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function updateOrderStatus(orderId,newStatus){
+  if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}
+  const{error}=await _supabase.from('orders').update({status:newStatus,updated_at:new Date().toISOString()}).eq('id',orderId);
+  if(error){showToast('❌ Error updating order: '+error.message);return;}
+  showToast('✅ Status updated to '+newStatus);
+  loadAdminOrders(); // refresh admin table
+}
+
+// ── REALTIME SUBSCRIPTIONS ──
+let adminOrdersChannel=null;
+let customerOrdersChannel=null;
+
+function subscribeAdminOrders(){
+  unsubscribeAdminOrders();
+  adminOrdersChannel=_supabase
+    .channel('admin-orders-watch')
+    .on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>{
+      if(isAdminVerified())loadAdminOrders();
+    })
+    .subscribe();
+}
+function unsubscribeAdminOrders(){
+  if(adminOrdersChannel){_supabase.removeChannel(adminOrdersChannel);adminOrdersChannel=null;}
+}
+
+function subscribeCustomerOrders(){
+  if(!currentUser)return;
+  unsubscribeCustomerOrders();
+  customerOrdersChannel=_supabase
+    .channel('customer-orders-watch')
+    .on('postgres_changes',
+      {event:'UPDATE',schema:'public',table:'orders',filter:`user_id=eq.${currentUser.id}`},
+      ()=>{ renderMyOrders(); } // silently refresh customer list
+    )
+    .subscribe();
+}
+function unsubscribeCustomerOrders(){
+  if(customerOrdersChannel){_supabase.removeChannel(customerOrdersChannel);customerOrdersChannel=null;}
+}
 
 // ── CUSTOMER ORDER HISTORY ──
+let _customerOrders=[]; // cache for realtime silent refresh
+
 async function showMyOrders(){
-  if(!currentUser)return;closeDropdown();
+  if(!currentUser)return;
+  closeDropdown();
   const{data:orders,error}=await _supabase.from('orders').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
   if(error){showToast('❌ Error loading orders: '+error.message);return;}
-  const body=document.getElementById('orderHistoryBody');
-  if(!orders||orders.length===0){body.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);"><div style="font-size:2rem;margin-bottom:10px;">📦</div><p>You haven\'t placed any orders yet.</p></div>';}
-  else{body.innerHTML=orders.map(o=>{const date=new Date(o.created_at).toLocaleDateString('en-KE');const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');const isDelivered=o.status==='Delivered';const confirmed=o.confirmed_by_customer||false;return '<div class="order-item"><div class="order-header"><div><div class="order-id">Order #'+o.id.substring(0,8)+'</div><div class="order-date">'+date+'</div></div><span class="order-status '+statusClass+'">'+o.status+'</span></div><div class="order-details"><strong>Items:</strong> '+o.items+'<br/><strong>Delivery Address:</strong> '+(o.address||'Pickup at Store')+'</div><div class="order-total">Total: Ksh '+o.total_price+'</div>'+(isDelivered?'<button class="confirm-delivery-btn" onclick="confirmDelivery(\''+o.id+'\')" '+(confirmed?'disabled':'')+'>'+( confirmed?'✅ Delivery Confirmed':'👋 Confirm Delivery')+'</button>':'')+'</div>';}).join('');}
+  _customerOrders=orders||[];
+  renderMyOrders();
   document.getElementById('orderHistory').classList.add('show');
   document.getElementById('orderHistory').scrollIntoView({behavior:'smooth'});
+  subscribeCustomerOrders(); // ✅ Start realtime for this customer
 }
-function closeOrderHistory(){document.getElementById('orderHistory').classList.remove('show');document.getElementById('home').scrollIntoView({behavior:'smooth'});}
+
+async function renderMyOrders(){
+  // If called from realtime, reload data first
+  if(currentUser&&_customerOrders.length===0){
+    const{data}=await _supabase.from('orders').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+    _customerOrders=data||[];
+  }
+  const body=document.getElementById('orderHistoryBody');
+  if(!body)return;
+
+  if(_customerOrders.length===0){
+    body.innerHTML='<div style="text-align:center;padding:48px 20px;color:var(--muted);"><div style="font-size:2.5rem;margin-bottom:12px;">📭</div><p style="font-size:1rem;font-weight:600;">No orders yet</p><p style="font-size:0.85rem;margin-top:6px;">Your orders will appear here once you place one.</p></div>';
+    return;
+  }
+
+  // Status steps for the progress tracker
+  const STEPS=['Received','Packed','In Transport','Delivered'];
+  const STEP_ICONS=['📥','📦','🚚','✅'];
+  const STEP_LABELS=['Received','Packed','In Transport','Delivered'];
+
+  body.innerHTML=_customerOrders.map(o=>{
+    const date=new Date(o.created_at).toLocaleDateString('en-KE',{year:'numeric',month:'short',day:'numeric'});
+    const confirmed=o.confirmed_by_customer||false;
+    const currentStepIdx=STEPS.indexOf(o.status);
+    const isDelivered=o.status==='Delivered';
+
+    // Build status pill color
+    const pillColors={
+      'Received':  'background:#fef3c7;color:#92400e;',
+      'Packed':    'background:#dbeafe;color:#1e40af;',
+      'In Transport':'background:#fce7f3;color:#831843;',
+      'Delivered': 'background:#dcfce7;color:#166534;'
+    };
+    const pillStyle=pillColors[o.status]||'background:#f3f4f6;color:#374151;';
+
+    // Build tracker steps HTML
+    const trackerSteps=STEPS.map((step,i)=>{
+      const isDone = i < currentStepIdx;
+      const isActive = i === currentStepIdx;
+      const cls = isDone ? 'done' : isActive ? 'active' : '';
+      return `<div class="tracker-step ${cls}">
+        <div class="tracker-dot">${isDone ? '✓' : STEP_ICONS[i]}</div>
+        <div class="tracker-label">${STEP_LABELS[i]}</div>
+      </div>`;
+    }).join('');
+
+    // Customer action area
+    let actionHtml='';
+    if(isDelivered && !confirmed){
+      actionHtml=`<div style="margin-top:14px;padding:14px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:12px;">
+        <div style="font-size:0.85rem;font-weight:700;color:#92400e;margin-bottom:8px;">📬 Your order has been delivered!</div>
+        <div style="font-size:0.8rem;color:#92400e;margin-bottom:12px;">Please confirm that you received your order so we can complete it.</div>
+        <button class="confirm-delivery-btn" onclick="confirmDelivery('${o.id}')">
+          👋 Yes, I received my order!
+        </button>
+      </div>`;
+    } else if(isDelivered && confirmed){
+      actionHtml=`<div style="margin-top:14px;"><div class="delivery-confirmed-msg">✅ You confirmed delivery — Thank you for shopping with us!</div></div>`;
+    } else if(!isDelivered){
+      // Show a friendly "what's next" hint
+      const nextStep=STEPS[currentStepIdx+1];
+      if(nextStep){
+        actionHtml=`<div style="margin-top:10px;font-size:0.8rem;color:var(--muted);display:flex;align-items:center;gap:6px;">
+          <span>⏳</span> <span>Next: <strong style="color:var(--text);">${nextStep}</strong> — we'll update this automatically</span>
+        </div>`;
+      }
+    }
+
+    return `<div class="order-item">
+      <div class="order-header">
+        <div>
+          <div class="order-id">Order #${o.id.substring(0,8).toUpperCase()}</div>
+          <div class="order-date">${date}</div>
+        </div>
+        <div class="order-status-pill" style="${pillStyle}">${o.status}</div>
+      </div>
+
+      <!-- Progress tracker -->
+      <div class="order-tracker">
+        <div class="order-tracker-title">📍 Order Progress</div>
+        <div class="tracker-steps">${trackerSteps}</div>
+      </div>
+
+      <div class="order-details">
+        <strong>Items:</strong> ${o.items}<br/>
+        <strong>Delivery:</strong> ${o.address||'Pickup at Store'}<br/>
+        <strong>Payment:</strong> ${o.payment_method||'M-Pesa / Cash'}
+      </div>
+      <div class="order-total">Total: Ksh ${o.total_price}</div>
+      ${actionHtml}
+    </div>`;
+  }).join('');
+}
+
+function closeOrderHistory(){
+  document.getElementById('orderHistory').classList.remove('show');
+  unsubscribeCustomerOrders();
+  _customerOrders=[];
+  document.getElementById('home').scrollIntoView({behavior:'smooth'});
+}
+
+// ── CONFIRM DELIVERY (customer side) ──
 async function confirmDelivery(orderId){
-  const{error}=await _supabase.from('orders').update({confirmed_by_customer:true,updated_at:new Date().toISOString()}).eq('id',orderId);
-  if(error){showToast('❌ Error confirming delivery: '+error.message);return;}
-  showToast('✅ Thank you! Delivery confirmed.');showMyOrders();
+  const btn=event.target;
+  btn.disabled=true;btn.textContent='⏳ Confirming…';
+  const{error}=await _supabase.from('orders').update({
+    confirmed_by_customer:true,
+    updated_at:new Date().toISOString()
+  }).eq('id',orderId);
+  if(error){showToast('❌ Error: '+error.message);btn.disabled=false;btn.innerHTML='👋 Yes, I received my order!';return;}
+  showToast('✅ Delivery confirmed! Thank you.');
+  // Update local cache and re-render without full reload
+  _customerOrders=_customerOrders.map(o=>o.id===orderId?{...o,confirmed_by_customer:true}:o);
+  renderMyOrders();
 }
 
 // ── SESSION ──
@@ -1266,10 +1533,18 @@ function checkoutCart(){
 }
 async function submitOrder(){
   const fn=document.getElementById('orderFirstName').value.trim();const ln=document.getElementById('orderLastName').value.trim();const phone=document.getElementById('orderPhone').value.trim();const address=document.getElementById('address').value.trim();const items=document.getElementById('items').value.trim();
+  const payMethod=document.getElementById('payMethod').value;
   if(!fn||!phone||!items){alert('Please fill in your name, phone number, and the items you need.');return;}
   if(currentUser){
     const totalText=document.getElementById('cartTotal').textContent;const totalPrice=parseInt(totalText.replace(/[^0-9]/g,''))||0;
-    const{error}=await _supabase.from('orders').insert({user_id:currentUser.id,customer_name:fn+(ln?' '+ln:''),phone,address,items,total_price:totalPrice,status:'Received'});
+    const{error}=await _supabase.from('orders').insert({
+      user_id:currentUser.id,
+      customer_name:fn+(ln?' '+ln:''),
+      phone,address,items,
+      total_price:totalPrice,
+      payment_method:payMethod,
+      status:'Received'          // ← admin sees "Received" immediately
+    });
     if(error){alert('Error saving order: '+error.message);return;}
   }
   const msg=document.getElementById('successMsg');msg.textContent="✅ Order received! We'll call you on your number to confirm. Thank you for choosing Runjob Stores!";msg.style.display='block';setTimeout(()=>msg.style.display='none',6000);
