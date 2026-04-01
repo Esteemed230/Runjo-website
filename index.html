@@ -12,7 +12,6 @@
     html{scroll-behavior:smooth}
     body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
 
-    /* ── SCROLL LOCK when auth is open (works on all browsers + GitHub Pages) ── */
     html.auth-open,
     body.auth-open{
       overflow:hidden !important;
@@ -23,7 +22,6 @@
       left:0 !important;
     }
 
-    /* ── AUTH OVERLAY ── clean full-page landing screen */
     #authOverlay{
       position:fixed;inset:0;z-index:9999;
       background:var(--cream);
@@ -34,7 +32,6 @@
     }
     #authOverlay.hidden{display:none}
 
-    /* subtle leaf pattern overlay */
     #authOverlay::before{
       content:'';position:fixed;inset:0;pointer-events:none;
       background-image:
@@ -60,17 +57,8 @@
       padding:28px 36px 22px;text-align:center;flex-shrink:0;
       position:relative;overflow:hidden;
     }
-    /* decorative circle accent in header */
-    .auth-header::after{
-      content:'';position:absolute;bottom:-30px;right:-30px;
-      width:120px;height:120px;border-radius:50%;
-      background:rgba(255,255,255,0.06);pointer-events:none;
-    }
-    .auth-header::before{
-      content:'';position:absolute;top:-20px;left:-20px;
-      width:80px;height:80px;border-radius:50%;
-      background:rgba(255,255,255,0.05);pointer-events:none;
-    }
+    .auth-header::after{content:'';position:absolute;bottom:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.06);pointer-events:none;}
+    .auth-header::before{content:'';position:absolute;top:-20px;left:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;}
     .auth-header-logo{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--white);margin-bottom:6px;position:relative;z-index:1;}
     .auth-header-logo span{color:#7ee8a2}
     .auth-header p{font-size:0.83rem;color:rgba(255,255,255,0.78);line-height:1.5;position:relative;z-index:1;}
@@ -79,7 +67,6 @@
     .auth-tab{flex:1;padding:14px;font-size:0.88rem;font-weight:600;border:none;background:none;cursor:pointer;color:var(--muted);transition:all 0.2s;border-bottom:3px solid transparent;letter-spacing:0.02em}
     .auth-tab.active{color:var(--green);border-bottom-color:var(--green);background:var(--white)}
 
-    /* auth body — no overflow hidden, just normal padding */
     .auth-body{padding:28px 32px 32px;}
 
     .google-btn{width:100%;padding:13px 20px;border:1.5px solid #e2e8f0;border-radius:50px;background:var(--white);display:flex;align-items:center;justify-content:center;gap:10px;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all 0.2s;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
@@ -126,91 +113,37 @@
     .password-wrap input{padding-right:42px}
     .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;line-height:1;padding:2px}
 
-    /* ── FORGOT PASSWORD SUCCESS BANNER ── */
-    .reset-sent-banner{
-      display:none;background:linear-gradient(135deg,#ecfdf5,#d1fae5);
-      border:1.5px solid #6ee7b7;border-radius:14px;
-      padding:16px 18px;margin-bottom:16px;
-    }
+    .reset-sent-banner{display:none;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:1.5px solid #6ee7b7;border-radius:14px;padding:16px 18px;margin-bottom:16px;}
     .reset-sent-banner.show{display:block;}
     .reset-sent-banner .rsb-title{font-size:0.92rem;font-weight:700;color:#065f46;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
     .reset-sent-banner .rsb-body{font-size:0.8rem;color:#047857;line-height:1.6;}
     .reset-sent-banner .rsb-email{font-weight:700;color:#065f46;}
     .reset-sent-banner .rsb-spam{margin-top:8px;font-size:0.78rem;background:rgba(255,255,255,0.6);border-radius:8px;padding:7px 10px;color:#065f46;border:1px dashed #6ee7b7;}
 
-    /* ── SAVE PASSWORD BANNER (after signup) ── */
-    .save-pw-banner{
-      display:none;background:linear-gradient(135deg,#fffbeb,#fef3c7);
-      border:1.5px solid #fcd34d;border-radius:14px;
-      padding:14px 16px;margin-top:12px;
-    }
+    .save-pw-banner{display:none;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:14px;padding:14px 16px;margin-top:12px;}
     .save-pw-banner.show{display:block;animation:slideUp 0.3s ease;}
     .save-pw-banner .spb-title{font-size:0.85rem;font-weight:700;color:#92400e;margin-bottom:6px;}
-    .save-pw-banner .spb-box{
-      background:white;border:1px solid #fcd34d;border-radius:8px;
-      padding:8px 12px;font-family:monospace;font-size:0.88rem;
-      color:#1a1a1a;letter-spacing:0.04em;word-break:break-all;
-      display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;
-    }
-    .spb-copy-btn{
-      background:var(--green);color:white;border:none;border-radius:6px;
-      padding:4px 10px;font-size:0.73rem;font-weight:700;cursor:pointer;
-      font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;
-      transition:background 0.18s;
-    }
+    .save-pw-banner .spb-box{background:white;border:1px solid #fcd34d;border-radius:8px;padding:8px 12px;font-family:monospace;font-size:0.88rem;color:#1a1a1a;letter-spacing:0.04em;word-break:break-all;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+    .spb-copy-btn{background:var(--green);color:white;border:none;border-radius:6px;padding:4px 10px;font-size:0.73rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;transition:background 0.18s;}
     .spb-copy-btn:hover{background:var(--green-light);}
     .save-pw-banner .spb-note{font-size:0.76rem;color:#92400e;line-height:1.5;}
 
-    /* ── PASSWORD SUGGESTION always visible ── */
     .pw-suggest-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-    .pw-suggest-btn{
-      display:inline-flex;align-items:center;gap:6px;
-      background:none;border:1.5px solid var(--green);
-      color:var(--green);border-radius:50px;
-      padding:5px 13px;font-size:0.76rem;font-weight:600;
-      cursor:pointer;font-family:'DM Sans',sans-serif;
-      transition:background 0.18s,color 0.18s,transform 0.15s;
-      white-space:nowrap;
-    }
+    .pw-suggest-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px solid var(--green);color:var(--green);border-radius:50px;padding:5px 13px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.18s,color 0.18s,transform 0.15s;white-space:nowrap;}
     .pw-suggest-btn:hover{background:var(--green);color:white;transform:translateY(-1px);}
     .pw-suggest-btn svg{flex-shrink:0;}
 
-    /* generated password preview pill */
-    .pw-generated-pill{
-      display:none;align-items:center;gap:8px;
-      background:var(--green-pale);border:1.5px solid rgba(26,107,60,0.25);
-      border-radius:12px;padding:9px 13px;margin-bottom:8px;
-    }
+    .pw-generated-pill{display:none;align-items:center;gap:8px;background:var(--green-pale);border:1.5px solid rgba(26,107,60,0.25);border-radius:12px;padding:9px 13px;margin-bottom:8px;}
     .pw-generated-pill.show{display:flex;}
-    .pw-generated-text{
-      flex:1;font-size:0.82rem;font-weight:700;color:var(--green);
-      font-family:monospace;letter-spacing:0.04em;word-break:break-all;
-    }
-    .pw-use-btn{
-      background:var(--green);color:white;border:none;border-radius:8px;
-      padding:5px 12px;font-size:0.76rem;font-weight:700;cursor:pointer;
-      font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;
-      transition:background 0.18s;
-    }
+    .pw-generated-text{flex:1;font-size:0.82rem;font-weight:700;color:var(--green);font-family:monospace;letter-spacing:0.04em;word-break:break-all;}
+    .pw-use-btn{background:var(--green);color:white;border:none;border-radius:8px;padding:5px 12px;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;transition:background 0.18s;}
     .pw-use-btn:hover{background:var(--green-light);}
-    .pw-refresh-btn{
-      background:none;border:none;color:var(--green);cursor:pointer;
-      font-size:1.1rem;padding:2px;line-height:1;flex-shrink:0;
-      transition:transform 0.3s;
-    }
+    .pw-refresh-btn{background:none;border:none;color:var(--green);cursor:pointer;font-size:1.1rem;padding:2px;line-height:1;flex-shrink:0;transition:transform 0.3s;}
     .pw-refresh-btn:hover{transform:rotate(180deg);}
 
-    /* manual entry hint */
     .pw-manual-hint{font-size:0.76rem;color:var(--muted);margin-bottom:8px;padding:0 2px;}
 
-    /* ── PASSWORD REQUIREMENTS BOX ── */
-    .pw-requirements{
-      background:var(--green-pale);
-      border:1.5px solid rgba(26,107,60,0.2);
-      border-radius:12px;
-      padding:12px 14px;
-      margin-bottom:10px;
-    }
+    .pw-requirements{background:var(--green-pale);border:1.5px solid rgba(26,107,60,0.2);border-radius:12px;padding:12px 14px;margin-bottom:10px;}
     .pw-requirements p{font-size:0.78rem;font-weight:700;color:var(--green);margin-bottom:8px;}
     .pw-req-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;}
     .pw-req-item{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);transition:color 0.25s;}
@@ -231,8 +164,6 @@
     .nav-links{display:flex;gap:2rem;list-style:none}
     .nav-links a{text-decoration:none;color:var(--text);font-size:0.9rem;font-weight:500;transition:color 0.2s}
     .nav-links a:hover{color:var(--green)}
-    .nav-cta{background:var(--green);color:var(--white);border:none;padding:10px 22px;border-radius:50px;font-size:0.85rem;font-weight:500;cursor:pointer;transition:background 0.2s,transform 0.15s;text-decoration:none}
-    .nav-cta:hover{background:var(--green-light);transform:translateY(-1px)}
     .nav-right{display:flex;align-items:center;gap:1rem;position:relative}
     .cart-wrap{position:relative;display:inline-block}
     .cart-count{position:absolute;top:-8px;right:-8px;background:var(--orange);color:var(--white);width:20px;height:20px;border-radius:50%;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -348,93 +279,33 @@
     .footer-col a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.85rem;transition:color 0.2s}
     .footer-col a:hover{color:var(--white)}
     .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,0.1);padding-top:2rem;font-size:0.8rem;opacity:0.7}
-    /* ── FORGOT PASSWORD MULTI-STEP PANEL ── */
-    #forgotPanel{
-      display:none;
-      animation:slideUp 0.32s cubic-bezier(.22,1,.36,1);
-    }
-    #forgotPanel.show{display:block;}
 
-    /* Step indicator */
-    .fp-steps{
-      display:flex;align-items:center;justify-content:center;
-      gap:0;margin-bottom:24px;
-    }
-    .fp-step{
-      display:flex;flex-direction:column;align-items:center;gap:4px;
-      flex:1;
-    }
-    .fp-step-circle{
-      width:32px;height:32px;border-radius:50%;
-      border:2px solid #e2e8f0;
-      background:var(--white);
-      display:flex;align-items:center;justify-content:center;
-      font-size:0.78rem;font-weight:700;color:var(--muted);
-      transition:all 0.3s;
-      position:relative;z-index:1;
-    }
-    .fp-step.active .fp-step-circle{
-      background:var(--green);border-color:var(--green);color:white;
-    }
-    .fp-step.done .fp-step-circle{
-      background:var(--green-light);border-color:var(--green-light);color:white;
-    }
-    .fp-step-label{
-      font-size:0.68rem;font-weight:600;color:var(--muted);text-align:center;
-      white-space:nowrap;
-    }
+    /* ── FORGOT PASSWORD MULTI-STEP PANEL ── */
+    #forgotPanel{display:none;animation:slideUp 0.32s cubic-bezier(.22,1,.36,1);}
+    #forgotPanel.show{display:block;}
+    .fp-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:24px;}
+    .fp-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+    .fp-step-circle{width:32px;height:32px;border-radius:50%;border:2px solid #e2e8f0;background:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:var(--muted);transition:all 0.3s;position:relative;z-index:1;}
+    .fp-step.active .fp-step-circle{background:var(--green);border-color:var(--green);color:white;}
+    .fp-step.done .fp-step-circle{background:var(--green-light);border-color:var(--green-light);color:white;}
+    .fp-step-label{font-size:0.68rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap;}
     .fp-step.active .fp-step-label{color:var(--green);}
     .fp-step.done .fp-step-label{color:var(--green-light);}
-    .fp-connector{
-      flex:1;height:2px;background:#e2e8f0;margin-bottom:18px;transition:background 0.3s;
-    }
+    .fp-connector{flex:1;height:2px;background:#e2e8f0;margin-bottom:18px;transition:background 0.3s;}
     .fp-connector.done{background:var(--green-light);}
-
-    /* individual step screens */
     .fp-screen{display:none;}
     .fp-screen.active{display:block;animation:fadeIn 0.25s ease;}
-
-    .fp-title{
-      font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:4px;
-    }
-    .fp-subtitle{
-      font-size:0.8rem;color:var(--muted);margin-bottom:18px;line-height:1.5;
-    }
-
-    /* back link */
-    .fp-back-btn{
-      background:none;border:none;color:var(--green);font-size:0.8rem;
-      font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
-      display:flex;align-items:center;gap:4px;padding:0;margin-bottom:16px;
-    }
+    .fp-title{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:4px;}
+    .fp-subtitle{font-size:0.8rem;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+    .fp-back-btn{background:none;border:none;color:var(--green);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:4px;padding:0;margin-bottom:16px;}
     .fp-back-btn:hover{text-decoration:underline;}
-
-    /* success screen */
-    .fp-success-icon{
-      width:64px;height:64px;border-radius:50%;
-      background:linear-gradient(135deg,#ecfdf5,#d1fae5);
-      border:2px solid #6ee7b7;
-      display:flex;align-items:center;justify-content:center;
-      font-size:2rem;margin:0 auto 16px;
-    }
-    .fp-success-title{
-      font-size:1.1rem;font-weight:800;color:#065f46;text-align:center;margin-bottom:8px;
-    }
-    .fp-success-body{
-      font-size:0.82rem;color:#047857;text-align:center;line-height:1.6;margin-bottom:20px;
-    }
-
-    /* not-found error banner */
-    .fp-notfound-banner{
-      display:none;
-      background:linear-gradient(135deg,#fef2f2,#fee2e2);
-      border:1.5px solid #fca5a5;border-radius:12px;
-      padding:12px 14px;margin-bottom:14px;
-      font-size:0.82rem;color:#991b1b;line-height:1.5;
-    }
+    .fp-success-icon{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:2px solid #6ee7b7;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 16px;}
+    .fp-success-title{font-size:1.1rem;font-weight:800;color:#065f46;text-align:center;margin-bottom:8px;}
+    .fp-success-body{font-size:0.82rem;color:#047857;text-align:center;line-height:1.6;margin-bottom:20px;}
+    .fp-notfound-banner{display:none;background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1.5px solid #fca5a5;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:0.82rem;color:#991b1b;line-height:1.5;}
     .fp-notfound-banner.show{display:block;animation:fadeIn 0.2s ease;}
 
-    /* ── ORDER MANAGEMENT STYLES ── */
+    /* ── ORDER MANAGEMENT ── */
     #adminPanel{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);overflow-y:auto;padding:20px;}
     #adminPanel.show{display:flex;align-items:flex-start;justify-content:center;}
     .admin-modal{background:white;border-radius:16px;width:100%;max-width:900px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.15);}
@@ -453,8 +324,6 @@
     .status-dropdown{padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:0.85rem;cursor:pointer;}
     .update-btn{background:var(--green);color:white;border:none;padding:8px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;}
     .update-btn:hover{background:var(--green-light);}
-
-    /* Order History for Customers */
     #orderHistory{display:none;}
     #orderHistory.show{display:block;}
     .order-item{background:white;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;transition:all 0.2s;}
@@ -484,9 +353,7 @@
       .auth-body{padding:20px 18px 28px}
       #sessionTimer{bottom:90px}
     }
-    @media(max-width:400px){
-      .form-row-3{grid-template-columns:1fr}
-    }
+    @media(max-width:400px){.form-row-3{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -520,34 +387,26 @@
 
       <!-- ── LOGIN FORM ── -->
       <div id="loginForm">
-        <!-- Forgot password success banner -->
         <div class="reset-sent-banner" id="resetSentBanner">
           <div class="rsb-title">📬 Reset link sent!</div>
-          <div class="rsb-body">
-            We've emailed a password reset link to <span class="rsb-email" id="resetSentEmail"></span>
-            <div class="rsb-spam">📁 <strong>Can't find it?</strong> Check your <strong>Spam</strong> or <strong>Junk</strong> folder — it may have landed there. The link expires in 1 hour.</div>
-          </div>
+          <div class="rsb-body">We've emailed a password reset link to <span class="rsb-email" id="resetSentEmail"></span><div class="rsb-spam">📁 <strong>Can't find it?</strong> Check your <strong>Spam</strong> or <strong>Junk</strong> folder — it may have landed there. The link expires in 1 hour.</div></div>
         </div>
         <div class="auth-form-group">
           <label>Email Address</label>
-          <input type="email" id="loginEmail" placeholder="you@example.com"
-            autocomplete="email" oninput="clearErr('loginEmail');hideResetBanner()"/>
+          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" oninput="clearErr('loginEmail');hideResetBanner()"/>
           <div class="field-error" id="loginEmailErr">Please enter a valid email.</div>
         </div>
         <div class="auth-form-group">
           <label>Password</label>
           <div class="password-wrap">
-            <input type="password" id="loginPw" placeholder="Your password"
-              autocomplete="current-password" oninput="clearErr('loginPw')"/>
+            <input type="password" id="loginPw" placeholder="Your password" autocomplete="current-password" oninput="clearErr('loginPw')"/>
             <button type="button" class="toggle-pw" onclick="togglePw('loginPw',this)">👁</button>
           </div>
           <div class="field-error" id="loginPwErr">Password is required.</div>
         </div>
-        <!-- Remember me + forgot password row -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:-4px;margin-bottom:10px;">
           <label style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--muted);cursor:pointer;font-weight:400;">
-            <input type="checkbox" id="rememberMe" style="width:15px;height:15px;accent-color:var(--green);cursor:pointer;"/>
-            Remember me
+            <input type="checkbox" id="rememberMe" style="width:15px;height:15px;accent-color:var(--green);cursor:pointer;"/> Remember me
           </label>
           <button onclick="openForgotPanel()" style="background:none;border:none;color:var(--green);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">Forgot password?</button>
         </div>
@@ -555,65 +414,48 @@
         <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:14px;">
           No account? <button onclick="switchTab('signup')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Create one →</button>
         </p>
-      </div><!-- /loginForm -->
+      </div>
 
-      <!-- ══════════════ FORGOT PASSWORD PANEL (multi-step) ══════════════ -->
+      <!-- ══ FORGOT PASSWORD PANEL ══ -->
       <div id="forgotPanel">
-
-        <!-- Step progress indicator -->
         <div class="fp-steps">
-          <div class="fp-step active" id="fpStep1">
-            <div class="fp-step-circle">1</div>
-            <div class="fp-step-label">Verify Email</div>
-          </div>
+          <div class="fp-step active" id="fpStep1"><div class="fp-step-circle">1</div><div class="fp-step-label">Verify Email</div></div>
           <div class="fp-connector" id="fpConn1"></div>
-          <div class="fp-step" id="fpStep2">
-            <div class="fp-step-circle">2</div>
-            <div class="fp-step-label">New Password</div>
-          </div>
+          <div class="fp-step" id="fpStep2"><div class="fp-step-circle">2</div><div class="fp-step-label">New Password</div></div>
           <div class="fp-connector" id="fpConn2"></div>
-          <div class="fp-step" id="fpStep3">
-            <div class="fp-step-circle">3</div>
-            <div class="fp-step-label">Done</div>
-          </div>
+          <div class="fp-step" id="fpStep3"><div class="fp-step-circle">3</div><div class="fp-step-label">Done</div></div>
         </div>
 
-        <!-- ── SCREEN 1: Enter email ── -->
+        <!-- Screen 1: Enter email -->
         <div class="fp-screen active" id="fpScreen1">
-          <button class="fp-back-btn" onclick="closeForgotPanel()">&#8592; Back to Sign In</button>
-          <div class="fp-title">&#128274; Forgot your password?</div>
+          <button class="fp-back-btn" onclick="closeForgotPanel()">← Back to Sign In</button>
+          <div class="fp-title">🔒 Forgot your password?</div>
           <div class="fp-subtitle">Enter the email address linked to your account and we'll verify it before sending a reset link.</div>
-
-          <!-- Not-found banner -->
           <div class="fp-notfound-banner" id="fpNotFoundBanner">
-            &#128683; <strong>Username not found.</strong> No account is registered with this email address. Please check the email or <button onclick="closeForgotPanel();switchTab('signup')" style="background:none;border:none;color:#991b1b;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;text-decoration:underline;padding:0;">create a new account</button>.
+            🚫 <strong>Username not found.</strong> No account is registered with this email address. Please check the email or <button onclick="closeForgotPanel();switchTab('signup')" style="background:none;border:none;color:#991b1b;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;text-decoration:underline;padding:0;">create a new account</button>.
           </div>
-
           <div class="auth-form-group">
             <label>Email Address</label>
-            <input type="email" id="fpEmail" placeholder="you@example.com"
-              autocomplete="email" oninput="clearFpError()"/>
+            <input type="email" id="fpEmail" placeholder="you@example.com" autocomplete="email" oninput="clearFpError()"/>
             <div class="field-error" id="fpEmailErr">Please enter a valid email address.</div>
           </div>
-          <button class="auth-submit-btn" id="fpVerifyBtn" onclick="fpVerifyEmail()">&#128233; Send Reset Link</button>
+          <button class="auth-submit-btn" id="fpVerifyBtn" onclick="fpVerifyEmail()">📨 Send Reset Link</button>
         </div>
 
-        <!-- ── SCREEN 1.5: Check Email ── -->
+        <!-- Screen 1.5: Check Email -->
         <div class="fp-screen" id="fpScreenCheckEmail">
-          <div class="fp-success-icon">&#128231;</div>
+          <div class="fp-success-icon">📧</div>
           <div class="fp-success-title">Check your email!</div>
           <div class="fp-success-body">We've sent a password reset link to <strong id="fpSentEmailDisplay"></strong>. Please click the link in the email to set your new password.</div>
           <div class="rsb-spam" style="margin-bottom:20px;">📁 <strong>Can't find it?</strong> Check your <strong>Spam</strong> or <strong>Junk</strong> folder. The link expires in 1 hour.</div>
-          <button class="auth-submit-btn" onclick="closeForgotPanel()">&#8592; Back to Sign In</button>
+          <button class="auth-submit-btn" onclick="closeForgotPanel()">← Back to Sign In</button>
         </div>
 
-        <!-- ── SCREEN 2: Create new password ── -->
+        <!-- Screen 2: Create new password -->
         <div class="fp-screen" id="fpScreen2">
-          <button class="fp-back-btn" onclick="fpGoToStep(1)">&#8592; Back</button>
-          <div class="fp-title">&#128273; Create New Password</div>
+          <button class="fp-back-btn" onclick="fpGoToStep(1)">← Back</button>
+          <div class="fp-title">🔑 Create New Password</div>
           <div class="fp-subtitle">Choose a strong password for your account. Use the generator below or type your own.</div>
-
-          <!-- Optional password generator (only here and on signup) -->
           <div class="auth-form-group">
             <div class="pw-suggest-row">
               <label style="margin-bottom:0;">New Password *</label>
@@ -622,16 +464,14 @@
                 Generate Password
               </button>
             </div>
-            <!-- Generated password pill (optional, only shown when Generate is clicked) -->
             <div class="pw-generated-pill" id="fpGeneratedPill">
               <span class="pw-generated-text" id="fpGeneratedText"></span>
               <button type="button" class="pw-refresh-btn" onclick="suggestResetPassword()" title="Generate another">↻</button>
               <button type="button" class="pw-use-btn" onclick="useResetGeneratedPassword()">Use this</button>
             </div>
-            <p class="pw-manual-hint">&#9999;&#65039; Or type your own password below:</p>
-            <!-- Password requirements -->
+            <p class="pw-manual-hint">✏️ Or type your own password below:</p>
             <div class="pw-requirements">
-              <p>&#128272; Your password must include:</p>
+              <p>🔐 Your password must include:</p>
               <ul class="pw-req-list">
                 <li class="pw-req-item" id="fp-req-length"><span class="pw-req-icon">✓</span> At least 8 characters</li>
                 <li class="pw-req-item" id="fp-req-upper"><span class="pw-req-icon">✓</span> One uppercase letter (A–Z)</li>
@@ -641,46 +481,36 @@
               </ul>
             </div>
             <div class="password-wrap">
-              <input type="password" id="fpNewPw" placeholder="Create a strong password"
-                autocomplete="new-password" oninput="checkResetStrength();clearFpPwError()"/>
-              <button type="button" class="toggle-pw" onclick="togglePw('fpNewPw',this)">&#128065;</button>
+              <input type="password" id="fpNewPw" placeholder="Create a strong password" autocomplete="new-password" oninput="checkResetStrength();clearFpPwError()"/>
+              <button type="button" class="toggle-pw" onclick="togglePw('fpNewPw',this)">👁</button>
             </div>
             <div class="strength-bar"><div class="strength-fill" id="fpStrengthFill"></div></div>
             <div class="strength-label" id="fpStrengthLabel"></div>
             <div class="field-error" id="fpNewPwErr">Password must meet all requirements above.</div>
           </div>
-
           <div class="auth-form-group">
             <label>Confirm New Password *</label>
             <div class="password-wrap">
-              <input type="password" id="fpConfirmPw" placeholder="Repeat your new password"
-                autocomplete="new-password" oninput="clearFpConfirmError()"/>
-              <button type="button" class="toggle-pw" onclick="togglePw('fpConfirmPw',this)">&#128065;</button>
+              <input type="password" id="fpConfirmPw" placeholder="Repeat your new password" autocomplete="new-password" oninput="clearFpConfirmError()"/>
+              <button type="button" class="toggle-pw" onclick="togglePw('fpConfirmPw',this)">👁</button>
             </div>
             <div class="field-error" id="fpConfirmPwErr">Passwords do not match.</div>
           </div>
-
-          <!-- Save password reminder -->
           <div class="save-pw-banner" id="fpSavePwBanner">
-            <div class="spb-title">&#128190; Save your new password before continuing!</div>
-            <div class="spb-box">
-              <span id="fpSavePwText">—</span>
-              <button class="spb-copy-btn" onclick="copyResetPassword()">Copy</button>
-            </div>
-            <div class="spb-note">&#128204; Store this in a safe place. You'll need it to sign in.</div>
+            <div class="spb-title">💾 Save your new password before continuing!</div>
+            <div class="spb-box"><span id="fpSavePwText">—</span><button class="spb-copy-btn" onclick="copyResetPassword()">Copy</button></div>
+            <div class="spb-note">📌 Store this in a safe place. You'll need it to sign in.</div>
           </div>
-
-          <button class="auth-submit-btn" id="fpResetBtn" onclick="fpSubmitNewPassword()">&#128274; Set New Password</button>
+          <button class="auth-submit-btn" id="fpResetBtn" onclick="fpSubmitNewPassword()">🔒 Set New Password</button>
         </div>
 
-        <!-- ── SCREEN 3: Success ── -->
+        <!-- Screen 3: Success -->
         <div class="fp-screen" id="fpScreen3">
-          <div class="fp-success-icon">&#10003;</div>
+          <div class="fp-success-icon">✓</div>
           <div class="fp-success-title">Password Updated!</div>
           <div class="fp-success-body">Your password has been successfully changed. Please sign in now using your <strong>new password</strong> to access your account.</div>
-          <button class="auth-submit-btn" onclick="fpGoToSignIn()">&#128273; Sign In with New Password</button>
+          <button class="auth-submit-btn" onclick="fpGoToSignIn()">🔑 Sign In with New Password</button>
         </div>
-
       </div><!-- /forgotPanel -->
 
       <!-- ── SIGNUP FORM ── -->
@@ -709,8 +539,6 @@
           <input type="email" id="signupEmail" placeholder="you@example.com" oninput="clearErr('signupEmail')"/>
           <div class="field-error" id="signupEmailErr">Enter a valid email address.</div>
         </div>
-
-        <!-- PASSWORD with live requirements -->
         <div class="auth-form-group">
           <div class="pw-suggest-row">
             <label style="margin-bottom:0;">Password *</label>
@@ -719,13 +547,11 @@
               Generate Strong Password
             </button>
           </div>
-          <!-- Always-visible generated password pill -->
           <div class="pw-generated-pill" id="pwGeneratedPill">
             <span class="pw-generated-text" id="pwGeneratedText"></span>
             <button type="button" class="pw-refresh-btn" onclick="suggestPassword()" title="Generate another">↻</button>
             <button type="button" class="pw-use-btn" onclick="useGeneratedPassword()">Use this</button>
           </div>
-          <!-- Manual entry hint -->
           <p class="pw-manual-hint">✏️ Or type your own password below — it must meet all requirements:</p>
           <div class="pw-requirements">
             <p>🔐 Your password must include:</p>
@@ -738,43 +564,34 @@
             </ul>
           </div>
           <div class="password-wrap">
-            <input type="password" id="signupPw" placeholder="Create a strong password"
-              autocomplete="new-password" oninput="checkStrength();clearErr('signupPw')"/>
+            <input type="password" id="signupPw" placeholder="Create a strong password" autocomplete="new-password" oninput="checkStrength();clearErr('signupPw')"/>
             <button type="button" class="toggle-pw" onclick="togglePw('signupPw',this)">👁</button>
           </div>
           <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
           <div class="strength-label" id="strengthLabel"></div>
           <div class="field-error" id="signupPwErr">Password must meet all requirements above.</div>
         </div>
-
         <div class="auth-form-group">
           <label>Confirm Password *</label>
           <div class="password-wrap">
-            <input type="password" id="confirmPw" placeholder="Repeat password"
-              autocomplete="new-password" oninput="clearErr('confirmPw')"/>
+            <input type="password" id="confirmPw" placeholder="Repeat password" autocomplete="new-password" oninput="clearErr('confirmPw')"/>
             <button type="button" class="toggle-pw" onclick="togglePw('confirmPw',this)">👁</button>
           </div>
           <div class="field-error" id="confirmPwErr">Passwords do not match.</div>
         </div>
-
-        <!-- Save password reminder banner (shown after successful account creation) -->
         <div class="save-pw-banner" id="savePwBanner">
           <div class="spb-title">💾 Save your password before continuing!</div>
-          <div class="spb-box">
-            <span id="savePwText">—</span>
-            <button class="spb-copy-btn" onclick="copyPassword()">Copy</button>
-          </div>
+          <div class="spb-box"><span id="savePwText">—</span><button class="spb-copy-btn" onclick="copyPassword()">Copy</button></div>
           <div class="spb-note">📌 Store this in a safe place (notes app, password manager, or written down). You'll need it to sign in next time.</div>
         </div>
-
         <button class="auth-submit-btn" id="signupBtn" onclick="handleSignup()">✨ Create Account</button>
         <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:14px;">
           Already have an account? <button onclick="switchTab('login')" style="background:none;border:none;color:var(--green);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign in →</button>
         </p>
       </div>
-    </div><!-- /auth-body -->
-  </div><!-- /auth-modal -->
-</div><!-- /authOverlay -->
+    </div>
+  </div>
+</div>
 
 <div id="sessionTimer" class="hidden">⏱ <span id="timerDisplay">60:00</span></div>
 <div id="toast"></div>
@@ -839,61 +656,33 @@
       <h2 style="font-size:1.4rem;font-weight:800;color:var(--green);margin:0;">👤 My Profile</h2>
       <button onclick="closeProfile()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);">✕</button>
     </div>
-    
     <div style="text-align:center;margin-bottom:24px;">
       <div id="profileAvatarLarge" style="width:80px;height:80px;border-radius:50%;background:var(--green);color:white;font-size:32px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">?</div>
       <div id="profileUsername" style="font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:4px;">—</div>
       <div id="profileEmail" style="font-size:0.9rem;color:var(--muted);">—</div>
     </div>
-    
     <div style="background:#f9fafb;border-radius:12px;padding:16px;margin-bottom:20px;">
-      <div style="margin-bottom:16px;">
-        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Full Name</div>
-        <div id="profileFullName" style="font-size:0.95rem;color:var(--text);">—</div>
-      </div>
-      <div style="margin-bottom:16px;">
-        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Email Address</div>
-        <div id="profileEmailDetail" style="font-size:0.95rem;color:var(--text);">—</div>
-      </div>
-      <div style="margin-bottom:16px;">
-        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Phone Number</div>
-        <div id="profilePhone" style="font-size:0.95rem;color:var(--text);">—</div>
-      </div>
-      <div>
-        <div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Date of Birth</div>
-        <div id="profileDOB" style="font-size:0.95rem;color:var(--text);">—</div>
-      </div>
+      <div style="margin-bottom:16px;"><div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Full Name</div><div id="profileFullName" style="font-size:0.95rem;color:var(--text);">—</div></div>
+      <div style="margin-bottom:16px;"><div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Email Address</div><div id="profileEmailDetail" style="font-size:0.95rem;color:var(--text);">—</div></div>
+      <div style="margin-bottom:16px;"><div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Phone Number</div><div id="profilePhone" style="font-size:0.95rem;color:var(--text);">—</div></div>
+      <div><div style="font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Date of Birth</div><div id="profileDOB" style="font-size:0.95rem;color:var(--text);">—</div></div>
     </div>
-    
     <button onclick="closeProfile()" style="width:100%;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;">← Back</button>
   </div>
 </div>
 
-<!-- Admin Panel (Hidden by default) -->
+<!-- Admin Panel -->
 <div id="adminPanel">
   <div class="admin-modal">
-    <div class="admin-header">
-      <h2>📦 Manage Orders</h2>
-      <button class="admin-close" onclick="closeAdminPanel()">✕</button>
-    </div>
+    <div class="admin-header"><h2>📦 Manage Orders</h2><button class="admin-close" onclick="closeAdminPanel()">✕</button></div>
     <table class="orders-table">
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Phone</th>
-          <th>Items</th>
-          <th>Total</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Order ID</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
       <tbody id="adminOrdersBody"></tbody>
     </table>
   </div>
 </div>
 
-<!-- Order History for Customers (shown in profile area) -->
+<!-- Order History -->
 <div id="orderHistory" style="padding:80px 5vw;">
   <span class="section-tag">📦 Order Tracking</span>
   <h2>My Orders</h2>
@@ -1018,7 +807,8 @@ const SUPABASE_URL  = 'https://ztteqanmfwefeobsqekh.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp0dGVxYW5tZndlZmVvYnNxZWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MDQwNzcsImV4cCI6MjA5MDQ4MDA3N30.bFZSvZmnc4UmP2vzIRRw0jwDgrd5CYx97WjT3gTgr08';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-let currentUser = null;
+const SESSION_DURATION = 3600000; // 1 hour ms
+let currentUser = null, sessionTimeout = null;
 
 const products = [
   {name:"Tomatoes",unit:"per piece",price:"Ksh 10",cost:10,emoji:"🍅",cat:"vegetables",badge:"Ksh 10!"},
@@ -1047,21 +837,18 @@ let cart = {};
 
 // ── AUTH ──
 function switchTab(tab){
-  // Hide forgot panel if open
   document.getElementById('forgotPanel').classList.remove('show');
-  document.querySelector('.auth-tabs').style.display = 'flex';
-  document.querySelector('.google-btn').style.display = 'flex';
-  document.querySelector('.auth-divider').style.display = 'flex';
+  document.querySelector('.auth-tabs').style.display='flex';
+  document.querySelector('.google-btn').style.display='flex';
+  document.querySelector('.auth-divider').style.display='flex';
   document.getElementById('loginForm').style.display  = tab==='login'  ? 'block':'none';
   document.getElementById('signupForm').style.display = tab==='signup' ? 'block':'none';
   document.getElementById('tabLogin').classList.toggle('active',  tab==='login');
   document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
-  // Scroll the overlay back to top when switching tabs
   document.getElementById('authOverlay').scrollTop = 0;
 }
-
 function openAuth(isTimeout){
-  document.getElementById('sessionBanner').classList.toggle('hidden', !isTimeout);
+  document.getElementById('sessionBanner').classList.toggle('hidden',!isTimeout);
   document.getElementById('authOverlay').classList.remove('hidden');
   document.documentElement.classList.add('auth-open');
   document.body.classList.add('auth-open');
@@ -1072,18 +859,10 @@ function closeAuth(){
   document.documentElement.classList.remove('auth-open');
   document.body.classList.remove('auth-open');
 }
-
 function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 function isValidPhone(p){return /^(07|01)\d{8}$/.test(p.replace(/\s/g,'').replace('+254','0'));}
-function showErr(id,msg){
-  const el=document.getElementById(id+'Err');
-  if(el){if(msg)el.textContent=msg;el.classList.add('show');}
-  const inp=document.getElementById(id);if(inp)inp.classList.add('error');
-}
-function clearErr(id){
-  const el=document.getElementById(id+'Err');if(el)el.classList.remove('show');
-  const inp=document.getElementById(id);if(inp)inp.classList.remove('error');
-}
+function showErr(id,msg){const el=document.getElementById(id+'Err');if(el){if(msg)el.textContent=msg;el.classList.add('show');}const inp=document.getElementById(id);if(inp)inp.classList.add('error');}
+function clearErr(id){const el=document.getElementById(id+'Err');if(el)el.classList.remove('show');const inp=document.getElementById(id);if(inp)inp.classList.remove('error');}
 
 async function handleLogin(){
   const email=document.getElementById('loginEmail').value.trim();
@@ -1098,16 +877,12 @@ async function handleLogin(){
   const{data,error}=await _supabase.auth.signInWithPassword({email,password:pw});
   btn.disabled=false;btn.textContent='🔑 Sign In';
   if(error){showErr('loginPw','Incorrect email or password.');return;}
-  // Save email if remember me checked
-  if(remember){
-    try{localStorage.setItem('runjob_saved_email',email);}catch(e){}
-  } else {
-    try{localStorage.removeItem('runjob_saved_email');}catch(e){}
-  }
+  try{if(remember){localStorage.setItem('runjob_saved_email',email);}else{localStorage.removeItem('runjob_saved_email');}}catch(e){}
   const{data:p}=await _supabase.from('profiles').select('*').eq('id',data.user.id).single();
   loginSuccess({...(p||{}),firstName:p?.first_name||'',middleName:p?.middle_name||'',lastName:p?.last_name||'',email:data.user.email,id:data.user.id});
 }
 
+// ── SIGNUP — trigger handles profile insert, data passed via user_metadata ──
 async function handleSignup(){
   const fn=document.getElementById('firstName').value.trim();
   const mn=document.getElementById('middleName').value.trim();
@@ -1127,28 +902,36 @@ async function handleSignup(){
   if(!ok)return;
   const btn=document.getElementById('signupBtn');
   btn.disabled=true;btn.textContent='⏳ Creating account…';
+
+  // ✅ Pass all profile fields as user_metadata so the
+  // handle_new_user_sync trigger saves them to public.profiles automatically.
+  // No manual insert needed — avoids all RLS and conflict issues.
   const{data,error}=await _supabase.auth.signUp({
-    email,password:pw,
-    options:{emailRedirectTo:'https://esteemed230.github.io/Runjo-website'}
+    email,
+    password:pw,
+    options:{
+      emailRedirectTo:'https://esteemed230.github.io/Runjo-website',
+      data:{
+        first_name:  fn,
+        middle_name: mn,
+        last_name:   ln,
+        phone:       phone,
+        dob:         dob
+      }
+    }
   });
+
+  btn.disabled=false;btn.textContent='✨ Create Account';
+
   if(error){
-    btn.disabled=false;btn.textContent='✨ Create Account';
     showErr('signupEmail',error.message.toLowerCase().includes('already')?'An account with this email already exists.':error.message);
     return;
   }
-  const{error:pe}=await _supabase.from('profiles').insert({
-    id:data.user.id,first_name:fn,middle_name:mn,last_name:ln,
-    dob,phone,email,created_at:new Date().toISOString()
-  });
-  btn.disabled=false;btn.textContent='✨ Create Account';
-  if(pe){showToast('⚠️ Profile save failed: '+pe.message);return;}
 
-  // Show save-password banner so user can record their password
+  // ✅ Trigger handles the profile row — just show the save-password banner
   document.getElementById('savePwText').textContent=pw;
   document.getElementById('savePwBanner').classList.add('show');
-
   showToast('📧 Confirmation email sent! Check your inbox.');
-  // After 6 seconds switch to login with email prefilled
   setTimeout(()=>{
     switchTab('login');
     document.getElementById('loginEmail').value=email;
@@ -1173,304 +956,163 @@ function loginSuccess(user){
 }
 
 async function signOut(){
-  await _supabase.auth.signOut();currentUser=null;stopSession();closeDropdown();
+  await _supabase.auth.signOut();
+  currentUser=null;stopSession();closeDropdown();
   document.getElementById('navSigninBtn').style.display='block';
   document.getElementById('navUserWrap').style.display='none';
-  document.getElementById('sessionTimer').classList.add('hidden');
   openAuth(false);
 }
 
 // ── FORGOT PASSWORD PANEL ──
 function openForgotPanel(){
-  // Pre-fill email from login field if valid
-  const loginEmail = document.getElementById('loginEmail').value.trim();
-  if(isValidEmail(loginEmail)){
-    document.getElementById('fpEmail').value = loginEmail;
-  }
-  // Hide login/signup forms and tabs, show panel
-  document.getElementById('loginForm').style.display = 'none';
-  document.getElementById('signupForm').style.display = 'none';
-  document.querySelector('.auth-tabs').style.display = 'none';
-  document.querySelector('.google-btn').style.display = 'none';
-  document.querySelector('.auth-divider').style.display = 'none';
+  const loginEmail=document.getElementById('loginEmail').value.trim();
+  if(isValidEmail(loginEmail)){document.getElementById('fpEmail').value=loginEmail;}
+  document.getElementById('loginForm').style.display='none';
+  document.getElementById('signupForm').style.display='none';
+  document.querySelector('.auth-tabs').style.display='none';
+  document.querySelector('.google-btn').style.display='none';
+  document.querySelector('.auth-divider').style.display='none';
   document.getElementById('sessionBanner').classList.add('hidden');
-  // Reset panel to step 1
   fpGoToStep(1);
   document.getElementById('forgotPanel').classList.add('show');
-  document.getElementById('authOverlay').scrollTop = 0;
+  document.getElementById('authOverlay').scrollTop=0;
 }
-
 function closeForgotPanel(){
   document.getElementById('forgotPanel').classList.remove('show');
-  document.querySelector('.auth-tabs').style.display = 'flex';
-  document.querySelector('.google-btn').style.display = 'flex';
-  document.querySelector('.auth-divider').style.display = 'flex';
+  document.querySelector('.auth-tabs').style.display='flex';
+  document.querySelector('.google-btn').style.display='flex';
+  document.querySelector('.auth-divider').style.display='flex';
   switchTab('login');
-  // Clear all panel fields
-  document.getElementById('fpEmail').value = '';
-  document.getElementById('fpNewPw').value = '';
-  document.getElementById('fpConfirmPw').value = '';
+  document.getElementById('fpEmail').value='';
+  document.getElementById('fpNewPw').value='';
+  document.getElementById('fpConfirmPw').value='';
   document.getElementById('fpNotFoundBanner').classList.remove('show');
   document.getElementById('fpGeneratedPill').classList.remove('show');
   document.getElementById('fpSavePwBanner').classList.remove('show');
-  clearFpError(); clearFpPwError(); clearFpConfirmError();
+  clearFpError();clearFpPwError();clearFpConfirmError();
 }
-
 function fpGoToStep(step){
-  // Update screens
   ['fpScreen1','fpScreen2','fpScreen3'].forEach((id,i)=>{
-    document.getElementById(id).classList.toggle('active', i+1===step);
+    document.getElementById(id).classList.toggle('active',i+1===step);
   });
-  // Update step circles
   ['fpStep1','fpStep2','fpStep3'].forEach((id,i)=>{
-    const el = document.getElementById(id);
+    const el=document.getElementById(id);
     el.classList.remove('active','done');
-    if(i+1 === step) el.classList.add('active');
-    else if(i+1 < step) el.classList.add('done');
+    if(i+1===step)el.classList.add('active');
+    else if(i+1<step)el.classList.add('done');
   });
-  // Update connectors
-  document.getElementById('fpConn1').classList.toggle('done', step > 1);
-  document.getElementById('fpConn2').classList.toggle('done', step > 2);
-  document.getElementById('authOverlay').scrollTop = 0;
+  document.getElementById('fpConn1').classList.toggle('done',step>1);
+  document.getElementById('fpConn2').classList.toggle('done',step>2);
+  document.getElementById('authOverlay').scrollTop=0;
 }
-
-function clearFpError(){
-  document.getElementById('fpEmailErr').classList.remove('show');
-  document.getElementById('fpEmail').classList.remove('error');
-  document.getElementById('fpNotFoundBanner').classList.remove('show');
-}
-function clearFpPwError(){
-  document.getElementById('fpNewPwErr').classList.remove('show');
-  document.getElementById('fpNewPw').classList.remove('error');
-}
-function clearFpConfirmError(){
-  document.getElementById('fpConfirmPwErr').classList.remove('show');
-  document.getElementById('fpConfirmPw').classList.remove('error');
-}
+function clearFpError(){document.getElementById('fpEmailErr').classList.remove('show');document.getElementById('fpEmail').classList.remove('error');document.getElementById('fpNotFoundBanner').classList.remove('show');}
+function clearFpPwError(){document.getElementById('fpNewPwErr').classList.remove('show');document.getElementById('fpNewPw').classList.remove('error');}
+function clearFpConfirmError(){document.getElementById('fpConfirmPwErr').classList.remove('show');document.getElementById('fpConfirmPw').classList.remove('error');}
 
 async function fpVerifyEmail(){
-  const email = document.getElementById('fpEmail').value.trim();
-  if(!isValidEmail(email)){
-    document.getElementById('fpEmailErr').classList.add('show');
-    document.getElementById('fpEmail').classList.add('error');
-    return;
-  }
-  const btn = document.getElementById('fpVerifyBtn');
-  btn.disabled = true; btn.textContent = '⏳ Verifying…';
-
-  // 1. Check if email exists in profiles table
-  const { data: profileData, error: profileError } = await _supabase
-    .from('profiles')
-    .select('id')
-    .eq('email', email)
-    .maybeSingle();
-
-  if(profileError || !profileData){
-    btn.disabled = false; btn.innerHTML = '&#128233; Send Reset Link';
+  const email=document.getElementById('fpEmail').value.trim();
+  if(!isValidEmail(email)){document.getElementById('fpEmailErr').classList.add('show');document.getElementById('fpEmail').classList.add('error');return;}
+  const btn=document.getElementById('fpVerifyBtn');
+  btn.disabled=true;btn.textContent='⏳ Verifying…';
+  const{data:profileData,error:profileError}=await _supabase.from('profiles').select('id').eq('email',email).maybeSingle();
+  if(profileError||!profileData){
+    btn.disabled=false;btn.innerHTML='📨 Send Reset Link';
     document.getElementById('fpNotFoundBanner').classList.add('show');
     document.getElementById('fpEmail').classList.add('error');
     return;
   }
-
-  // 2. Email found — Send the actual Supabase reset link
-  const { error: resetError } = await _supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + window.location.pathname
-  });
-
-  btn.disabled = false; btn.innerHTML = '&#128233; Send Reset Link';
-
-  if(resetError){
-    showToast('❌ ' + resetError.message);
-    return;
-  }
-
-  // 3. Show the "Check Email" screen
+  const{error:resetError}=await _supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
+  btn.disabled=false;btn.innerHTML='📨 Send Reset Link';
+  if(resetError){showToast('❌ '+resetError.message);return;}
   document.getElementById('fpNotFoundBanner').classList.remove('show');
-  document.getElementById('fpSentEmailDisplay').textContent = email;
-  
-  // Hide all screens, show check email screen
-  ['fpScreen1','fpScreen2','fpScreen3','fpScreenCheckEmail'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.classList.remove('active');
-  });
+  document.getElementById('fpSentEmailDisplay').textContent=email;
+  ['fpScreen1','fpScreen2','fpScreen3','fpScreenCheckEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
   document.getElementById('fpScreenCheckEmail').classList.add('active');
 }
 
-// Password generator for reset flow
 function suggestResetPassword(){
-  const pw = generateStrongPassword();
-  const pill = document.getElementById('fpGeneratedPill');
-  const txt  = document.getElementById('fpGeneratedText');
-  txt.textContent = pw;
-  pill.classList.add('show');
-  const btn = pill.querySelector('.pw-refresh-btn');
-  btn.style.transform = 'rotate(360deg)';
-  setTimeout(()=>btn.style.transform='', 350);
-  pill._generated = pw;
+  const pw=generateStrongPassword();
+  const pill=document.getElementById('fpGeneratedPill');
+  const txt=document.getElementById('fpGeneratedText');
+  txt.textContent=pw;pill.classList.add('show');
+  const btn=pill.querySelector('.pw-refresh-btn');
+  btn.style.transform='rotate(360deg)';setTimeout(()=>btn.style.transform='',350);
+  pill._generated=pw;
 }
-
 function useResetGeneratedPassword(){
-  const pill = document.getElementById('fpGeneratedPill');
-  const pw   = pill._generated;
-  if(!pw) return;
-  const inp     = document.getElementById('fpNewPw');
-  const confInp = document.getElementById('fpConfirmPw');
-  inp.value     = pw;
-  confInp.value = pw;
-  inp.type = 'text';
-  const toggleBtn = inp.parentElement.querySelector('.toggle-pw');
-  if(toggleBtn) toggleBtn.textContent = '🙈';
-  checkResetStrength();
-  clearFpPwError(); clearFpConfirmError();
-  // Show save banner
-  document.getElementById('fpSavePwText').textContent = pw;
+  const pill=document.getElementById('fpGeneratedPill');const pw=pill._generated;if(!pw)return;
+  const inp=document.getElementById('fpNewPw');const confInp=document.getElementById('fpConfirmPw');
+  inp.value=pw;confInp.value=pw;inp.type='text';
+  const toggleBtn=inp.parentElement.querySelector('.toggle-pw');if(toggleBtn)toggleBtn.textContent='🙈';
+  checkResetStrength();clearFpPwError();clearFpConfirmError();
+  document.getElementById('fpSavePwText').textContent=pw;
   document.getElementById('fpSavePwBanner').classList.add('show');
   pill.classList.remove('show');
   showToast('✅ Password applied! Save it before you continue.');
 }
-
 function copyResetPassword(){
-  const text = document.getElementById('fpSavePwText').textContent;
-  if(!text || text==='—') return;
+  const text=document.getElementById('fpSavePwText').textContent;if(!text||text==='—')return;
   navigator.clipboard.writeText(text).then(()=>{
     showToast('📋 Password copied to clipboard!');
     document.querySelector('#fpSavePwBanner .spb-copy-btn').textContent='Copied ✓';
-    setTimeout(()=>{
-      const btn=document.querySelector('#fpSavePwBanner .spb-copy-btn');
-      if(btn) btn.textContent='Copy';
-    },2000);
-  }).catch(()=>{
-    const ta=document.createElement('textarea');
-    ta.value=text;document.body.appendChild(ta);ta.select();
-    document.execCommand('copy');document.body.removeChild(ta);
-    showToast('📋 Password copied!');
-  });
+    setTimeout(()=>{const btn=document.querySelector('#fpSavePwBanner .spb-copy-btn');if(btn)btn.textContent='Copy';},2000);
+  }).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Password copied!');});
 }
-
 function checkResetStrength(){
-  const pw = document.getElementById('fpNewPw').value;
-  const hasLength  = pw.length >= 8;
-  const hasUpper   = /[A-Z]/.test(pw);
-  const hasLower   = /[a-z]/.test(pw);
-  const hasNumber  = /[0-9]/.test(pw);
-  const hasSpecial = /[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
-  const setFpReq=(id,met)=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    el.classList.toggle('met',met);
-  };
-  setFpReq('fp-req-length',  hasLength);
-  setFpReq('fp-req-upper',   hasUpper);
-  setFpReq('fp-req-lower',   hasLower);
-  setFpReq('fp-req-number',  hasNumber);
-  setFpReq('fp-req-special', hasSpecial);
+  const pw=document.getElementById('fpNewPw').value;
+  const hasLength=pw.length>=8,hasUpper=/[A-Z]/.test(pw),hasLower=/[a-z]/.test(pw),hasNumber=/[0-9]/.test(pw),hasSpecial=/[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
+  const setFpReq=(id,met)=>{const el=document.getElementById(id);if(!el)return;el.classList.toggle('met',met);};
+  setFpReq('fp-req-length',hasLength);setFpReq('fp-req-upper',hasUpper);setFpReq('fp-req-lower',hasLower);setFpReq('fp-req-number',hasNumber);setFpReq('fp-req-special',hasSpecial);
   const score=[hasLength,hasUpper,hasLower,hasNumber,hasSpecial].filter(Boolean).length;
-  const fill  = document.getElementById('fpStrengthFill');
-  const label = document.getElementById('fpStrengthLabel');
-  const levels=[
-    {p:'0%',  c:'#e5e7eb', t:''},
-    {p:'20%', c:'#ef4444', t:'Weak'},
-    {p:'40%', c:'#f59e0b', t:'Fair'},
-    {p:'60%', c:'#3b82f6', t:'Good'},
-    {p:'80%', c:'#10b981', t:'Very Good'},
-    {p:'100%',c:'#22c55e', t:'Strong 🔒'},
-  ];
-  fill.style.width      = levels[score].p;
-  fill.style.background = levels[score].c;
-  label.textContent     = levels[score].t;
-  label.style.color     = levels[score].c;
+  const fill=document.getElementById('fpStrengthFill');const label=document.getElementById('fpStrengthLabel');
+  const levels=[{p:'0%',c:'#e5e7eb',t:''},{p:'20%',c:'#ef4444',t:'Weak'},{p:'40%',c:'#f59e0b',t:'Fair'},{p:'60%',c:'#3b82f6',t:'Good'},{p:'80%',c:'#10b981',t:'Very Good'},{p:'100%',c:'#22c55e',t:'Strong 🔒'}];
+  fill.style.width=levels[score].p;fill.style.background=levels[score].c;label.textContent=levels[score].t;label.style.color=levels[score].c;
 }
-
 async function fpSubmitNewPassword(){
-  const pw  = document.getElementById('fpNewPw').value;
-  const cpw = document.getElementById('fpConfirmPw').value;
-  let ok = true;
-  if(!passwordMeetsAll(pw)){
-    document.getElementById('fpNewPwErr').classList.add('show');
-    document.getElementById('fpNewPw').classList.add('error');
-    ok = false;
-  }
-  if(pw !== cpw){
-    document.getElementById('fpConfirmPwErr').classList.add('show');
-    document.getElementById('fpConfirmPw').classList.add('error');
-    ok = false;
-  }
-  if(!ok) return;
-
-  const btn = document.getElementById('fpResetBtn');
-  btn.disabled = true; btn.textContent = '⏳ Updating…';
-
-  // 1. Update the password
-  const { error } = await _supabase.auth.updateUser({ password: pw });
-  
-  if(error){
-    btn.disabled = false; btn.innerHTML = '&#128274; Set New Password';
-    showToast('❌ ' + error.message);
-    return;
-  }
-
-  // 2. IMPORTANT: Sign out immediately so the user MUST log in with the new password
-  await _supabase.auth.signOut();
-  currentUser = null;
-  stopSession();
-
-  btn.disabled = false; btn.innerHTML = '&#128274; Set New Password';
-  
-  // 3. Advance to success screen
+  const pw=document.getElementById('fpNewPw').value;const cpw=document.getElementById('fpConfirmPw').value;
+  let ok=true;
+  if(!passwordMeetsAll(pw)){document.getElementById('fpNewPwErr').classList.add('show');document.getElementById('fpNewPw').classList.add('error');ok=false;}
+  if(pw!==cpw){document.getElementById('fpConfirmPwErr').classList.add('show');document.getElementById('fpConfirmPw').classList.add('error');ok=false;}
+  if(!ok)return;
+  const btn=document.getElementById('fpResetBtn');btn.disabled=true;btn.textContent='⏳ Updating…';
+  const{error}=await _supabase.auth.updateUser({password:pw});
+  if(error){btn.disabled=false;btn.innerHTML='🔒 Set New Password';showToast('❌ '+error.message);return;}
+  // ✅ Sign out after password reset — user must log in fresh with new password
+  await _supabase.auth.signOut();currentUser=null;stopSession();
+  btn.disabled=false;btn.innerHTML='🔒 Set New Password';
   fpGoToStep(3);
 }
-
-function fpGoToSignIn(){
-  closeForgotPanel();
-  switchTab('login');
-}
-
-function hideResetBanner(){
-  document.getElementById('resetSentBanner').classList.remove('show');
-}
+function fpGoToSignIn(){closeForgotPanel();switchTab('login');}
+function hideResetBanner(){document.getElementById('resetSentBanner').classList.remove('show');}
 
 function updateNavUser(user){
   const fn=user.firstName||user.first_name||'?';
   const ln=user.lastName||user.last_name||'?';
   const mn=user.middleName||user.middle_name||'';
-  // Use only the first letter of the first name for the avatar
   document.getElementById('navAvatar').textContent=(fn[0]||'?').toUpperCase();
   document.getElementById('navName').textContent=fn;
   document.getElementById('ddName').textContent=fn+(mn?' '+mn:'')+' '+ln;
   document.getElementById('ddEmail').textContent=user.email;
   document.getElementById('navSigninBtn').style.display='none';
   document.getElementById('navUserWrap').style.display='block';
-
-  // ── ADMIN SECURITY CHECK ──
-  // Replace 'evidencegach332@gmail.com' with your actual admin email
-  const adminEmail = 'evidencegach332@gmail.com'; 
-  const adminBtn = document.getElementById('adminBtn');
-  if(adminBtn) {
-    adminBtn.style.display = (user.email === adminEmail) ? 'flex' : 'none';
-  }
+  const adminEmail='evidencegach332@gmail.com';
+  const adminBtn=document.getElementById('adminBtn');
+  if(adminBtn)adminBtn.style.display=(user.email===adminEmail)?'flex':'none';
 }
-
 function prefillOrderForm(user){
   const fn=user.firstName||user.first_name||'';
   const mn=user.middleName||user.middle_name||'';
   const ln=user.lastName||user.last_name||'';
-  const e1=document.getElementById('orderFirstName');
-  const e2=document.getElementById('orderLastName');
-  const e3=document.getElementById('orderPhone');
-  if(e1)e1.value=fn+(mn?' '+mn:'');
-  if(e2)e2.value=ln;
-  if(e3)e3.value=user.phone||'';
+  const e1=document.getElementById('orderFirstName');const e2=document.getElementById('orderLastName');const e3=document.getElementById('orderPhone');
+  if(e1)e1.value=fn+(mn?' '+mn:'');if(e2)e2.value=ln;if(e3)e3.value=user.phone||'';
 }
-
 function showProfile(){
-  if(!currentUser)return;
-  closeDropdown();
+  if(!currentUser)return;closeDropdown();
   const fn=currentUser.firstName||currentUser.first_name||'';
   const mn=currentUser.middleName||currentUser.middle_name||'';
   const ln=currentUser.lastName||currentUser.last_name||'';
   const fullName=fn+(mn?' '+mn:'')+' '+ln;
-  const email=currentUser.email||'—';
-  const phone=currentUser.phone||'—';
+  const email=currentUser.email||'—';const phone=currentUser.phone||'—';
   const dob=currentUser.dob?new Date(currentUser.dob).toLocaleDateString('en-KE',{year:'numeric',month:'long',day:'numeric'}):'—';
   document.getElementById('profileAvatarLarge').textContent=(fn[0]||'?').toUpperCase();
   document.getElementById('profileUsername').textContent=fn||'User';
@@ -1481,239 +1123,113 @@ function showProfile(){
   document.getElementById('profileDOB').textContent=dob;
   document.getElementById('profileModal').style.display='flex';
 }
-function closeProfile(){
-  document.getElementById('profileModal').style.display='none';
-}
-
+function closeProfile(){document.getElementById('profileModal').style.display='none';}
 function toggleDropdown(){document.getElementById('userDropdown').classList.toggle('open');}
-// ── ADMIN PANEL SECURITY ──
-const ADMIN_EMAIL='evidencegach332@gmail.com';let adminVerified=false;let adminVerificationTime=null;const ADMIN_VERIFICATION_TIMEOUT=15*60*1000;function isAdminUser(){return currentUser&&currentUser.email===ADMIN_EMAIL;}function isAdminVerified(){if(!isAdminUser())return false;if(!adminVerified)return false;if(adminVerificationTime&&Date.now()-adminVerificationTime>ADMIN_VERIFICATION_TIMEOUT){adminVerified=false;return false;}return true;}function showAdminVerification(){const modal=document.createElement('div');modal.id='adminVerificationModal';modal.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;';modal.innerHTML=`<div style="background:white;border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.2);"><h2 style="font-size:1.2rem;font-weight:800;color:var(--green);margin:0 0 16px 0;">🔐 Admin Verification</h2><p style="color:var(--muted);margin-bottom:20px;">Enter your password to access the admin panel.</p><input type="password" id="adminVerifyPw" placeholder="Enter your password" style="width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:0.95rem;margin-bottom:16px;box-sizing:border-box;" /><div id="adminVerifyErr" style="color:#dc2626;font-size:0.85rem;margin-bottom:12px;display:none;">Incorrect password. Please try again.</div><div style="display:flex;gap:12px;"><button onclick="verifyAdminPassword()" style="flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Verify</button><button onclick="closeAdminVerification()" style="flex:1;padding:12px;background:#e5e7eb;color:var(--text);border:none;border-radius:8px;font-weight:600;cursor:pointer;">Cancel</button></div></div>`;document.body.appendChild(modal);document.getElementById('adminVerifyPw').focus();document.getElementById('adminVerifyPw').addEventListener('keypress',(e)=>{if(e.key==='Enter')verifyAdminPassword();});}function closeAdminVerification(){const modal=document.getElementById('adminVerificationModal');if(modal)modal.remove();}async function verifyAdminPassword(){const pw=document.getElementById('adminVerifyPw').value;if(!pw){document.getElementById('adminVerifyErr').style.display='block';return;}const{error}=await _supabase.auth.signInWithPassword({email:ADMIN_EMAIL,password:pw});if(error){document.getElementById('adminVerifyErr').style.display='block';return;}adminVerified=true;adminVerificationTime=Date.now();closeAdminVerification();loadAdminOrders();document.getElementById('adminPanel').classList.add('show');}function openAdminPanel(){if(!isAdminUser()){showToast('🚫 Access Denied: Admin only.');return;}if(!isAdminVerified()){showAdminVerification();return;}closeDropdown();loadAdminOrders();document.getElementById('adminPanel').classList.add('show');}function closeAdminPanel(){document.getElementById('adminPanel').classList.remove('show');}async function loadAdminOrders(){if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}const{data:orders,error}=await _supabase.from('orders').select('*').order('created_at',{ascending:false});if(error){showToast('❌ Error loading orders: '+error.message);return;}const body=document.getElementById('adminOrdersBody');if(!orders||orders.length===0){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;">No orders yet.</td></tr>';return;}body.innerHTML=orders.map(o=>{const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');return '<tr><td>'+o.id.substring(0,8)+'...</td><td>'+o.customer_name+'</td><td>'+o.phone+'</td><td>'+o.items.substring(0,30)+'...</td><td>Ksh '+o.total_price+'</td><td><span class="status-badge '+statusClass+'">'+o.status+'</span></td><td><select class="status-dropdown" onchange="updateOrderStatus(\''+o.id+'\',this.value)"><option value="Received" '+(o.status==='Received'?'selected':'')+'>Received</option><option value="Packed" '+(o.status==='Packed'?'selected':'')+'>Packed</option><option value="In Transport" '+(o.status==='In Transport'?'selected':'')+'>In Transport</option><option value="Delivered" '+(o.status==='Delivered'?'selected':'')+'>Delivered</option></select></td></tr>';}).join('');}async function updateOrderStatus(orderId,newStatus){if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}const{error}=await _supabase.from('orders').update({status:newStatus,updated_at:new Date().toISOString()}).eq('id',orderId);if(error){showToast('❌ Error updating order: '+error.message);return;}showToast('✅ Order status updated to '+newStatus);loadAdminOrders();}
+function closeDropdown(){document.getElementById('userDropdown').classList.remove('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('#navUserWrap'))closeDropdown();});
+
+// ── ADMIN PANEL ──
+const ADMIN_EMAIL='evidencegach332@gmail.com';let adminVerified=false;let adminVerificationTime=null;const ADMIN_VERIFICATION_TIMEOUT=15*60*1000;
+function isAdminUser(){return currentUser&&currentUser.email===ADMIN_EMAIL;}
+function isAdminVerified(){if(!isAdminUser())return false;if(!adminVerified)return false;if(adminVerificationTime&&Date.now()-adminVerificationTime>ADMIN_VERIFICATION_TIMEOUT){adminVerified=false;return false;}return true;}
+function showAdminVerification(){const modal=document.createElement('div');modal.id='adminVerificationModal';modal.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;';modal.innerHTML=`<div style="background:white;border-radius:16px;padding:32px;max-width:400px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.2);"><h2 style="font-size:1.2rem;font-weight:800;color:var(--green);margin:0 0 16px 0;">🔐 Admin Verification</h2><p style="color:var(--muted);margin-bottom:20px;">Enter your password to access the admin panel.</p><input type="password" id="adminVerifyPw" placeholder="Enter your password" style="width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:0.95rem;margin-bottom:16px;box-sizing:border-box;" /><div id="adminVerifyErr" style="color:#dc2626;font-size:0.85rem;margin-bottom:12px;display:none;">Incorrect password. Please try again.</div><div style="display:flex;gap:12px;"><button onclick="verifyAdminPassword()" style="flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Verify</button><button onclick="closeAdminVerification()" style="flex:1;padding:12px;background:#e5e7eb;color:var(--text);border:none;border-radius:8px;font-weight:600;cursor:pointer;">Cancel</button></div></div>`;document.body.appendChild(modal);document.getElementById('adminVerifyPw').focus();document.getElementById('adminVerifyPw').addEventListener('keypress',(e)=>{if(e.key==='Enter')verifyAdminPassword();});}
+function closeAdminVerification(){const modal=document.getElementById('adminVerificationModal');if(modal)modal.remove();}
+async function verifyAdminPassword(){const pw=document.getElementById('adminVerifyPw').value;if(!pw){document.getElementById('adminVerifyErr').style.display='block';return;}const{error}=await _supabase.auth.signInWithPassword({email:ADMIN_EMAIL,password:pw});if(error){document.getElementById('adminVerifyErr').style.display='block';return;}adminVerified=true;adminVerificationTime=Date.now();closeAdminVerification();loadAdminOrders();document.getElementById('adminPanel').classList.add('show');}
+function openAdminPanel(){if(!isAdminUser()){showToast('🚫 Access Denied: Admin only.');return;}if(!isAdminVerified()){showAdminVerification();return;}closeDropdown();loadAdminOrders();document.getElementById('adminPanel').classList.add('show');}
+function closeAdminPanel(){document.getElementById('adminPanel').classList.remove('show');}
+async function loadAdminOrders(){if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}const{data:orders,error}=await _supabase.from('orders').select('*').order('created_at',{ascending:false});if(error){showToast('❌ Error loading orders: '+error.message);return;}const body=document.getElementById('adminOrdersBody');if(!orders||orders.length===0){body.innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;">No orders yet.</td></tr>';return;}body.innerHTML=orders.map(o=>{const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');return '<tr><td>'+o.id.substring(0,8)+'...</td><td>'+o.customer_name+'</td><td>'+o.phone+'</td><td>'+o.items.substring(0,30)+'...</td><td>Ksh '+o.total_price+'</td><td><span class="status-badge '+statusClass+'">'+o.status+'</span></td><td><select class="status-dropdown" onchange="updateOrderStatus(\''+o.id+'\',this.value)"><option value="Received" '+(o.status==='Received'?'selected':'')+'>Received</option><option value="Packed" '+(o.status==='Packed'?'selected':'')+'>Packed</option><option value="In Transport" '+(o.status==='In Transport'?'selected':'')+'>In Transport</option><option value="Delivered" '+(o.status==='Delivered'?'selected':'')+'>Delivered</option></select></td></tr>';}).join('');}
+async function updateOrderStatus(orderId,newStatus){if(!isAdminVerified()){showToast('🚫 Admin verification required.');return;}const{error}=await _supabase.from('orders').update({status:newStatus,updated_at:new Date().toISOString()}).eq('id',orderId);if(error){showToast('❌ Error updating order: '+error.message);return;}showToast('✅ Order status updated to '+newStatus);loadAdminOrders();}
 
 // ── CUSTOMER ORDER HISTORY ──
 async function showMyOrders(){
-  if(!currentUser)return;
-  closeDropdown();
+  if(!currentUser)return;closeDropdown();
   const{data:orders,error}=await _supabase.from('orders').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
   if(error){showToast('❌ Error loading orders: '+error.message);return;}
   const body=document.getElementById('orderHistoryBody');
   if(!orders||orders.length===0){body.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);"><div style="font-size:2rem;margin-bottom:10px;">📦</div><p>You haven\'t placed any orders yet.</p></div>';}
-  else{
-    body.innerHTML=orders.map(o=>{
-      const date=new Date(o.created_at).toLocaleDateString('en-KE');
-      const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');
-      const isDelivered=o.status==='Delivered';
-      const confirmed=o.confirmed_by_customer||false;
-      return '<div class="order-item"><div class="order-header"><div><div class="order-id">Order #'+o.id.substring(0,8)+'</div><div class="order-date">'+date+'</div></div><span class="order-status '+statusClass+'">'+o.status+'</span></div><div class="order-details"><strong>Items:</strong> '+o.items+'<br/><strong>Delivery Address:</strong> '+(o.address||'Pickup at Store')+'</div><div class="order-total">Total: Ksh '+o.total_price+'</div>'+(isDelivered?'<button class="confirm-delivery-btn" onclick="confirmDelivery(\''+o.id+'\')" '+(confirmed?'disabled':'')+'>'+( confirmed?'✅ Delivery Confirmed':'👋 Confirm Delivery')+' </button>':'')+'</div>';
-    }).join('');
-  }
+  else{body.innerHTML=orders.map(o=>{const date=new Date(o.created_at).toLocaleDateString('en-KE');const statusClass='status-'+o.status.toLowerCase().replace(/ /g,'-');const isDelivered=o.status==='Delivered';const confirmed=o.confirmed_by_customer||false;return '<div class="order-item"><div class="order-header"><div><div class="order-id">Order #'+o.id.substring(0,8)+'</div><div class="order-date">'+date+'</div></div><span class="order-status '+statusClass+'">'+o.status+'</span></div><div class="order-details"><strong>Items:</strong> '+o.items+'<br/><strong>Delivery Address:</strong> '+(o.address||'Pickup at Store')+'</div><div class="order-total">Total: Ksh '+o.total_price+'</div>'+(isDelivered?'<button class="confirm-delivery-btn" onclick="confirmDelivery(\''+o.id+'\')" '+(confirmed?'disabled':'')+'>'+( confirmed?'✅ Delivery Confirmed':'👋 Confirm Delivery')+'</button>':'')+'</div>';}).join('');}
   document.getElementById('orderHistory').classList.add('show');
   document.getElementById('orderHistory').scrollIntoView({behavior:'smooth'});
 }
-function closeOrderHistory(){
-  document.getElementById('orderHistory').classList.remove('show');
-  document.getElementById('home').scrollIntoView({behavior:'smooth'});
-}
+function closeOrderHistory(){document.getElementById('orderHistory').classList.remove('show');document.getElementById('home').scrollIntoView({behavior:'smooth'});}
 async function confirmDelivery(orderId){
   const{error}=await _supabase.from('orders').update({confirmed_by_customer:true,updated_at:new Date().toISOString()}).eq('id',orderId);
   if(error){showToast('❌ Error confirming delivery: '+error.message);return;}
-  showToast('✅ Thank you! Delivery confirmed.');
-  showMyOrders();
+  showToast('✅ Thank you! Delivery confirmed.');showMyOrders();
 }
-function closeDropdown(){document.getElementById('userDropdown').classList.remove('open');}
-document.addEventListener('click',e=>{if(!e.target.closest('#navUserWrap'))closeDropdown();});
 
 // ── SESSION ──
 function startSession(){
-  sessionEndTime=Date.now()+SESSION_DURATION*1000;
-  const timerEl=document.getElementById('sessionTimer');
-  timerEl.classList.remove('hidden');clearInterval(sessionInterval);
-  sessionInterval=setInterval(()=>{
-    const rem=Math.max(0,Math.floor((sessionEndTime-Date.now())/1000));
-    const m=Math.floor(rem/60);const s=(rem%60).toString().padStart(2,'0');
-    document.getElementById('timerDisplay').textContent=m+':'+s;
-    if(rem<=WARN_AT){timerEl.classList.add('warning');if(rem===WARN_AT)showToast('⚠️ Session expires in 5 minutes!');}
-    if(rem===0){
-      clearInterval(sessionInterval);timerEl.classList.add('hidden');
-      currentUser=null;
-      document.getElementById('navSigninBtn').style.display='block';
-      document.getElementById('navUserWrap').style.display='none';
-      openAuth(true);
-    }
-  },1000);
+  localStorage.setItem('lastActivityTime',Date.now().toString());
+  if(sessionTimeout)clearTimeout(sessionTimeout);
+  sessionTimeout=setTimeout(()=>{if(currentUser){showToast('⏰ Your session has expired. Please sign in again.');signOut();}},SESSION_DURATION);
+  document.addEventListener('click',resetSessionTimer,true);
+  document.addEventListener('keypress',resetSessionTimer,true);
+}
+function resetSessionTimer(){
+  if(!currentUser)return;
+  localStorage.setItem('lastActivityTime',Date.now().toString());
+  if(sessionTimeout)clearTimeout(sessionTimeout);
+  sessionTimeout=setTimeout(()=>{showToast('⏰ Your session has expired. Please sign in again.');signOut();},SESSION_DURATION);
 }
 function stopSession(){
-  clearInterval(sessionInterval);sessionInterval=null;sessionEndTime=null;
-  document.getElementById('sessionTimer').classList.add('hidden');
-  document.getElementById('sessionTimer').classList.remove('warning');
+  if(sessionTimeout)clearTimeout(sessionTimeout);
+  document.removeEventListener('click',resetSessionTimer,true);
+  document.removeEventListener('keypress',resetSessionTimer,true);
 }
-['click','keydown','scroll','mousemove','touchstart'].forEach(evt=>
-  document.addEventListener(evt,()=>{
-    if(currentUser&&sessionEndTime){
-      sessionEndTime=Date.now()+SESSION_DURATION*1000;
-      document.getElementById('sessionTimer').classList.remove('warning');
-    }
-  },{passive:true})
-);
 
 // ── PASSWORD GENERATOR ──
 function generateStrongPassword(){
-  const upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
-  const lower   = 'abcdefghjkmnpqrstuvwxyz';
-  const numbers = '23456789';
-  const special = '!@#$%^&*-_+=?';
-  const all = upper + lower + numbers + special;
-  let pw = [
-    upper[Math.floor(Math.random()*upper.length)],
-    upper[Math.floor(Math.random()*upper.length)],
-    lower[Math.floor(Math.random()*lower.length)],
-    lower[Math.floor(Math.random()*lower.length)],
-    numbers[Math.floor(Math.random()*numbers.length)],
-    numbers[Math.floor(Math.random()*numbers.length)],
-    special[Math.floor(Math.random()*special.length)],
-    special[Math.floor(Math.random()*special.length)],
-  ];
-  for(let i=pw.length;i<14;i++) pw.push(all[Math.floor(Math.random()*all.length)]);
-  for(let i=pw.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [pw[i],pw[j]]=[pw[j],pw[i]];
-  }
+  const upper='ABCDEFGHJKLMNPQRSTUVWXYZ';const lower='abcdefghjkmnpqrstuvwxyz';const numbers='23456789';const special='!@#$%^&*-_+=?';const all=upper+lower+numbers+special;
+  let pw=[upper[Math.floor(Math.random()*upper.length)],upper[Math.floor(Math.random()*upper.length)],lower[Math.floor(Math.random()*lower.length)],lower[Math.floor(Math.random()*lower.length)],numbers[Math.floor(Math.random()*numbers.length)],numbers[Math.floor(Math.random()*numbers.length)],special[Math.floor(Math.random()*special.length)],special[Math.floor(Math.random()*special.length)]];
+  for(let i=pw.length;i<14;i++)pw.push(all[Math.floor(Math.random()*all.length)]);
+  for(let i=pw.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pw[i],pw[j]]=[pw[j],pw[i]];}
   return pw.join('');
 }
-
 function suggestPassword(){
-  const pw = generateStrongPassword();
-  const pill = document.getElementById('pwGeneratedPill');
-  const txt  = document.getElementById('pwGeneratedText');
-  txt.textContent = pw;
-  pill.classList.add('show');
-  const btn = pill.querySelector('.pw-refresh-btn');
-  btn.style.transform='rotate(360deg)';
-  setTimeout(()=>btn.style.transform='',350);
-  pill._generated = pw;
+  const pw=generateStrongPassword();const pill=document.getElementById('pwGeneratedPill');const txt=document.getElementById('pwGeneratedText');
+  txt.textContent=pw;pill.classList.add('show');
+  const btn=pill.querySelector('.pw-refresh-btn');btn.style.transform='rotate(360deg)';setTimeout(()=>btn.style.transform='',350);pill._generated=pw;
 }
-
 function useGeneratedPassword(){
-  const pill = document.getElementById('pwGeneratedPill');
-  const pw   = pill._generated;
-  if(!pw) return;
-  const inp    = document.getElementById('signupPw');
-  const confInp= document.getElementById('confirmPw');
-  inp.value    = pw;
-  confInp.value= pw;
-  inp.type = 'text';
-  const toggleBtn = inp.parentElement.querySelector('.toggle-pw');
-  if(toggleBtn) toggleBtn.textContent='🙈';
-  checkStrength();
-  clearErr('signupPw');
-  clearErr('confirmPw');
-  // Show save banner immediately so user can copy
-  document.getElementById('savePwText').textContent=pw;
-  document.getElementById('savePwBanner').classList.add('show');
-  pill.classList.remove('show');
-  showToast('✅ Password applied! Save it before you continue.');
+  const pill=document.getElementById('pwGeneratedPill');const pw=pill._generated;if(!pw)return;
+  const inp=document.getElementById('signupPw');const confInp=document.getElementById('confirmPw');
+  inp.value=pw;confInp.value=pw;inp.type='text';
+  const toggleBtn=inp.parentElement.querySelector('.toggle-pw');if(toggleBtn)toggleBtn.textContent='🙈';
+  checkStrength();clearErr('signupPw');clearErr('confirmPw');
+  document.getElementById('savePwText').textContent=pw;document.getElementById('savePwBanner').classList.add('show');
+  pill.classList.remove('show');showToast('✅ Password applied! Save it before you continue.');
 }
-
 function copyPassword(){
-  const text = document.getElementById('savePwText').textContent;
-  if(!text||text==='—') return;
-  navigator.clipboard.writeText(text).then(()=>{
-    showToast('📋 Password copied to clipboard!');
-    document.querySelector('.spb-copy-btn').textContent='Copied ✓';
-    setTimeout(()=>document.querySelector('.spb-copy-btn').textContent='Copy',2000);
-  }).catch(()=>{
-    // Fallback for older browsers
-    const ta=document.createElement('textarea');
-    ta.value=text;document.body.appendChild(ta);ta.select();
-    document.execCommand('copy');document.body.removeChild(ta);
-    showToast('📋 Password copied!');
-  });
+  const text=document.getElementById('savePwText').textContent;if(!text||text==='—')return;
+  navigator.clipboard.writeText(text).then(()=>{showToast('📋 Password copied to clipboard!');document.querySelector('.spb-copy-btn').textContent='Copied ✓';setTimeout(()=>document.querySelector('.spb-copy-btn').textContent='Copy',2000);}).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Password copied!');});
 }
-
-
-function togglePw(id,btn){
-  const inp=document.getElementById(id);
-  inp.type=inp.type==='password'?'text':'password';
-  btn.textContent=inp.type==='password'?'👁':'🙈';
-}
-
-function passwordMeetsAll(pw){
-  return pw.length>=8 &&
-    /[A-Z]/.test(pw) &&
-    /[a-z]/.test(pw) &&
-    /[0-9]/.test(pw) &&
-    /[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
-}
-
-function setReq(id, met){
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.classList.toggle('met', met);
-  el.querySelector('.pw-req-icon').textContent = met ? '✓' : '✓';
-}
-
+function togglePw(id,btn){const inp=document.getElementById(id);inp.type=inp.type==='password'?'text':'password';btn.textContent=inp.type==='password'?'👁':'🙈';}
+function passwordMeetsAll(pw){return pw.length>=8&&/[A-Z]/.test(pw)&&/[a-z]/.test(pw)&&/[0-9]/.test(pw)&&/[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);}
+function setReq(id,met){const el=document.getElementById(id);if(!el)return;el.classList.toggle('met',met);el.querySelector('.pw-req-icon').textContent='✓';}
 function checkStrength(){
   const pw=document.getElementById('signupPw').value;
-  const hasLength  = pw.length >= 8;
-  const hasUpper   = /[A-Z]/.test(pw);
-  const hasLower   = /[a-z]/.test(pw);
-  const hasNumber  = /[0-9]/.test(pw);
-  const hasSpecial = /[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
-
-  setReq('req-length',  hasLength);
-  setReq('req-upper',   hasUpper);
-  setReq('req-lower',   hasLower);
-  setReq('req-number',  hasNumber);
-  setReq('req-special', hasSpecial);
-
-  const score = [hasLength,hasUpper,hasLower,hasNumber,hasSpecial].filter(Boolean).length;
-  const fill  = document.getElementById('strengthFill');
-  const label = document.getElementById('strengthLabel');
-  const levels = [
-    {p:'0%',  c:'#e5e7eb', t:''},
-    {p:'20%', c:'#ef4444', t:'Weak'},
-    {p:'40%', c:'#f59e0b', t:'Fair'},
-    {p:'60%', c:'#3b82f6', t:'Good'},
-    {p:'80%', c:'#10b981', t:'Very Good'},
-    {p:'100%',c:'#22c55e', t:'Strong 🔒'},
-  ];
-  fill.style.width      = levels[score].p;
-  fill.style.background = levels[score].c;
-  label.textContent     = levels[score].t;
-  label.style.color     = levels[score].c;
+  const hasLength=pw.length>=8,hasUpper=/[A-Z]/.test(pw),hasLower=/[a-z]/.test(pw),hasNumber=/[0-9]/.test(pw),hasSpecial=/[!@#$%^&*()\-_=+\[\]{};:'"\\|,.<>/?`~]/.test(pw);
+  setReq('req-length',hasLength);setReq('req-upper',hasUpper);setReq('req-lower',hasLower);setReq('req-number',hasNumber);setReq('req-special',hasSpecial);
+  const score=[hasLength,hasUpper,hasLower,hasNumber,hasSpecial].filter(Boolean).length;
+  const fill=document.getElementById('strengthFill');const label=document.getElementById('strengthLabel');
+  const levels=[{p:'0%',c:'#e5e7eb',t:''},{p:'20%',c:'#ef4444',t:'Weak'},{p:'40%',c:'#f59e0b',t:'Fair'},{p:'60%',c:'#3b82f6',t:'Good'},{p:'80%',c:'#10b981',t:'Very Good'},{p:'100%',c:'#22c55e',t:'Strong 🔒'}];
+  fill.style.width=levels[score].p;fill.style.background=levels[score].c;label.textContent=levels[score].t;label.style.color=levels[score].c;
 }
 
 // ── TOAST ──
 let toastTimer;
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200);}
 
 // ── PRODUCTS ──
 function renderProducts(filter){
   if(filter===undefined)filter=getCurrentFilter();
   const grid=document.getElementById('productsGrid');
   const filtered=filter==='all'?products:products.filter(p=>p.cat===filter);
-  grid.innerHTML=filtered.map(p=>{
-    const qty=cart[p.name+'|'+p.unit]||0;
-    return '<div class="product-card">'+(p.badge?'<div class="product-badge">'+p.badge+'</div>':'')+
-      '<span class="product-emoji">'+p.emoji+'</span>'+
-      '<div class="product-name">'+p.name+'</div>'+
-      '<div class="product-unit">'+p.unit+'</div>'+
-      '<div class="product-price">'+p.price+'</div>'+
-      (qty>0
-        ?'<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;"><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',-1)">−</button><span class="qty-num" style="font-size:1rem;font-weight:700;color:var(--green);">'+qty+'</span><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',1)">+</button></div>'
-        :'<button class="add-btn" onclick="addToCart(\''+p.name+'\',\''+p.unit+'\')" >+ Add to Cart</button>'
-      )+'</div>';
-  }).join('');
+  grid.innerHTML=filtered.map(p=>{const qty=cart[p.name+'|'+p.unit]||0;return '<div class="product-card">'+(p.badge?'<div class="product-badge">'+p.badge+'</div>':'')+'<span class="product-emoji">'+p.emoji+'</span><div class="product-name">'+p.name+'</div><div class="product-unit">'+p.unit+'</div><div class="product-price">'+p.price+'</div>'+(qty>0?'<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;"><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',-1)">−</button><span class="qty-num" style="font-size:1rem;font-weight:700;color:var(--green);">'+qty+'</span><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',1)">+</button></div>':'<button class="add-btn" onclick="addToCart(\''+p.name+'\',\''+p.unit+'\')">+ Add to Cart</button>')+'</div>';}).join('');
 }
-function filterProducts(cat,btn){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');renderProducts(cat);
-}
-function getCurrentFilter(){
-  const a=document.querySelector('.tab.active');return a?(a.getAttribute('data-cat')||'all'):'all';
-}
+function filterProducts(cat,btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderProducts(cat);}
+function getCurrentFilter(){const a=document.querySelector('.tab.active');return a?(a.getAttribute('data-cat')||'all'):'all';}
 
 // ── CART ──
 function addToCart(n,u){const k=n+'|'+u;cart[k]=(cart[k]||0)+1;updateCart();renderProducts();}
@@ -1721,39 +1237,23 @@ function changeQty(n,u,d){const k=n+'|'+u;cart[k]=(cart[k]||0)+d;if(cart[k]<=0)d
 function removeFromCart(k){delete cart[k];updateCart();renderProducts();}
 function clearCart(){cart={};updateCart();renderProducts();}
 function getProductByKey(k){const[n,u]=k.split('|');return products.find(p=>p.name===n&&p.unit===u);}
-
 function updateCart(){
-  const entries=Object.entries(cart);
-  const totalQty=entries.reduce((s,[,q])=>s+q,0);
+  const entries=Object.entries(cart);const totalQty=entries.reduce((s,[,q])=>s+q,0);
   const subtotal=entries.reduce((s,[k,q])=>{const p=getProductByKey(k);return s+(p?p.cost*q:0);},0);
-  const hasDiscount=subtotal>=7500;
-  const discountAmt=hasDiscount?Math.round(subtotal*0.03):0;
-  const finalTotal=subtotal-discountAmt;
-  const badge=document.getElementById('cartCount');
-  badge.style.display=totalQty>0?'flex':'none';badge.textContent=totalQty;
+  const hasDiscount=subtotal>=7500;const discountAmt=hasDiscount?Math.round(subtotal*0.03):0;const finalTotal=subtotal-discountAmt;
+  const badge=document.getElementById('cartCount');badge.style.display=totalQty>0?'flex':'none';badge.textContent=totalQty;
   const body=document.getElementById('cartBody');const footer=document.getElementById('cartFooter');
-  if(entries.length===0){
-    body.innerHTML='<div class="cart-empty"><div class="big">🛒</div><p>Your cart is empty.<br/>Add items from the products section!</p></div>';
-    footer.style.display='none';
-  }else{
-    body.innerHTML=entries.map(([key,qty])=>{
-      const p=getProductByKey(key);
-      return '<div class="cart-item"><div class="cart-item-emoji">'+p.emoji+'</div><div class="cart-item-info"><div class="cart-item-name">'+p.name+' <span style="font-size:0.75rem;color:var(--muted);">('+p.unit+')</span></div><div class="cart-item-price">Ksh '+p.cost+' × '+qty+' = <strong>Ksh '+p.cost*qty+'</strong></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',-1)">−</button><span class="qty-num">'+qty+'</span><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',1)">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(\''+key+'\')" title="Remove">🗑</button></div>';
-    }).join('');
+  if(entries.length===0){body.innerHTML='<div class="cart-empty"><div class="big">🛒</div><p>Your cart is empty.<br/>Add items from the products section!</p></div>';footer.style.display='none';}
+  else{
+    body.innerHTML=entries.map(([key,qty])=>{const p=getProductByKey(key);return '<div class="cart-item"><div class="cart-item-emoji">'+p.emoji+'</div><div class="cart-item-info"><div class="cart-item-name">'+p.name+' <span style="font-size:0.75rem;color:var(--muted);">('+p.unit+')</span></div><div class="cart-item-price">Ksh '+p.cost+' × '+qty+' = <strong>Ksh '+p.cost*qty+'</strong></div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',-1)">−</button><span class="qty-num">'+qty+'</span><button class="qty-btn" onclick="changeQty(\''+p.name+'\',\''+p.unit+'\',1)">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(\''+key+'\')" title="Remove">🗑</button></div>';}).join('');
     document.getElementById('cartSubtotal').textContent='Ksh '+subtotal;
     const dr=document.getElementById('discountRow');const bh=document.getElementById('bulkHint');
     if(hasDiscount){dr.style.display='flex';document.getElementById('discountAmt').textContent='− Ksh '+discountAmt;bh.style.display='none';}
     else{dr.style.display='none';bh.style.display='block';}
-    document.getElementById('cartTotal').textContent='Ksh '+finalTotal;
-    footer.style.display='block';
+    document.getElementById('cartTotal').textContent='Ksh '+finalTotal;footer.style.display='block';
   }
 }
-
-function toggleCart(){
-  document.getElementById('cartDrawer').classList.toggle('open');
-  document.getElementById('cartOverlay').classList.toggle('open');
-}
-
+function toggleCart(){document.getElementById('cartDrawer').classList.toggle('open');document.getElementById('cartOverlay').classList.toggle('open');}
 function checkoutCart(){
   const entries=Object.entries(cart);if(entries.length===0)return;
   const summary=entries.map(([k,q])=>{const p=getProductByKey(k);return q+'× '+p.name+' ('+p.unit+') — Ksh '+p.cost*q;}).join(', ');
@@ -1762,39 +1262,22 @@ function checkoutCart(){
   const note=hasDiscount?' | 🎉 3% Bulk Discount: −Ksh '+discountAmt+' | TOTAL TO PAY: Ksh '+finalTotal:' | Total: Ksh '+subtotal;
   document.getElementById('items').value=summary+note;toggleCart();
   document.getElementById('order').scrollIntoView({behavior:'smooth'});
-  setTimeout(()=>{
-    const msg=document.getElementById('successMsg');msg.style.display='block';
-    msg.textContent=hasDiscount?'🎉 Bulk discount applied! You save Ksh '+discountAmt+'. Total: Ksh '+finalTotal+'. Fill in your details and place your order!':'🛒 Cart total: Ksh '+subtotal+'. Fill in your details and place your order!';
-    setTimeout(()=>{msg.style.display='none';},8000);
-  },600);
+  setTimeout(()=>{const msg=document.getElementById('successMsg');msg.style.display='block';msg.textContent=hasDiscount?'🎉 Bulk discount applied! You save Ksh '+discountAmt+'. Total: Ksh '+finalTotal+'. Fill in your details and place your order!':'🛒 Cart total: Ksh '+subtotal+'. Fill in your details and place your order!';setTimeout(()=>{msg.style.display='none';},8000);},600);
 }
-
 async function submitOrder(){
-  const fn=document.getElementById('orderFirstName').value.trim();
-  const ln=document.getElementById('orderLastName').value.trim();
-  const phone=document.getElementById('orderPhone').value.trim();
-  const address=document.getElementById('address').value.trim();
-  const items=document.getElementById('items').value.trim();
-  
+  const fn=document.getElementById('orderFirstName').value.trim();const ln=document.getElementById('orderLastName').value.trim();const phone=document.getElementById('orderPhone').value.trim();const address=document.getElementById('address').value.trim();const items=document.getElementById('items').value.trim();
   if(!fn||!phone||!items){alert('Please fill in your name, phone number, and the items you need.');return;}
-  
   if(currentUser){
-    const totalText=document.getElementById('cartTotal').textContent;
-    const totalPrice=parseInt(totalText.replace(/[^0-9]/g,''))||0;
+    const totalText=document.getElementById('cartTotal').textContent;const totalPrice=parseInt(totalText.replace(/[^0-9]/g,''))||0;
     const{error}=await _supabase.from('orders').insert({user_id:currentUser.id,customer_name:fn+(ln?' '+ln:''),phone,address,items,total_price:totalPrice,status:'Received'});
     if(error){alert('Error saving order: '+error.message);return;}
   }
-  
-  const msg=document.getElementById('successMsg');
-  msg.textContent="✅ Order received! We'll call you on your number to confirm. Thank you for choosing Runjob Stores!";
-  msg.style.display='block';setTimeout(()=>msg.style.display='none',6000);
-  ['orderFirstName','orderLastName','orderPhone','delivType','payMethod','address','items'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
-  clearCart();
+  const msg=document.getElementById('successMsg');msg.textContent="✅ Order received! We'll call you on your number to confirm. Thank you for choosing Runjob Stores!";msg.style.display='block';setTimeout(()=>msg.style.display='none',6000);
+  ['orderFirstName','orderLastName','orderPhone','delivType','payMethod','address','items'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});clearCart();
 }
 
 // ── INIT ──
 openAuth(false);
-
 document.querySelectorAll('.tab').forEach(btn=>{
   const txt=btn.textContent.trim().toLowerCase();
   if(txt.includes('veg'))btn.setAttribute('data-cat','vegetables');
@@ -1806,102 +1289,58 @@ document.querySelectorAll('.tab').forEach(btn=>{
 document.getElementById('navUserWrap').style.display='none';
 renderProducts('all');
 
-// Restore saved email from "Remember me"
-try{
-  const saved=localStorage.getItem('runjob_saved_email');
-  if(saved){
-    document.getElementById('loginEmail').value=saved;
-    document.getElementById('rememberMe').checked=true;
-  }
-}catch(e){}
+try{const saved=localStorage.getItem('runjob_saved_email');if(saved){document.getElementById('loginEmail').value=saved;document.getElementById('rememberMe').checked=true;}}catch(e){}
 
-// Auto-generate a password suggestion when signup tab opens
 document.getElementById('tabSignup').addEventListener('click',()=>{
-  setTimeout(()=>{
-    if(!document.getElementById('pwGeneratedPill').classList.contains('show')){
-      suggestPassword();
-    }
-  },200);
+  setTimeout(()=>{if(!document.getElementById('pwGeneratedPill').classList.contains('show')){suggestPassword();}},200);
 });
-// ── SESSION PERSISTENCE & INACTIVITY TIMEOUT ──
-let sessionTimeout;
-const SESSION_DURATION = 3600000; // 1 hour in milliseconds
 
-function startSession(){
-  // Store the last activity time
-  localStorage.setItem('lastActivityTime', Date.now().toString());
-  
-  // Clear any existing timeout
-  if(sessionTimeout) clearTimeout(sessionTimeout);
-  
-  // Set a new timeout for 1 hour
-  sessionTimeout = setTimeout(()=>{
-    if(currentUser){
-      showToast('⏰ Your session has expired. Please sign in again.');
-      signOut();
-    }
-  }, SESSION_DURATION);
-  
-  // Update activity on user interaction
-  document.addEventListener('click', resetSessionTimer, true);
-  document.addEventListener('keypress', resetSessionTimer, true);
-}
-
-function resetSessionTimer(){
-  if(!currentUser) return;
-  localStorage.setItem('lastActivityTime', Date.now().toString());
-  if(sessionTimeout) clearTimeout(sessionTimeout);
-  sessionTimeout = setTimeout(()=>{
-    showToast('⏰ Your session has expired. Please sign in again.');
-    signOut();
-  }, SESSION_DURATION);
-}
-
-function stopSession(){
-  if(sessionTimeout) clearTimeout(sessionTimeout);
-  document.removeEventListener('click', resetSessionTimer, true);
-  document.removeEventListener('keypress', resetSessionTimer, true);
-}
-
-// Restore Supabase session on page load
+// ── RESTORE SESSION ──
 (async()=>{
   const{data:{session}}=await _supabase.auth.getSession();
   if(session&&session.user){
     try{
       const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
       loginSuccess({...(p||{}),firstName:p?.first_name||'',middleName:p?.middle_name||'',lastName:p?.last_name||'',email:session.user.email,id:session.user.id});
-    }catch(e){
-      console.error('Error restoring session:', e);
-    }
+    }catch(e){console.error('Error restoring session:',e);}
   }
 })();
 
-// Google OAuth callback + Password Recovery handler
+// ── AUTH STATE CHANGE — Google OAuth + Password Recovery ──
 _supabase.auth.onAuthStateChange(async(event,session)=>{
+
+  // ✅ PASSWORD_RECOVERY: user clicked the reset link in email
+  // Opens the forgot-password panel directly at Step 2 (new password screen)
   if(event==='PASSWORD_RECOVERY'){
-    // User clicked the reset link in their email — open the reset panel at step 2
     openAuth(false);
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('signupForm').style.display = 'none';
-    document.querySelector('.auth-tabs').style.display = 'none';
-    document.querySelector('.google-btn').style.display = 'none';
-    document.querySelector('.auth-divider').style.display = 'none';
-    
-    // Reset panel state and go to step 2
+    document.getElementById('loginForm').style.display='none';
+    document.getElementById('signupForm').style.display='none';
+    document.querySelector('.auth-tabs').style.display='none';
+    document.querySelector('.google-btn').style.display='none';
+    document.querySelector('.auth-divider').style.display='none';
     fpGoToStep(2);
     document.getElementById('forgotPanel').classList.add('show');
-    
-    // Clear any previous inputs
-    document.getElementById('fpNewPw').value = '';
-    document.getElementById('fpConfirmPw').value = '';
-    
+    document.getElementById('fpNewPw').value='';
+    document.getElementById('fpConfirmPw').value='';
     showToast('🔒 Link verified! Please set your new password.');
     return;
   }
+
+  // ✅ SIGNED_IN: Google OAuth or session restore
+  // Reads user_metadata so Google users and trigger-created profiles both work
   if(event==='SIGNED_IN'&&session&&!currentUser){
     const{data:p}=await _supabase.from('profiles').select('*').eq('id',session.user.id).single();
-    const meta=session.user.user_metadata||{};const parts=(meta.full_name||'').split(' ');
-    loginSuccess({...(p||{}),firstName:p?.first_name||parts[0]||'User',middleName:p?.middle_name||'',lastName:p?.last_name||parts.slice(-1)[0]||'',email:session.user.email,id:session.user.id});
+    const meta=session.user.user_metadata||{};
+    const parts=(meta.full_name||'').split(' ');
+    loginSuccess({
+      ...(p||{}),
+      firstName:  p?.first_name  || meta.first_name  || parts[0]           || 'User',
+      middleName: p?.middle_name || meta.middle_name || '',
+      lastName:   p?.last_name   || meta.last_name   || parts.slice(-1)[0] || '',
+      phone:      p?.phone       || meta.phone        || '',
+      email:      session.user.email,
+      id:         session.user.id
+    });
   }
 });
 </script>
